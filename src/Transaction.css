@@ -1,0 +1,15 @@
+.Transaction {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 2rem;
+	padding: 2rem 0;
+	border-bottom: var(--line);
+}
+
+.Transaction-name {
+}
+
+.Transaction-date {
+	font-size: 1.2rem;
+}
