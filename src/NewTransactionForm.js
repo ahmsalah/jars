@@ -26,8 +26,10 @@ export class NewTransactionForm extends Component {
 		if (this.state.expense) {
 			amount = this.state.amount * -1;
 			transaction = { ...this.state, amount: amount, id: uuid() };
+			this.props.addAmount(this.state.amount, 'exp');
 		} else {
 			transaction = { ...this.state, id: uuid() };
+			this.props.addAmount(this.state.amount, 'inc');
 		}
 		this.props.addTransaction(transaction);
 		this.setState({ name: '', amount: '', note: '' });

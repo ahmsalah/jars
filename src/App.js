@@ -22,17 +22,28 @@ class App extends Component {
 				// 	date: '2019-09-26',
 				// 	note: ''
 				// }
-			]
+			],
+			inc: [],
+			exp: [],
+			total: ''
 		};
 	}
 	addTransaction = newTransaction => {
 		this.setState({ transactions: [ ...this.state.transactions, newTransaction ] });
 	};
 
+	addAmount = (newAmount, type) => {
+		if (type === 'exp') {
+			this.setState({ exp: [ ...this.state.exp, newAmount ] });
+		} else if (type === 'inc') {
+			this.setState({ inc: [ ...this.state.inc, newAmount ] });
+		}
+	};
+
 	render() {
 		return (
 			<div className="App">
-				<Navbar addTransaction={this.addTransaction} />
+				<Navbar addTransaction={this.addTransaction} addAmount={this.addAmount} />
 				<div className="App__content">
 					<Summary />
 					<TransactionsList transactions={this.state.transactions} />
