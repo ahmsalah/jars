@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import uuid from 'uuid/v4';
 
 export class NewTransactionForm extends Component {
 	constructor(props) {
@@ -17,6 +18,13 @@ export class NewTransactionForm extends Component {
 			note: ''
 		};
 	}
+
+	handleSubmit = evt => {
+		evt.preventDefault();
+		const transaction = { ...this.state, id: uuid() };
+		this.props.addTransaction(transaction);
+		this.setState({ name: '', amount: '', date: this.curDate, note: '' });
+	};
 
 	handleChange = evt => {
 		this.setState({

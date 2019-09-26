@@ -9,19 +9,33 @@ class App extends Component {
 		super(props);
 
 		this.state = {
-			expenses: [],
-			income: [],
-			total: 0
+			transactions: [
+				{
+					name: 'Salary',
+					amount: 3000,
+					date: '2019-09-26',
+					note: ''
+				},
+				{
+					name: 'Savings',
+					amount: 200,
+					date: '2019-09-26',
+					note: ''
+				}
+			]
 		};
 	}
+	addTransaction = newTransaction => {
+		this.setState({ transactions: [ ...this.state.transactions, newTransaction ] });
+	};
 
 	render() {
 		return (
 			<div className="App">
-				<Navbar />
+				<Navbar addTransaction={this.addTransaction} />
 				<div className="App__content">
 					<Summary />
-					<TransactionsList />
+					<TransactionsList transactions={this.state.transactions} />
 				</div>
 			</div>
 		);

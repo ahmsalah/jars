@@ -5,29 +5,20 @@ import './TransactionsList.css';
 export class TransactionsList extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			transactions: [
-				{
-					name: 'Salary',
-					amount: 3000,
-					date: '2019-09-26',
-					note: ''
-				},
-				{
-					name: 'Savings',
-					amount: 200,
-					date: '2019-09-26',
-					note: ''
-				}
-			]
-		};
+		this.state = {};
 	}
 
 	render() {
 		return (
 			<div className="TransactionsList">
-				{this.state.transactions.map(tr => (
-					<Transaction name={tr.name} amount={tr.amount} date={tr.date} note={tr.note} />
+				{this.props.transactions.map(tr => (
+					<Transaction
+						name={tr.name}
+						amount={tr.amount}
+						date={tr.date}
+						note={tr.note}
+						addTransaction={this.props.addTransaction}
+					/>
 				))}
 			</div>
 		);
