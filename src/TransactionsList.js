@@ -3,11 +3,6 @@ import Transaction from './Transaction';
 import './TransactionsList.css';
 
 export class TransactionsList extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {};
-	}
-
 	render() {
 		return (
 			<div className="TransactionsList">

@@ -6,9 +6,9 @@ export class Transaction extends Component {
 		const { name, date, amount, note } = this.props;
 		return (
 			<p className="Transaction">
-				<span className="Transaction-name">{name}</span>
-				<span className="Transaction-date">{date}</span>
-				<span className="Transaction-amount">{amount}</span>
+				<span className="Transaction__name">{name}</span>
+				<span className="Transaction__date">{date}</span>
+				<span className="Transaction__amount">{amount}</span>
 			</p>
 		);
 	}

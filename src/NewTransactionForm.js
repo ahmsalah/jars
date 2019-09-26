@@ -13,6 +13,7 @@ export class NewTransactionForm extends Component {
 
 		this.state = {
 			name: '',
+			expense: true,
 			amount: '',
 			date: curDate,
 			note: ''
@@ -21,10 +22,24 @@ export class NewTransactionForm extends Component {
 
 	handleSubmit = evt => {
 		evt.preventDefault();
-		const transaction = { ...this.state, id: uuid() };
+		let transaction, amount;
+		if (this.state.expense) {
+			amount = this.state.amount * -1;
+			transaction = { ...this.state, amount: amount, id: uuid() };
+		} else {
+			transaction = { ...this.state, id: uuid() };
+		}
 		this.props.addTransaction(transaction);
 		this.setState({ name: '', amount: '', note: '' });
 	};
+
+	// handleSubmit = evt => {
+	// 	evt.preventDefault();
+	// 	console.log(typeof this.state.amount);
+	// 	const transaction = { ...this.state, id: uuid() };
+	// 	this.props.addTransaction(transaction);
+	// 	this.setState({ name: '', amount: '', note: '' });
+	// };
 
 	handleChange = evt => {
 		this.setState({
@@ -32,7 +47,14 @@ export class NewTransactionForm extends Component {
 		});
 	};
 
+	handleCheck = () => {
+		this.setState({ expense: !this.state.expense });
+	};
+
 	render() {
+		// console.log(this.state.checked);
+		// console.log(this.state.amount);
+
 		const { name, amount, date, note } = this.state;
 		return (
 			<form className="NewTransactionForm" onSubmit={this.handleSubmit}>
@@ -45,6 +67,13 @@ export class NewTransactionForm extends Component {
 					value={name}
 					onChange={this.handleChange}
 					required
+				/>
+				<input
+					type="checkbox"
+					// name="checked"
+					// value={this.state.checked}
+					onChange={this.handleCheck}
+					defaultChecked={this.state.expense}
 				/>
 				<label htmlFor="amount">Amount </label>
 				<input
