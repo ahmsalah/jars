@@ -23,7 +23,7 @@ export class NewTransactionForm extends Component {
 		evt.preventDefault();
 		const transaction = { ...this.state, id: uuid() };
 		this.props.addTransaction(transaction);
-		this.setState({ name: '', amount: '', date: this.curDate, note: '' });
+		this.setState({ name: '', amount: '', note: '' });
 	};
 
 	handleChange = evt => {
@@ -46,7 +46,7 @@ export class NewTransactionForm extends Component {
 					onChange={this.handleChange}
 					required
 				/>
-				<label htmlFor="name">Amount </label>
+				<label htmlFor="amount">Amount </label>
 				<input
 					type="number"
 					placeholder="Amount"
@@ -56,16 +56,9 @@ export class NewTransactionForm extends Component {
 					onChange={this.handleChange}
 					required
 				/>
-				<label htmlFor="name">Date </label>
-				<input
-					type="date"
-					placeholder="Date"
-					id="date"
-					name="date"
-					value={date}
-					onChange={this.handleChange}
-				/>
-				<label htmlFor="name">Notes </label>
+				<label htmlFor="date">Date </label>
+				<input type="date" id="date" name="date" value={date} onChange={this.handleChange} />
+				<label htmlFor="note">Notes </label>
 				<input
 					type="text"
 					placeholder="Notes"

@@ -13,6 +13,7 @@ export class TransactionsList extends Component {
 			<div className="TransactionsList">
 				{this.props.transactions.map(tr => (
 					<Transaction
+						key={tr.id}
 						name={tr.name}
 						amount={tr.amount}
 						date={tr.date}

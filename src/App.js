@@ -10,18 +10,18 @@ class App extends Component {
 
 		this.state = {
 			transactions: [
-				{
-					name: 'Salary',
-					amount: 3000,
-					date: '2019-09-26',
-					note: ''
-				},
-				{
-					name: 'Savings',
-					amount: 200,
-					date: '2019-09-26',
-					note: ''
-				}
+				// {
+				// 	name: 'Salary',
+				// 	amount: 3000,
+				// 	date: '2019-09-26',
+				// 	note: ''
+				// },
+				// {
+				// 	name: 'Savings',
+				// 	amount: 200,
+				// 	date: '2019-09-26',
+				// 	note: ''
+				// }
 			]
 		};
 	}
