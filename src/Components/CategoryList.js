@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-export class Categories extends Component {
+export class CategoryList extends Component {
 	render() {
 		return <div />;
 	}
 }
 
-export default Categories;
+export default CategoryList;

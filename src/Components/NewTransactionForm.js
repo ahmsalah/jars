@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import uuid from 'uuid/v4';
+import './NewTransactionForm.css';
+import BtnSwitch from './BtnSwitch';
 
 export class NewTransactionForm extends Component {
+	static defaultProps = {
+		categories: [ '', 'Gas', 'Salary', 'Taxi' ]
+	};
 	constructor(props) {
 		super(props);
 		const date = new Date();
@@ -11,6 +16,7 @@ export class NewTransactionForm extends Component {
 		const curDate = `${year}-${month}-${day}`;
 
 		this.state = {
+			category: '',
 			name: '',
 			expense: true,
 			amount: '',
@@ -44,9 +50,12 @@ export class NewTransactionForm extends Component {
 	};
 
 	render() {
-		const { name, amount, date, note } = this.state;
+		const { category, name, amount, date, note } = this.state;
 		return (
 			<form className="NewTransactionForm" onSubmit={this.handleSubmit}>
+				<select name="category" value={category} onChange={this.handleChange} required>
+					{this.props.categories.map(ct => <option value={ct}>{ct}</option>)}
+				</select>
 				<label htmlFor="name">Name </label>
 				<input
 					type="text"
@@ -57,7 +66,9 @@ export class NewTransactionForm extends Component {
 					onChange={this.handleChange}
 					required
 				/>
-				<input type="checkbox" onChange={this.handleCheck} defaultChecked={this.state.expense} />
+
+				{/* <input type="checkbox" onChange={this.handleCheck} defaultChecked={this.state.expense}  /> */}
+				<BtnSwitch onChange={this.handleCheck} />
 				<label htmlFor="amount">Amount </label>
 				<input
 					type="number"
@@ -70,7 +81,7 @@ export class NewTransactionForm extends Component {
 				/>
 				<label htmlFor="date">Date </label>
 				<input type="date" id="date" name="date" value={date} onChange={this.handleChange} />
-				<label htmlFor="note">Notes </label>
+				{/* <label htmlFor="note">Notes </label>
 				<input
 					type="text"
 					placeholder="Notes"
@@ -78,7 +89,7 @@ export class NewTransactionForm extends Component {
 					name="note"
 					value={note}
 					onChange={this.handleChange}
-				/>
+				/> */}
 				<button>Add</button>
 			</form>
 		);
