@@ -7,14 +7,23 @@ export class Categories extends Component {
 		super(props);
 
 		this.state = {
-			categories: { expense: [], income: [] }
+			expCategories: [],
+			incCategories: []
 		};
 	}
+
+	addCategory = (newCategory, categoryType) => {
+		if (categoryType === 'exp') {
+			this.setState({ expCategories: [ ...this.state.expCategories, newCategory ] });
+		} else if (categoryType === 'inc') {
+			this.setState({ incCategories: [ ...this.state.incCategories, newCategory ] });
+		}
+	};
 
 	render() {
 		return (
 			<div className="Categories">
-				<Navbar display="categories" />
+				<Navbar display="categories" addCategory={this.addCategory} />
 			</div>
 		);
 	}

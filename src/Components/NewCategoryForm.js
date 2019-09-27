@@ -15,7 +15,8 @@ export class NewCategoryForm extends Component {
 
 	handleSubmit = evt => {
 		evt.preventDefault();
-		this.props.addCategory(this.state.categoryName);
+		const type = this.state.expense ? 'exp' : 'inc';
+		this.props.addCategory(this.state.categoryName, type);
 		this.setState({ categoryName: '' });
 	};
 

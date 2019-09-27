@@ -8,7 +8,7 @@ export class Navbar extends Component {
 		return (
 			<div className="Navbar">
 				{this.props.display === 'categories' ? (
-					<NewCategoryForm />
+					<NewCategoryForm addCategory={this.props.addCategory} />
 				) : (
 					<NewTransactionForm addTransaction={this.props.addTransaction} />
 				)}
