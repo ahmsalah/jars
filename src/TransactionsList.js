@@ -14,6 +14,7 @@ export class TransactionsList extends Component {
 						amount={tr.amount}
 						date={tr.date}
 						note={tr.note}
+						type={tr.type}
 						removeTransaction={this.props.removeTransaction}
 					/>
 				))}

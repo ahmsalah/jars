@@ -26,12 +26,20 @@
 	margin-right: 2rem;
 }
 
+.inc {
+	color: var(--color-blue);
+}
+
+.exp {
+	color: var(--color-red);
+}
+
 .Transaction__remove-btn {
 	opacity: 0;
 	cursor: pointer;
 }
 
-.Transaction__remove-btn:hover {
+.Transaction:hover .Transaction__remove-btn {
 	opacity: 1;
 	transition: opacity .4s;
 }

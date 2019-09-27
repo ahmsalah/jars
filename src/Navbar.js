@@ -8,7 +8,7 @@ export class Navbar extends Component {
 			<div className="Navbar">
 				<NewTransactionForm
 					addTransaction={this.props.addTransaction}
-					addAmount={this.props.addAmount}
+					calcTotal={this.props.calcTotal}
 				/>
 			</div>
 		);

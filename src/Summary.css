@@ -1,0 +1,29 @@
+.Summary {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	font-size: 1.8rem;
+	border-bottom: 3rem solid var(--color-grey-light-2);
+	padding: 4rem;
+}
+
+.Summary > * {
+	display: flex;
+	padding: .3rem 1rem;
+}
+
+.Summary__amount {
+	margin-left: auto;
+	font-size: 2.4rem;
+}
+
+.Summary__amount--inc {
+	color: var(--color-blue);
+}
+.Summary__amount--exp {
+	color: var(--color-red);
+}
+
+.Summary__total {
+	border-top: var(--line);
+}

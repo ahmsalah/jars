@@ -9,7 +9,6 @@ export class NewTransactionForm extends Component {
 		const day = date.getDate().toString().padStart(2, '0');
 		const year = date.getFullYear();
 		const curDate = `${year}-${month}-${day}`;
-		console.log(curDate);
 
 		this.state = {
 			name: '',
@@ -22,16 +21,13 @@ export class NewTransactionForm extends Component {
 
 	handleSubmit = evt => {
 		evt.preventDefault();
-		let transaction, amount;
+		let transaction;
+		let amount = parseInt(this.state.amount);
 		if (this.state.expense) {
 			amount = this.state.amount * -1;
 			transaction = { ...this.state, amount: amount, type: 'exp', id: uuid() };
-			//change the amount to be a number first
-			this.props.addAmount(this.state.amount, 'exp');
 		} else {
-			transaction = { ...this.state, type: 'inc', id: uuid() };
-			//change the amount to be a number first
-			this.props.addAmount(this.state.amount, 'inc');
+			transaction = { ...this.state, amount: amount, type: 'inc', id: uuid() };
 		}
 		this.props.addTransaction(transaction);
 		this.setState({ name: '', amount: '', note: '' });
@@ -48,9 +44,6 @@ export class NewTransactionForm extends Component {
 	};
 
 	render() {
-		// console.log(this.state.checked);
-		// console.log(this.state.amount);
-
 		const { name, amount, date, note } = this.state;
 		return (
 			<form className="NewTransactionForm" onSubmit={this.handleSubmit}>

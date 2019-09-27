@@ -7,12 +7,12 @@ export class Transaction extends Component {
 	};
 
 	render() {
-		const { name, date, amount, note } = this.props;
+		const { name, date, amount, note, type } = this.props;
 		return (
 			<p className="Transaction">
 				<span className="Transaction__name">{name}</span>
 				<span className="Transaction__date">{date}</span>
-				<span className="Transaction__amount">{amount}</span>
+				<span className={`Transaction__amount ${type === 'exp' ? 'exp' : 'inc'}`}>{amount}</span>
 				<a className="Transaction__remove-btn" onClick={this.handleRemove}>
 					<i className="fas fa-trash" />
 				</a>
