@@ -40,13 +40,22 @@ class App extends Component {
 		}
 	};
 
+	removeTransaction = id => {
+		this.setState({
+			transactions: this.state.transactions.filter(tr => tr.id !== id)
+		});
+	};
+
 	render() {
 		return (
 			<div className="App">
 				<Navbar addTransaction={this.addTransaction} addAmount={this.addAmount} />
 				<div className="App__content">
 					<Summary />
-					<TransactionsList transactions={this.state.transactions} />
+					<TransactionsList
+						transactions={this.state.transactions}
+						removeTransaction={this.removeTransaction}
+					/>
 				</div>
 			</div>
 		);

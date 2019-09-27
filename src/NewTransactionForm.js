@@ -25,23 +25,17 @@ export class NewTransactionForm extends Component {
 		let transaction, amount;
 		if (this.state.expense) {
 			amount = this.state.amount * -1;
-			transaction = { ...this.state, amount: amount, id: uuid() };
+			transaction = { ...this.state, amount: amount, type: 'exp', id: uuid() };
+			//change the amount to be a number first
 			this.props.addAmount(this.state.amount, 'exp');
 		} else {
-			transaction = { ...this.state, id: uuid() };
+			transaction = { ...this.state, type: 'inc', id: uuid() };
+			//change the amount to be a number first
 			this.props.addAmount(this.state.amount, 'inc');
 		}
 		this.props.addTransaction(transaction);
 		this.setState({ name: '', amount: '', note: '' });
 	};
-
-	// handleSubmit = evt => {
-	// 	evt.preventDefault();
-	// 	console.log(typeof this.state.amount);
-	// 	const transaction = { ...this.state, id: uuid() };
-	// 	this.props.addTransaction(transaction);
-	// 	this.setState({ name: '', amount: '', note: '' });
-	// };
 
 	handleChange = evt => {
 		this.setState({

@@ -1,6 +1,6 @@
 .Transaction {
 	display: flex;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 	align-items: center;
 	font-size: 2rem;
 	padding: 2rem 0;
@@ -8,8 +8,30 @@
 }
 
 .Transaction__name {
+	/* max-width: 60%; */
+	width: 40%;
+	overflow-wrap: break-word;
+	margin-right: 6rem;
 }
 
 .Transaction__date {
+	/* width: 20%; */
+	/* align-self: center; */
 	font-size: 1.2rem;
+}
+
+.Transaction__amount {
+	/* width: 30%; */
+	margin-left: auto;
+	margin-right: 2rem;
+}
+
+.Transaction__remove-btn {
+	opacity: 0;
+	cursor: pointer;
+}
+
+.Transaction__remove-btn:hover {
+	opacity: 1;
+	transition: opacity .4s;
 }

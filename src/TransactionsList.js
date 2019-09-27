@@ -9,11 +9,12 @@ export class TransactionsList extends Component {
 				{this.props.transactions.map(tr => (
 					<Transaction
 						key={tr.id}
+						id={tr.id}
 						name={tr.name}
 						amount={tr.amount}
 						date={tr.date}
 						note={tr.note}
-						addTransaction={this.props.addTransaction}
+						removeTransaction={this.props.removeTransaction}
 					/>
 				))}
 			</div>
