@@ -6,10 +6,7 @@ export class Navbar extends Component {
 	render() {
 		return (
 			<div className="Navbar">
-				<NewTransactionForm
-					addTransaction={this.props.addTransaction}
-					calcTotal={this.props.calcTotal}
-				/>
+				<NewTransactionForm addTransaction={this.props.addTransaction} />
 			</div>
 		);
 	}

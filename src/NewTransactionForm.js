@@ -24,11 +24,11 @@ export class NewTransactionForm extends Component {
 		let transaction;
 		let amount = parseInt(this.state.amount);
 		if (this.state.expense) {
-			amount = this.state.amount * -1;
-			transaction = { ...this.state, amount: amount, type: 'exp', id: uuid() };
+			transaction = { ...this.state, id: uuid(), amount: amount * -1, type: 'exp' };
 		} else {
-			transaction = { ...this.state, amount: amount, type: 'inc', id: uuid() };
+			transaction = { ...this.state, id: uuid(), amount: amount, type: 'inc' };
 		}
+
 		this.props.addTransaction(transaction);
 		this.setState({ name: '', amount: '', note: '' });
 	};
@@ -57,13 +57,7 @@ export class NewTransactionForm extends Component {
 					onChange={this.handleChange}
 					required
 				/>
-				<input
-					type="checkbox"
-					// name="checked"
-					// value={this.state.checked}
-					onChange={this.handleCheck}
-					defaultChecked={this.state.expense}
-				/>
+				<input type="checkbox" onChange={this.handleCheck} defaultChecked={this.state.expense} />
 				<label htmlFor="amount">Amount </label>
 				<input
 					type="number"

@@ -20,20 +20,7 @@ class App extends Component {
 		super(props);
 
 		this.state = {
-			transactions: [
-				// {
-				// 	name: 'Salary',
-				// 	amount: 3000,
-				// 	date: '2019-09-26',
-				// 	note: ''
-				// },
-				// {
-				// 	name: 'Savings',
-				// 	amount: 200,
-				// 	date: '2019-09-26',
-				// 	note: ''
-				// }
-			],
+			transactions: [],
 			inc: [],
 			exp: []
 		};
@@ -55,17 +42,8 @@ class App extends Component {
 				totalExp.push(tr.amount);
 			}
 		});
-		// console.log(totalInc, totalExp);
 		this.setState({ inc: totalInc, exp: totalExp });
 	};
-
-	// addAmount = (newAmount, type) => {
-	// 	if (type === 'exp') {
-	// 		this.setState({ exp: [ ...this.state.exp, newAmount ] });
-	// 	} else if (type === 'inc') {
-	// 		this.setState({ inc: [ ...this.state.inc, newAmount ] });
-	// 	}
-	// };
 
 	removeTransaction = id => {
 		this.setState(
@@ -85,7 +63,7 @@ class App extends Component {
 		const { transactions, exp, inc } = this.state;
 		return (
 			<div className="App">
-				<Navbar addTransaction={this.addTransaction} calcTotal={this.calcTotal} />
+				<Navbar addTransaction={this.addTransaction} />
 				<div className="App__content">
 					<Summary exp={exp} inc={inc} sumTotal={this.sumTotal} />
 					<TransactionsList
