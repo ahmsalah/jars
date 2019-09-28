@@ -5,12 +5,17 @@ import NewCategoryForm from './NewCategoryForm';
 
 export class Navbar extends Component {
 	render() {
+		const { expCategories, incCategories, addTransaction, addCategory } = this.props;
 		return (
 			<div className="Navbar">
 				{this.props.display === 'categories' ? (
-					<NewCategoryForm addCategory={this.props.addCategory} />
+					<NewCategoryForm addCategory={addCategory} />
 				) : (
-					<NewTransactionForm addTransaction={this.props.addTransaction} />
+					<NewTransactionForm
+						addTransaction={addTransaction}
+						expCategories={expCategories}
+						incCategories={incCategories}
+					/>
 				)}
 			</div>
 		);

@@ -17,12 +17,12 @@ export class NewTransactionForm extends Component {
 
 		this.state = {
 			category: '',
-			name: '',
+			description: '',
 			expense: true,
 			amount: '',
 			date: curDate,
-			note: '',
 			type: ''
+			// note: '',
 		};
 	}
 
@@ -51,12 +51,26 @@ export class NewTransactionForm extends Component {
 	};
 
 	render() {
-		const { category, description, amount, date } = this.state;
+		const { category, description, amount, date, expense } = this.state;
+		const { expCategories, incCategories } = this.props;
 		return (
 			<form className="NewTransactionForm" onSubmit={this.handleSubmit}>
 				<BtnSwitch toggleExpense={this.toggleExpense} />
 				<select name="category" value={category} onChange={this.handleChange} required>
-					{this.props.categories.map(ct => <option value={ct}>{ct}</option>)}
+					<option value="" />
+					{expense ? (
+						expCategories.map(ct => (
+							<option key={ct.id} value={ct.name}>
+								{ct.name}
+							</option>
+						))
+					) : (
+						incCategories.map(ct => (
+							<option key={ct.id} value={ct.name}>
+								{ct.name}
+							</option>
+						))
+					)}
 				</select>
 				<label htmlFor="description">Description </label>
 				<input

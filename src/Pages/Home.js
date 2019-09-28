@@ -24,7 +24,7 @@ export class Home extends Component {
 	calcTotal = () => {
 		let totalInc = [];
 		let totalExp = [];
-		this.state.transactions.map(tr => {
+		this.state.transactions.forEach(tr => {
 			if (tr.type === 'inc') {
 				totalInc.push(tr.amount);
 			} else if (tr.type === 'exp') {
@@ -50,9 +50,14 @@ export class Home extends Component {
 
 	render() {
 		const { transactions, exp, inc } = this.state;
+		const { expCategories, incCategories } = this.props;
 		return (
 			<div className="Home">
-				<Navbar addTransaction={this.addTransaction} />
+				<Navbar
+					addTransaction={this.addTransaction}
+					expCategories={expCategories}
+					incCategories={incCategories}
+				/>
 				<div className="Home__content">
 					<Summary exp={exp} inc={inc} sumTotal={this.sumTotal} />
 					<TransactionsList
