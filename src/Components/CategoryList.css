@@ -1,10 +1,3 @@
-.CategoryList {
-	width: 100%;
-	display: flex;
-	flex-wrap: wrap;
-	/* padding: 4rem; */
-}
-
 .CategoryList__list {
 	flex-basis: 50%;
 	display: flex;
@@ -31,6 +24,7 @@
 	/* align-items: center; */
 	font-size: 2rem;
 	padding: 1.3rem 2rem;
+	background-color: #fff;
 	border-bottom: var(--line);
 	width: 80%;
 	margin: 0 auto;

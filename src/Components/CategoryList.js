@@ -1,41 +1,24 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './CategoryList.css';
 import Category from './Category';
+import { SortableContainer } from 'react-sortable-hoc';
 
-export class CategoryList extends Component {
-	render() {
-		return (
-			<div className="CategoryList">
-				<div className="CategoryList__list CategoryList__list--exp">
-					<h3 className="CategoryList__title">Expenses</h3>
-
-					{this.props.expCategories.map(ct => (
-						<Category
-							key={ct.id}
-							id={ct.id}
-							name={ct.name}
-							type={ct.type}
-							removeCategory={this.props.removeCategory}
-						/>
-					))}
-				</div>
-
-				<div className="CategoryList__list CategoryList__list--inc">
-					<h3 className="CategoryList__title">Income</h3>
-
-					{this.props.incCategories.map(ct => (
-						<Category
-							key={ct.id}
-							id={ct.id}
-							name={ct.name}
-							type={ct.type}
-							removeCategory={this.props.removeCategory}
-						/>
-					))}
-				</div>
-			</div>
-		);
-	}
-}
+const CategoryList = SortableContainer(({ categoryList, removeCategory, type }) => {
+	return (
+		<div className={`CategoryList__list CategoryList__list--${type}`}>
+			<h3 className="CategoryList__title">{type === 'exp' ? 'Expenses' : 'Income'}</h3>
+			{categoryList.map((ct, i) => (
+				<Category
+					index={i}
+					key={ct.id}
+					id={ct.id}
+					name={ct.name}
+					type={ct.type}
+					removeCategory={removeCategory}
+				/>
+			))}
+		</div>
+	);
+});
 
 export default CategoryList;

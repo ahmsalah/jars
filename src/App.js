@@ -5,6 +5,7 @@ import './App.css';
 import Home from './Pages/Home';
 import Categories from './Pages/Categories';
 import Sidebar from './Components/Sidebar';
+import arrayMove from 'array-move';
 
 class App extends Component {
 	constructor(props) {
@@ -21,6 +22,11 @@ class App extends Component {
 			]
 		};
 	}
+	onSortEnd = ({ oldIndex, newIndex }) => {
+		this.setState(({ expCategories }) => ({
+			expCategories: arrayMove(expCategories, oldIndex, newIndex)
+		}));
+	};
 
 	removeCategory = (id, type) => {
 		if (type === 'exp') {
@@ -59,6 +65,7 @@ class App extends Component {
 								incCategories={incCategories}
 								addCategory={this.addCategory}
 								removeCategory={this.removeCategory}
+								onSortEnd={this.onSortEnd}
 							/>
 						)}
 					/>

@@ -1,23 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { SortableElement } from 'react-sortable-hoc';
 import './CategoryList.css';
 
-export class Category extends Component {
-	handleRemove = () => {
-		this.props.removeCategory(this.props.id, this.props.type);
+const Category = SortableElement(({ id, type, name, removeCategory }) => {
+	const handleRemove = () => {
+		removeCategory(id, type);
 	};
 
-	render() {
-		return (
-			<div className="CategoryList__category">
-				<div className="CategoryList__category-inner">
-					<span>{this.props.name}</span>
-					<button className="CategoryList__remove-btn" onClick={this.handleRemove}>
-						<i className="fas fa-trash" />
-					</button>
-				</div>
+	return (
+		<div className="CategoryList__category">
+			<div className="CategoryList__category-inner">
+				<span>{name}</span>
+				<button className="CategoryList__remove-btn" onClick={handleRemove}>
+					<i className="fas fa-trash" />
+				</button>
 			</div>
-		);
-	}
-}
+		</div>
+	);
+});
 
 export default Category;
