@@ -10,11 +10,11 @@ export class TransactionsList extends Component {
 					<Transaction
 						key={tr.id}
 						id={tr.id}
-						name={tr.name}
+						type={tr.type}
+						category={tr.category}
+						description={tr.description}
 						amount={tr.amount}
 						date={tr.date}
-						note={tr.note}
-						type={tr.type}
 						removeTransaction={this.props.removeTransaction}
 					/>
 				))}

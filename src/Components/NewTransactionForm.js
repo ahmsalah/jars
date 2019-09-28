@@ -51,26 +51,22 @@ export class NewTransactionForm extends Component {
 	};
 
 	render() {
-		const { category, name, amount, date, note } = this.state;
+		const { category, description, amount, date } = this.state;
 		return (
 			<form className="NewTransactionForm" onSubmit={this.handleSubmit}>
+				<BtnSwitch toggleExpense={this.toggleExpense} />
 				<select name="category" value={category} onChange={this.handleChange} required>
 					{this.props.categories.map(ct => <option value={ct}>{ct}</option>)}
 				</select>
-				<label htmlFor="name">Name </label>
+				<label htmlFor="description">Description </label>
 				<input
 					type="text"
-					placeholder="Transaction Name"
-					id="name"
-					name="name"
-					value={name}
+					placeholder="Description"
+					id="description"
+					name="description"
+					value={description}
 					onChange={this.handleChange}
-					required
 				/>
-
-				{/* <input type="checkbox" onChange={this.handleCheck} defaultChecked={this.state.expense}  /> */}
-				<BtnSwitch toggleExpense={this.toggleExpense} />
-
 				<label htmlFor="amount">Amount </label>
 				<input
 					type="number"
@@ -83,15 +79,6 @@ export class NewTransactionForm extends Component {
 				/>
 				<label htmlFor="date">Date </label>
 				<input type="date" id="date" name="date" value={date} onChange={this.handleChange} />
-				{/* <label htmlFor="note">Notes </label>
-				<input
-					type="text"
-					placeholder="Notes"
-					id="note"
-					name="note"
-					value={note}
-					onChange={this.handleChange}
-				/> */}
 				<button>Add</button>
 			</form>
 		);
