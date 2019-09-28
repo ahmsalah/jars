@@ -36,10 +36,15 @@
 
 .Transaction__remove-btn {
 	opacity: 0;
+	background-color: transparent;
+	border-style: none;
+	color: inherit;
 	cursor: pointer;
+	outline: none;
+	transition: opacity .3s;
+	font-size: inherit;
 }
 
 .Transaction:hover .Transaction__remove-btn {
 	opacity: 1;
-	transition: opacity .4s;
 }

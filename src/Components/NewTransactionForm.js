@@ -21,7 +21,8 @@ export class NewTransactionForm extends Component {
 			expense: true,
 			amount: '',
 			date: curDate,
-			note: ''
+			note: '',
+			type: ''
 		};
 	}
 
@@ -45,7 +46,7 @@ export class NewTransactionForm extends Component {
 		});
 	};
 
-	handleCheck = () => {
+	toggleExpense = () => {
 		this.setState({ expense: !this.state.expense });
 	};
 
@@ -68,7 +69,8 @@ export class NewTransactionForm extends Component {
 				/>
 
 				{/* <input type="checkbox" onChange={this.handleCheck} defaultChecked={this.state.expense}  /> */}
-				<BtnSwitch onChange={this.handleCheck} />
+				<BtnSwitch toggleExpense={this.toggleExpense} />
+
 				<label htmlFor="amount">Amount </label>
 				<input
 					type="number"

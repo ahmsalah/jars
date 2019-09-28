@@ -6,9 +6,9 @@ import './NewCategoryForm.css';
 export class NewCategoryForm extends Component {
 	constructor(props) {
 		super(props);
-
 		this.state = {
-			categoryName: '',
+			name: '',
+			type: '',
 			expense: true
 		};
 	}
@@ -16,8 +16,9 @@ export class NewCategoryForm extends Component {
 	handleSubmit = evt => {
 		evt.preventDefault();
 		const type = this.state.expense ? 'exp' : 'inc';
-		this.props.addCategory(this.state.categoryName, type);
-		this.setState({ categoryName: '' });
+		const newCategory = { name: this.state.name, id: uuid(), type: type };
+		this.props.addCategory(newCategory, type);
+		this.setState({ name: '' });
 	};
 
 	handleChange = evt => {
@@ -26,24 +27,24 @@ export class NewCategoryForm extends Component {
 		});
 	};
 
-	handleCheck = () => {
+	toggleExpense = () => {
 		this.setState({ expense: !this.state.expense });
 	};
 
 	render() {
 		return (
 			<form className="NewCategoryForm" onSubmit={this.handleSubmit}>
-				<label htmlFor="categoryName">New Category </label>
+				<label htmlFor="name">New Category </label>
 				<input
 					type="text"
 					placeholder="Category Name"
-					id="categoryName"
-					name="categoryName"
-					value={this.state.categoryName}
+					id="name"
+					name="name"
+					value={this.state.name}
 					onChange={this.handleChange}
 					required
 				/>
-				<BtnSwitch onChange={this.handleCheck} />
+				<BtnSwitch toggleExpense={this.toggleExpense} />
 				<button>Add</button>
 			</form>
 		);
