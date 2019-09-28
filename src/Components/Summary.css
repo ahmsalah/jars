@@ -4,7 +4,8 @@
 	flex-direction: column;
 	font-size: 1.8rem;
 	border-bottom: 3rem solid var(--color-grey-light-2);
-	padding: 4rem;
+	border-top: 2px solid var(--color-grey-light-2);
+	padding: 3rem 4rem 4rem;
 }
 
 .Summary > * {

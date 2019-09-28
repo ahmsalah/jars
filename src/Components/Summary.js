@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import './Summary.css';
+import { sumTotal } from '../helpers';
 
 export class Summary extends Component {
 	render() {
-		const { inc, exp, sumTotal } = this.props;
-		// const reducer = (acc, curr) => acc + curr;
-		// const totalInc = inc.length > 0 ? inc.reduce(reducer) : 0;
-		// const totalExp = exp.length > 0 ? exp.reduce(reducer) : 0;
+		const { inc, exp } = this.props;
 		const total = sumTotal(inc) + sumTotal(exp);
 		return (
 			<div className="Summary">

@@ -3,6 +3,7 @@ import './Home.css';
 import Navbar from '../Components/Navbar';
 import Summary from '../Components/Summary';
 import TransactionsList from '../Components/TransactionsList';
+import { sortList, pushToArrays } from '../helpers';
 
 export class Home extends Component {
 	constructor(props) {
@@ -11,27 +12,19 @@ export class Home extends Component {
 		this.state = {
 			transactions: [],
 			inc: [],
-			exp: []
+			exp: [],
+			orderBy: 'date'
 		};
+	}
+	componentDidMount() {
+		this.sortTransactionList();
 	}
 
 	addTransaction = newTransaction => {
-		this.setState({ transactions: [ ...this.state.transactions, newTransaction ] }, () =>
-			this.calcTotal()
-		);
-	};
-
-	calcTotal = () => {
-		let totalInc = [];
-		let totalExp = [];
-		this.state.transactions.forEach(tr => {
-			if (tr.type === 'inc') {
-				totalInc.push(tr.amount);
-			} else if (tr.type === 'exp') {
-				totalExp.push(tr.amount);
-			}
+		this.setState({ transactions: [ ...this.state.transactions, newTransaction ] }, () => {
+			this.sortTransactionList();
+			this.pushToIncExpArray();
 		});
-		this.setState({ inc: totalInc, exp: totalExp });
 	};
 
 	removeTransaction = id => {
@@ -39,17 +32,42 @@ export class Home extends Component {
 			{
 				transactions: this.state.transactions.filter(tr => tr.id !== id)
 			},
-			() => this.calcTotal()
+			() => this.pushToIncExpArray()
 		);
 	};
 
-	sumTotal = arr => {
-		const reducer = (acc, curr) => acc + curr;
-		return arr.length > 0 ? arr.reduce(reducer) : 0;
+	pushToIncExpArray = () => {
+		let [ incArray, expArray ] = pushToArrays(this.state.transactions);
+		this.setState({ inc: incArray, exp: expArray });
 	};
 
+	/**
+	 |--------------------------------------------------
+	 | Sorting Transactions
+	 |--------------------------------------------------
+	 */
+
+	toggleListReverse = () => {
+		this.setState({ transactions: this.state.transactions.reverse() });
+	};
+
+	handleChange = evt => {
+		this.setState(
+			{
+				[evt.target.name]: evt.target.value
+			},
+			() => this.sortTransactionList()
+		);
+	};
+
+	sortTransactionList = () => {
+		const sortedTransactions = sortList(this.state.transactions, this.state.orderBy);
+		this.setState({ transactions: sortedTransactions });
+	};
+	//--------------------------------------------------
+
 	render() {
-		const { transactions, exp, inc } = this.state;
+		const { transactions, exp, inc, orderBy } = this.state;
 		const { expCategories, incCategories } = this.props;
 		return (
 			<div className="Home">
@@ -59,7 +77,18 @@ export class Home extends Component {
 					incCategories={incCategories}
 				/>
 				<div className="Home__content">
-					<Summary exp={exp} inc={inc} sumTotal={this.sumTotal} />
+					<div className="Home__filters-container">
+						<label htmlFor="orderBy">Order by:</label>
+						<select id="orderBy" name="orderBy" value={orderBy} onChange={this.handleChange}>
+							<option value="date">date</option>
+							<option value="amount">amount</option>
+							<option value="category">category</option>
+						</select>
+						<button className="Home__btn-reverse" onClick={this.toggleListReverse}>
+							Reverse
+						</button>
+					</div>
+					<Summary exp={exp} inc={inc} />
 					<TransactionsList
 						transactions={transactions}
 						removeTransaction={this.removeTransaction}

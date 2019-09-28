@@ -37,7 +37,7 @@ export class NewTransactionForm extends Component {
 		}
 
 		this.props.addTransaction(transaction);
-		this.setState({ name: '', amount: '', note: '' });
+		this.setState({ description: '', amount: '', note: '' });
 	};
 
 	handleChange = evt => {
@@ -57,7 +57,7 @@ export class NewTransactionForm extends Component {
 			<form className="NewTransactionForm" onSubmit={this.handleSubmit}>
 				<BtnSwitch toggleExpense={this.toggleExpense} />
 				<select name="category" value={category} onChange={this.handleChange} required>
-					<option value="" />
+					<option value="">Choose Category</option>
 					{expense ? (
 						expCategories.map(ct => (
 							<option key={ct.id} value={ct.name}>
@@ -92,7 +92,7 @@ export class NewTransactionForm extends Component {
 					required
 				/>
 				<label htmlFor="date">Date </label>
-				<input type="date" id="date" name="date" value={date} onChange={this.handleChange} />
+				<input type="date" id="date" name="date" value={date} onChange={this.handleChange} required />
 				<button>Add</button>
 			</form>
 		);

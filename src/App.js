@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import uuid from 'uuid/v4';
 import './App.css';
 import Home from './Pages/Home';
 import Categories from './Pages/Categories';
 import Sidebar from './Components/Sidebar';
-// import Sidebar from './Sidebar';
-import { Route, Switch, Redirect } from 'react-router-dom';
 
 class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			expCategories: [
-				{ id: 1, name: 'Taxi', type: 'exp' },
-				{ id: 2, name: 'Groceries', type: 'exp' },
-				{ id: 3, name: 'Internet', type: 'exp' }
+				{ id: uuid(), name: 'Taxi', type: 'exp' },
+				{ id: uuid(), name: 'Groceries', type: 'exp' },
+				{ id: uuid(), name: 'Internet', type: 'exp' }
 			],
 			incCategories: [
-				{ id: 51, name: 'Salary', type: 'inc' },
-				{ id: 52, name: 'Savings', type: 'inc' }
+				{ id: uuid(), name: 'Salary', type: 'inc' },
+				{ id: uuid(), name: 'Savings', type: 'inc' }
 			]
 		};
 	}

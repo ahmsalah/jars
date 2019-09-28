@@ -16,3 +16,10 @@
 	box-shadow: 0 3px 24px 0 rgba(0, 0, 0, .12);
 	border-radius: .5rem;
 }
+
+.Home__filters-container {
+	padding: 2rem;
+}
+
+.Home__btn-reverse {
+}
