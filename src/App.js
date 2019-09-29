@@ -6,42 +6,55 @@ import Home from './Pages/Home';
 import Categories from './Pages/Categories';
 import Sidebar from './Components/Sidebar';
 import arrayMove from 'array-move';
+import { pushToArrays } from './helpers';
 
 class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			expCategories: [
-				{ id: uuid(), name: 'Taxi', type: 'exp' },
+			allCategories: [
 				{ id: uuid(), name: 'Groceries', type: 'exp' },
-				{ id: uuid(), name: 'Internet', type: 'exp' }
-			],
-			incCategories: [
+				{ id: uuid(), name: 'Internet', type: 'exp' },
+				{ id: uuid(), name: 'Taxi', type: 'exp' },
 				{ id: uuid(), name: 'Salary', type: 'inc' },
-				{ id: uuid(), name: 'Savings', type: 'inc' }
-			]
+				{ id: uuid(), name: 'Savings', type: 'inc' },
+				{ id: uuid(), name: 'Bonus', type: 'inc' }
+			],
+			expCategories: [],
+			incCategories: []
 		};
 	}
-	onSortEnd = ({ oldIndex, newIndex }) => {
-		this.setState(({ expCategories }) => ({
-			expCategories: arrayMove(expCategories, oldIndex, newIndex)
-		}));
-	};
+	componentDidMount() {
+		this.splitCategories();
+	}
 
-	removeCategory = (id, type) => {
-		if (type === 'exp') {
-			this.setState({ expCategories: this.state.expCategories.filter(ct => ct.id !== id) });
-		} else if (type === 'inc') {
-			this.setState({ incCategories: this.state.incCategories.filter(ct => ct.id !== id) });
+	onSortEnd = ({ oldIndex, newIndex, collection }) => {
+		if (collection === 'exp') {
+			this.setState(({ expCategories }) => ({
+				expCategories: arrayMove(expCategories, oldIndex, newIndex)
+			}));
+		} else if (collection === 'inc') {
+			this.setState(({ incCategories }) => ({
+				incCategories: arrayMove(incCategories, oldIndex, newIndex)
+			}));
 		}
 	};
 
-	addCategory = (newCategory, type) => {
-		if (type === 'exp') {
-			this.setState({ expCategories: [ ...this.state.expCategories, newCategory ] });
-		} else if (type === 'inc') {
-			this.setState({ incCategories: [ ...this.state.incCategories, newCategory ] });
-		}
+	removeCategory = id => {
+		this.setState({ allCategories: this.state.allCategories.filter(ct => ct.id !== id) }, () =>
+			this.splitCategories()
+		);
+	};
+
+	splitCategories = () => {
+		let [ incArray, expArray ] = pushToArrays(this.state.allCategories);
+		this.setState({ expCategories: expArray, incCategories: incArray });
+	};
+
+	addCategory = newCategory => {
+		this.setState({ allCategories: [ ...this.state.allCategories, newCategory ] }, () =>
+			this.splitCategories()
+		);
 	};
 
 	render() {

@@ -30,18 +30,21 @@ function sumTotal(arr) {
 
 /**
 |--------------------------------------------------
-| Function to push the values of an array of objects' values to 2 arrays based on a condition.
+| Function to push the values (or the objects) of an array of objects' values to 2 arrays based on a condition.
 | @param {Array} array of objects that its values will be pushed to 2 new arrays.
+| @param {String} or {boolean} if a second parameter is passed, push the object amount value.
 |--------------------------------------------------
 */
-function pushToArrays(arr) {
+function pushToArrays(arr, condt) {
 	let incArray = [];
 	let expArray = [];
 	arr.forEach(i => {
+		// if a second parameter is passed, push the object amount value
+		let val = condt ? i.amount : i;
 		if (i.type === 'inc') {
-			incArray.push(i.amount);
+			incArray.push(val);
 		} else if (i.type === 'exp') {
-			expArray.push(i.amount);
+			expArray.push(val);
 		}
 	});
 

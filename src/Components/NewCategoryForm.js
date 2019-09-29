@@ -17,7 +17,7 @@ export class NewCategoryForm extends Component {
 		evt.preventDefault();
 		const type = this.state.expense ? 'exp' : 'inc';
 		const newCategory = { name: this.state.name, id: uuid(), type: type };
-		this.props.addCategory(newCategory, type);
+		this.props.addCategory(newCategory);
 		this.setState({ name: '' });
 	};
 

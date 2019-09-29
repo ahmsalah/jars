@@ -12,18 +12,20 @@ export class Categories extends Component {
 				<div className="Categories__content">
 					<div className="Categories__Lists">
 						<CategoryList
-							axis="y"
 							type="exp"
 							categoryList={expCategories}
 							removeCategory={removeCategory}
 							onSortEnd={onSortEnd}
+							distance={10}
+							// pressDelay={100}
 						/>
 						<CategoryList
-							axis="y"
 							type="inc"
 							categoryList={incCategories}
 							removeCategory={removeCategory}
 							onSortEnd={onSortEnd}
+							distance={10}
+							// pressDelay={100}
 						/>
 					</div>
 				</div>

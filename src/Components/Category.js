@@ -4,7 +4,7 @@ import './CategoryList.css';
 
 const Category = SortableElement(({ id, type, name, removeCategory }) => {
 	const handleRemove = () => {
-		removeCategory(id, type);
+		removeCategory(id);
 	};
 
 	return (

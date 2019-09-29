@@ -15,6 +15,7 @@ const CategoryList = SortableContainer(({ categoryList, removeCategory, type }) 
 					name={ct.name}
 					type={ct.type}
 					removeCategory={removeCategory}
+					collection={type}
 				/>
 			))}
 		</div>

@@ -37,7 +37,7 @@ export class Home extends Component {
 	};
 
 	pushToIncExpArray = () => {
-		let [ incArray, expArray ] = pushToArrays(this.state.transactions);
+		const [ incArray, expArray ] = pushToArrays(this.state.transactions, 'amount');
 		this.setState({ inc: incArray, exp: expArray });
 	};
 

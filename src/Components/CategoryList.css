@@ -27,8 +27,11 @@
 	background-color: #fff;
 	border-bottom: var(--line);
 	width: 80%;
-	margin: 0 auto;
 	text-align: center;
+	cursor: grab;
+}
+.CategoryList__category:active {
+	cursor: grabbing;
 }
 
 .CategoryList__category-inner {
