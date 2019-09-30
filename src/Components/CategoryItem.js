@@ -2,16 +2,16 @@ import React from 'react';
 import { SortableElement } from 'react-sortable-hoc';
 import './CategoryList.css';
 
-const Category = SortableElement(({ id, type, name, removeCategory }) => {
+const CategoryItem = SortableElement(({ id, type, name, removeCategory }) => {
 	const handleRemove = () => {
 		removeCategory(id);
 	};
 
 	return (
-		<div className="CategoryList__category">
-			<div className="CategoryList__category-inner">
+		<div className="CategoryItem">
+			<div className="CategoryItem__inner">
 				<span>{name}</span>
-				<button className="CategoryList__remove-btn" onClick={handleRemove}>
+				<button className="CategoryItem__remove-btn" onClick={handleRemove}>
 					<i className="fas fa-trash" />
 				</button>
 			</div>
@@ -19,4 +19,4 @@ const Category = SortableElement(({ id, type, name, removeCategory }) => {
 	);
 });
 
-export default Category;
+export default CategoryItem;

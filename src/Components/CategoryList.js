@@ -1,14 +1,16 @@
 import React from 'react';
-import './CategoryList.css';
-import Category from './Category';
+import './CategoryItem.css';
+import CategoryItem from './CategoryItem';
 import { SortableContainer } from 'react-sortable-hoc';
 
 const CategoryList = SortableContainer(({ categoryList, removeCategory, type }) => {
 	return (
 		<div className={`CategoryList__list CategoryList__list--${type}`}>
-			<h3 className="CategoryList__title">{type === 'exp' ? 'Expenses' : 'Income'}</h3>
+			<h3 className="CategoryList__title">
+				{type === 'exp' ? 'Expenses' : 'Income'}
+			</h3>
 			{categoryList.map((ct, i) => (
-				<Category
+				<CategoryItem
 					index={i}
 					key={ct.id}
 					id={ct.id}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Transaction from './Transaction';
+import TransactionItem from './TransactionItem';
 import './TransactionsList.css';
 
 export class TransactionsList extends Component {
@@ -7,7 +7,7 @@ export class TransactionsList extends Component {
 		return (
 			<div className="TransactionsList">
 				{this.props.transactions.map(tr => (
-					<Transaction
+					<TransactionItem
 						key={tr.id}
 						id={tr.id}
 						type={tr.type}

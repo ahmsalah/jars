@@ -1,4 +1,4 @@
-.Transaction {
+.TransactionItem {
 	display: flex;
 	/* justify-content: space-between; */
 	align-items: center;
@@ -7,20 +7,20 @@
 	border-bottom: var(--line);
 }
 
-.Transaction__name {
+.TransactionItem__name {
 	/* max-width: 60%; */
 	width: 40%;
 	overflow-wrap: break-word;
 	margin-right: 6rem;
 }
 
-.Transaction__date {
+.TransactionItem__date {
 	/* width: 20%; */
 	/* align-self: center; */
 	font-size: 1.2rem;
 }
 
-.Transaction__amount {
+.TransactionItem__amount {
 	/* width: 30%; */
 	margin-left: auto;
 	margin-right: 2rem;
@@ -34,7 +34,7 @@
 	color: var(--color-red);
 }
 
-.Transaction__remove-btn {
+.TransactionItem__remove-btn {
 	opacity: 0;
 	background-color: transparent;
 	border-style: none;
@@ -45,6 +45,6 @@
 	font-size: inherit;
 }
 
-.Transaction:hover .Transaction__remove-btn {
+.TransactionItem:hover .TransactionItem__remove-btn {
 	opacity: 1;
 }
