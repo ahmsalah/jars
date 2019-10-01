@@ -8,6 +8,7 @@ import useToggleState from '../hooks/useToggleState';
 
 function Home({ expCategories, incCategories }) {
 	const [ transactions, setTransactions ] = useState([]);
+	const [ displayTransactions, setDisplayTransactions ] = useState(transactions);
 	const [ expTransactions, setExpTransactions ] = useState([]);
 	const [ incTransactions, setIncTransactions ] = useState([]);
 	const [ orderBy, setOrderBy ] = useState('date');
@@ -16,8 +17,7 @@ function Home({ expCategories, incCategories }) {
 	useEffect(
 		() => {
 			const sortedTransactions = sortList(transactions, orderBy, isReversed);
-			console.log(orderBy, transactions);
-			setTransactions(sortedTransactions);
+			setDisplayTransactions(sortedTransactions);
 		},
 		[ orderBy, transactions, isReversed ]
 	);
@@ -31,6 +31,7 @@ function Home({ expCategories, incCategories }) {
 		[ transactions ]
 	);
 
+	//------ Adding & Removing Transactions -----//
 	const addTransaction = newTransaction => {
 		isReversed
 			? setTransactions([ ...transactions, newTransaction ])
@@ -41,24 +42,18 @@ function Home({ expCategories, incCategories }) {
 		const updatedTransactions = transactions.filter(tr => tr.id !== id);
 		setTransactions(updatedTransactions);
 	};
+	//-------------------------------------------//
 
-	/**
-	 |--------------------------------------------------
-	 | Sorting Transactions
-	 |--------------------------------------------------
-	 */
-
+	//--------- Sorting Transactions ------------//
 	const toggleListReverse = () => {
-		// const reversedTransactions = transactions.reverse();
-		// setTransactions(reversedTransactions);
 		toggleIsReversed();
 	};
 
 	const handleChange = evt => {
 		setOrderBy(evt.target.value);
 	};
+	//-------------------------------------------//
 
-	//--------------------------------------------------
 	return (
 		<div className="Home">
 			<Navbar
@@ -81,9 +76,8 @@ function Home({ expCategories, incCategories }) {
 				<Summary exp={expTransactions} inc={incTransactions} />
 
 				<TransactionsList
-					transactions={[ ...transactions ]}
+					transactions={displayTransactions}
 					removeTransaction={removeTransaction}
-					// isReversed={isReversed}
 				/>
 			</div>
 		</div>

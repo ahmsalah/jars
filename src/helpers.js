@@ -3,9 +3,11 @@
 | Function to sort an array of objects by some specific key.
 | @param {Array} array to be sorted.
 | @param {String} value that the array will be sorted by.
+| @param {boolean} if true, reverse the order of the array.
 |--------------------------------------------------
 */
-function sortList(arr, sortBy, isReversed) {
+function sortList(array, sortBy, isReversed) {
+	let arr = [ ...array ];
 	let sortedList;
 	if (sortBy === 'date') {
 		sortedList = arr.sort(
