@@ -5,14 +5,26 @@
 | @param {String} value that the array will be sorted by.
 |--------------------------------------------------
 */
-function sortList(arr, sortBy) {
+function sortList(arr, sortBy, isReversed) {
 	let sortedList;
 	if (sortBy === 'date') {
-		sortedList = arr.sort((a, b) => new Date(b.date) - new Date(a.date));
+		sortedList = arr.sort(
+			(a, b) =>
+				isReversed
+					? new Date(a.date) - new Date(b.date)
+					: new Date(b.date) - new Date(a.date)
+		);
 	} else if (sortBy === 'amount') {
-		sortedList = arr.sort((a, b) => b.amount - a.amount);
+		sortedList = arr.sort(
+			(a, b) => (isReversed ? a.amount - b.amount : b.amount - a.amount)
+		);
 	} else if (sortBy === 'category') {
-		sortedList = arr.sort((a, b) => a.category.localeCompare(b.category));
+		sortedList = arr.sort(
+			(a, b) =>
+				isReversed
+					? b.category.localeCompare(a.category)
+					: a.category.localeCompare(b.category)
+		);
 	}
 	return sortedList;
 }

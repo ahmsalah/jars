@@ -22,4 +22,14 @@
 }
 
 .Home__btn-reverse {
+	margin-left: 6rem;
+}
+
+.Home__content label {
+	margin-right: 1rem;
+	font-size: 1.4rem;
+}
+
+.Home__content select {
+	font-size: 1.5rem;
 }
