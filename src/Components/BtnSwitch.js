@@ -2,12 +2,8 @@ import React from 'react';
 import './BtnSwitch.css';
 
 function BtnSwitch({ toggleExpense }) {
-	const handleChange = () => {
-		toggleExpense();
-	};
-
 	return (
-		<div className="BtnSwitch" onChange={handleChange}>
+		<div className="BtnSwitch" onChange={toggleExpense}>
 			<input
 				type="radio"
 				id="yes"

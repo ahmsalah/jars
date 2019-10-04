@@ -6,8 +6,8 @@
 
 	--color-grey-light-1: #faf9f9;
 	--color-grey-light-2: rgb(244, 242, 242);
-	--color-grey-light-3: rgb(240, 238, 238);
-	--color-grey-light-4: rgb(230, 230, 230);
+	--color-grey-light-3: rgb(240, 240, 240);
+	--color-grey-light-4: rgb(238, 238, 238);
 	--color-grey-light-5: rgb(204, 204, 204);
 
 	--color-grey-dark-1: #333;
@@ -27,19 +27,23 @@
 
 html {
 	box-sizing: border-box;
-	font-size: 62.5%;
+	/* font-size: 62.5%; */
 }
 
 body {
 	background-color: var(--color-grey-light-4);
 	color: var(--color-secondary);
 	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
-		"Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+		"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
 
 code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+li {
+	list-style: none;
 }

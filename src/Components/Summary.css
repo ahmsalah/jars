@@ -2,20 +2,20 @@
 	width: 100%;
 	display: flex;
 	flex-direction: column;
-	font-size: 1.8rem;
-	border-bottom: 3rem solid var(--color-grey-light-2);
+	font-size: 18px;
+	border-bottom: 30px solid var(--color-grey-light-2);
 	border-top: 2px solid var(--color-grey-light-2);
-	padding: 3rem 4rem 4rem;
+	padding: 30px 40px 40px;
 }
 
 .Summary > * {
 	display: flex;
-	padding: .3rem 1rem;
+	padding: 3px 10px;
 }
 
 .Summary__amount {
 	margin-left: auto;
-	font-size: 2.4rem;
+	font-size: 24px;
 }
 
 .Summary__amount--inc {

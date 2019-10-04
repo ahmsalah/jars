@@ -1,24 +1,21 @@
 .Categories {
-	flex: 1;
+	/* flex: 1; */
 }
 
 .Categories__content {
-	padding: 0 0 4rem;
+	/* margin: 50px auto; */
+	/* max-width: 650px; */
+	/* padding-bottom: 4rem; */
+	/* background-color: #fff; */
 	/* width: 90%; */
-	background-color: #fff;
-	display: flex;
-	justify-content: center;
-	max-width: 65rem;
-	min-height: 20rem;
-	margin: 5rem auto;
-	/* padding: 4rem 0; */
-	box-shadow: 0 3px 24px 0 rgba(0, 0, 0, .12);
-	border-radius: .5rem;
+	/* display: flex; */
+	/* justify-content: center; */
+	/* min-height: 20rem; */
+	/* box-shadow: 0 3px 24px 0 rgba(0, 0, 0, .12); */
+	/* border-radius: .5rem; */
 }
 
 .Categories__Lists {
-	width: 100%;
-	display: flex;
-	flex-wrap: wrap;
-	/* padding: 4rem; */
+	/* display: flex; */
+	/* flex-wrap: wrap; */
 }

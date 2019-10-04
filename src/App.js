@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import uuid from 'uuid/v4';
 import './App.css';
-import Home from './Pages/Home';
+import Transactions from './Pages/Transactions';
 import Categories from './Pages/Categories';
 import Sidebar from './Components/Sidebar';
 import arrayMove from 'array-move';
@@ -69,7 +69,7 @@ function App() {
 					exact
 					path="/"
 					render={() => (
-						<Home
+						<Transactions
 							expCategories={expCategories}
 							incCategories={incCategories}
 						/>

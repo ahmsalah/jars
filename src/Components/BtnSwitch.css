@@ -1,5 +1,5 @@
 .BtnSwitch {
-	font-size: 1.3rem;
+	font-size: 11px;
 	position: relative;
 	display: inline-block;
 	-webkit-user-select: none;
@@ -65,7 +65,8 @@
 	background: #fff;
 	border-radius: 1em;
 	pointer-events: none;
-	box-shadow: 0 .1429em .2143em rgba(43, 43, 43, .2), 0 .3572em .3572em rgba(43, 43, 43, .1);
+	box-shadow: 0 .1429em .2143em rgba(43, 43, 43, .2),
+		0 .3572em .3572em rgba(43, 43, 43, .1);
 	transition: left .4s ease-in-out, background .2s ease-in-out;
 }
 .BtnSwitch__radio_yes:checked ~ .BtnSwitch__label_no:after {

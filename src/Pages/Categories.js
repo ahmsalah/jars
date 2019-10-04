@@ -1,7 +1,9 @@
 import React from 'react';
 import Navbar from '../Components/Navbar';
-import './Categories.css';
 import CategoryList from '../Components/CategoryList';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import useStyles from '../styles/CategoriesStyles';
 
 function Categories({
 	expCategories,
@@ -10,28 +12,28 @@ function Categories({
 	removeCategory,
 	onSortEnd
 }) {
+	const classes = useStyles();
+
 	return (
-		<div className="Categories">
+		<div className={classes.root}>
 			<Navbar display="categories" addCategory={addCategory} />
-			<div className="Categories__content">
-				<div className="Categories__Lists">
-					<CategoryList
-						type="exp"
-						categoryList={expCategories}
-						removeCategory={removeCategory}
-						onSortEnd={onSortEnd}
-						distance={10}
-						// pressDelay={100}
-					/>
-					<CategoryList
-						type="inc"
-						categoryList={incCategories}
-						removeCategory={removeCategory}
-						onSortEnd={onSortEnd}
-						distance={10}
-						// pressDelay={100}
-					/>
-				</div>
+			<div className={classes.content}>
+				<CategoryList
+					type="exp"
+					categories={expCategories}
+					removeCategory={removeCategory}
+					onSortEnd={onSortEnd}
+					distance={10}
+					// pressDelay={100}
+				/>
+				<CategoryList
+					type="inc"
+					categories={incCategories}
+					removeCategory={removeCategory}
+					onSortEnd={onSortEnd}
+					distance={10}
+					// pressDelay={100}
+				/>
 			</div>
 		</div>
 	);

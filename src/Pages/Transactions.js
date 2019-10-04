@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import './Home.css';
+import './Transactions.css';
 import Navbar from '../Components/Navbar';
 import Summary from '../Components/Summary';
 import TransactionsList from '../Components/TransactionsList';
 import { sortList, pushToArrays } from '../helpers';
 import useToggleState from '../hooks/useToggleState';
 
-function Home({ expCategories, incCategories }) {
+function Transactions({ expCategories, incCategories }) {
 	const [ transactions, setTransactions ] = useState([]);
 	const [ displayTransactions, setDisplayTransactions ] = useState(transactions);
 	const [ expTransactions, setExpTransactions ] = useState([]);
@@ -55,21 +55,23 @@ function Home({ expCategories, incCategories }) {
 	//-------------------------------------------//
 
 	return (
-		<div className="Home">
+		<div className="Transactions">
 			<Navbar
 				addTransaction={addTransaction}
 				expCategories={expCategories}
 				incCategories={incCategories}
 			/>
-			<div className="Home__content">
-				<div className="Home__filters-container">
+			<div className="Transactions__content">
+				<div className="Transactions__filters-container">
 					<label htmlFor="orderBy">Order by:</label>
 					<select id="orderBy" value={orderBy} onChange={handleChange}>
 						<option value="date">Date</option>
 						<option value="amount">Amount</option>
 						<option value="category">Category</option>
 					</select>
-					<button className="Home__btn-reverse" onClick={toggleListReverse}>
+					<button
+						className="Transactions__btn-reverse"
+						onClick={toggleListReverse}>
 						Reverse Order
 					</button>
 				</div>
@@ -84,4 +86,4 @@ function Home({ expCategories, incCategories }) {
 	);
 }
 
-export default Home;
+export default Transactions;
