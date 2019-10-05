@@ -8,6 +8,7 @@ export default makeStyles(theme => ({
 		whiteSpace: 'nowrap'
 	},
 	drawerOpen: {
+		zIndex: 300,
 		width: drawerWidth,
 		transition: theme.transitions.create('width', {
 			easing: theme.transitions.easing.sharp,

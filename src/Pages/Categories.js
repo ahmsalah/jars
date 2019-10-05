@@ -1,9 +1,8 @@
 import React from 'react';
 import Navbar from '../Components/Navbar';
 import CategoryList from '../Components/CategoryList';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 import useStyles from '../styles/CategoriesStyles';
+// import Grid from '@material-ui/core/Grid';
 
 function Categories({
 	expCategories,

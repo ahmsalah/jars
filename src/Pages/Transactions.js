@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import './Transactions.css';
+
 import Navbar from '../Components/Navbar';
 import Summary from '../Components/Summary';
 import TransactionsList from '../Components/TransactionsList';
-import { sortList, pushToArrays } from '../helpers';
+import Filters from '../Components/Filters';
+
 import useToggleState from '../hooks/useToggleState';
+import { sortList, pushToArrays } from '../helpers';
+import { Paper } from '@material-ui/core';
 
 function Transactions({ expCategories, incCategories }) {
 	const [ transactions, setTransactions ] = useState([]);
@@ -45,44 +48,42 @@ function Transactions({ expCategories, incCategories }) {
 	//-------------------------------------------//
 
 	//--------- Sorting Transactions ------------//
-	const toggleListReverse = () => {
-		toggleIsReversed();
-	};
-
 	const handleChange = evt => {
 		setOrderBy(evt.target.value);
 	};
 	//-------------------------------------------//
 
 	return (
-		<div className="Transactions">
+		<React.Fragment>
 			<Navbar
 				addTransaction={addTransaction}
 				expCategories={expCategories}
 				incCategories={incCategories}
 			/>
-			<div className="Transactions__content">
-				<div className="Transactions__filters-container">
-					<label htmlFor="orderBy">Order by:</label>
-					<select id="orderBy" value={orderBy} onChange={handleChange}>
-						<option value="date">Date</option>
-						<option value="amount">Amount</option>
-						<option value="category">Category</option>
-					</select>
-					<button
-						className="Transactions__btn-reverse"
-						onClick={toggleListReverse}>
-						Reverse Order
-					</button>
-				</div>
+
+			<div
+				style={{
+					maxWidth: '650px',
+					margin: '120px auto 50px'
+				}}>
 				<Summary exp={expTransactions} inc={incTransactions} />
 
-				<TransactionsList
-					transactions={displayTransactions}
-					removeTransaction={removeTransaction}
-				/>
+				<Paper>
+					<Filters
+						toggleListReverse={() => {
+							toggleIsReversed();
+						}}
+						handleChange={handleChange}
+						orderBy={orderBy}
+					/>
+
+					<TransactionsList
+						transactions={displayTransactions}
+						removeTransaction={removeTransaction}
+					/>
+				</Paper>
 			</div>
-		</div>
+		</React.Fragment>
 	);
 }
 

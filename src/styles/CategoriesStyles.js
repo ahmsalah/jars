@@ -6,7 +6,7 @@ export default makeStyles(({ spacing }) => ({
 	},
 	content: {
 		margin: `${spacing(15)}px auto ${spacing(5)}px`,
-		maxWidth: spacing(88),
+		maxWidth: spacing(80),
 		display: 'flex',
 		flexWrap: 'wrap',
 		justifyContent: 'space-between',

@@ -1,82 +1,73 @@
 .BtnSwitch {
-	font-size: 11px;
 	position: relative;
+	outline: 0;
 	display: inline-block;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
-.BtnSwitch__radio {
-	display: none;
-}
-.BtnSwitch__label {
-	display: inline-block;
-	padding: .75em .5em .75em .75em;
-	vertical-align: top;
-	font-size: 1em;
-	font-weight: 700;
-	line-height: 1.5;
-	color: #fff;
 	cursor: pointer;
-	transition: color .2s ease-in-out;
+	user-select: none;
+	margin: 0 0 5px 0;
 }
-.BtnSwitch__label + .BtnSwitch__label {
-	padding-right: .75em;
-	padding-left: 0;
-}
-.BtnSwitch__txt {
+
+.BtnSwitch span {
 	position: relative;
-	z-index: 2;
-	display: inline-block;
-	min-width: 1.5em;
-	opacity: 1;
-	pointer-events: none;
-	transition: opacity .2s ease-in-out;
+	display: block;
+	height: 1.8em;
+	line-height: 1.2em;
+	overflow: hidden;
+	font-weight: normal;
+	text-align: center;
+	border-radius: 2em;
+	padding: 0.2em 1em;
+	border: 1px solid #fafafa;
+	box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.2), 0 2px 0 rgba(255, 255, 255, 0.7);
+	transition: color 0.3s ease, padding 0.3s ease-in-out, background 0.3s ease-in-out;
 }
-.BtnSwitch__radio_no:checked ~ .BtnSwitch__label_yes .BtnSwitch__txt,
-.BtnSwitch__radio_yes:checked ~ .BtnSwitch__label_no .BtnSwitch__txt {
-	opacity: 0;
+.BtnSwitch span:before {
+	position: relative;
+	display: block;
+	line-height: 1.3em;
+	padding: 0 0.2em;
+	font-size: 1em;
 }
-.BtnSwitch__label:before {
-	content: "";
+.BtnSwitch span:after {
 	position: absolute;
-	z-index: -1;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	background: #dc004e;
-	border-radius: 1.5em;
-	box-shadow: inset 0 .0715em .3572em rgba(43, 43, 43, .05);
-	transition: background .2s ease-in-out;
+	display: block;
+	content: '';
+	border-radius: 2em;
+	width: 1.3em;
+	height: 1.3em;
+	margin-left: -1.45em;
+	top: 0.2em;
+	background: #ffffff;
+	transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 0.97),
+		background 0.3s ease-in-out;
 }
-.BtnSwitch__radio_yes:checked ~ .BtnSwitch__label:before {
-	background: #1976d2;
+.BtnSwitch input[type="checkbox"] {
+	display: none !important;
 }
-.BtnSwitch__label_no:after {
-	content: "";
-	position: absolute;
-	z-index: 2;
-	top: .5em;
-	bottom: .5em;
-	left: .5em;
-	width: 2em;
-	background: #fff;
-	border-radius: 1em;
-	pointer-events: none;
-	box-shadow: 0 .1429em .2143em rgba(43, 43, 43, .2),
-		0 .3572em .3572em rgba(43, 43, 43, .1);
-	transition: left .4s ease-in-out, background .2s ease-in-out;
+.BtnSwitch input[type="checkbox"]:not(:checked) + span {
+	background: #1aa333;
+	color: #ffffff;
+	padding-left: 2.3em;
+	padding-right: 1.2em;
 }
-.BtnSwitch__radio_yes:checked ~ .BtnSwitch__label_no:after {
-	left: calc(100% - 2.5em);
-	background: #fff;
+.BtnSwitch input[type="checkbox"]:not(:checked) + span:before {
+	content: attr(data-off);
+	color: #ffffff;
 }
-.BtnSwitch__radio_no:checked ~ .BtnSwitch__label_yes:before,
-.BtnSwitch__radio_yes:checked ~ .BtnSwitch__label_no:before {
-	z-index: 1;
+.BtnSwitch input[type="checkbox"]:not(:checked) + span:after {
+	background: #ffffff;
+	left: 1.6em;
 }
-.BtnSwitch__radio_yes:checked ~ .BtnSwitch__label_yes {
-	color: #fff;
+.BtnSwitch input[type="checkbox"]:checked + span {
+	background: #de474e;
+	color: #ffffff;
+	padding-left: 1.2em;
+	padding-right: 2.3em;
+}
+.BtnSwitch input[type="checkbox"]:checked + span:before {
+	content: attr(data-on);
+}
+.BtnSwitch input[type="checkbox"]:checked + span:after {
+	background: #ffffff;
+	left: 100%;
 }

@@ -3,9 +3,8 @@
 	display: flex;
 	flex-direction: column;
 	font-size: 18px;
-	border-bottom: 30px solid var(--color-grey-light-2);
-	border-top: 2px solid var(--color-grey-light-2);
-	padding: 30px 40px 40px;
+	padding: 30px 40px;
+	margin-bottom: 40px;
 }
 
 .Summary > * {
