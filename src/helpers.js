@@ -10,12 +10,7 @@ function sortList(array, sortBy, isReversed) {
 	let arr = [ ...array ];
 	let sortedList;
 	if (sortBy === 'date') {
-		sortedList = arr.sort(
-			(a, b) =>
-				isReversed
-					? new Date(a.date) - new Date(b.date)
-					: new Date(b.date) - new Date(a.date)
-		);
+		sortedList = arr.sort((a, b) => (isReversed ? a.date - b.date : a.date - b.date));
 	} else if (sortBy === 'amount') {
 		sortedList = arr.sort(
 			(a, b) => (isReversed ? a.amount - b.amount : b.amount - a.amount)
@@ -65,4 +60,34 @@ function pushToArrays(arr, condt) {
 	return [ incArray, expArray ];
 }
 
-export { sortList, sumTotal, pushToArrays };
+/**
+|--------------------------------------------------
+| Function to format the date to Day-Month-Year
+| @param {Date} the date to be formated
+|--------------------------------------------------
+*/
+function formatDate(date) {
+	const monthsArr = [
+		'Jan',
+		'Feb',
+		'Mar',
+		'Apr',
+		'May',
+		'Jun',
+		'Jul',
+		'Aug',
+		'Sep',
+		'Oct',
+		'Nov',
+		'Dec'
+	];
+	const d = date.getDate();
+	// const d = date.getDate().toString().padStart(2, '0');
+	const m = monthsArr[date.getMonth()];
+	// const m = date.getMonth() + 1;
+	const y = date.getFullYear();
+
+	return `${d}-${m}-${y}`;
+}
+
+export { sortList, sumTotal, pushToArrays, formatDate };

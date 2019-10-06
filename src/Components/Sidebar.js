@@ -14,11 +14,20 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
 import CategoryIcon from '@material-ui/icons/Category';
+import CollectionsBookmarkIcon from '@material-ui/icons/CollectionsBookmark';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 
 function Sidebar() {
 	const classes = useStyles();
-
 	const [ open, toggleOpen ] = useToggleState(false);
+
+	const tabs = [ 'Transactions', 'Categories', 'Budget', 'Reports' ];
+	const generateIcons = val => {
+		if (val === 'Transactions') return <HomeIcon />;
+		else if (val === 'Categories') return <CategoryIcon />;
+		else if (val === 'Budget') return <AssignmentIcon />;
+		else if (val === 'Reports') return <CollectionsBookmarkIcon />;
+	};
 
 	return (
 		<Drawer
@@ -41,7 +50,7 @@ function Sidebar() {
 			</div>
 			<Divider />
 			<List>
-				{[ 'Transactions', 'Categories' ].map((text, index) => (
+				{tabs.map((text, index) => (
 					<ListItem
 						key={text}
 						button
@@ -49,9 +58,7 @@ function Sidebar() {
 						exact
 						activeClassName={classes.active}
 						to={index > 0 ? `/${text.toLowerCase()}` : '/'}>
-						<ListItemIcon>
-							{index % 2 === 0 ? <HomeIcon /> : <CategoryIcon />}
-						</ListItemIcon>
+						<ListItemIcon>{generateIcons(text)}</ListItemIcon>
 						<ListItemText primary={text} />
 					</ListItem>
 				))}
@@ -59,5 +66,4 @@ function Sidebar() {
 		</Drawer>
 	);
 }
-
 export default Sidebar;

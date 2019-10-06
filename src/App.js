@@ -7,6 +7,16 @@ import Categories from './Pages/Categories';
 import Sidebar from './Components/Sidebar';
 import arrayMove from 'array-move';
 import { pushToArrays } from './helpers';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import { Typography } from '@material-ui/core';
+
+const theme = createMuiTheme({
+	palette: {
+		primary: { main: '#1aa333' },
+		secondary: { main: '#de474e' }
+	}
+});
 
 function App() {
 	const initialCategories = [
@@ -62,35 +72,67 @@ function App() {
 	};
 
 	return (
-		<div className="App">
-			<Sidebar />
-			<Switch>
-				<Route
-					exact
-					path="/"
-					render={() => (
-						<Transactions
-							expCategories={expCategories}
-							incCategories={incCategories}
-						/>
-					)}
-				/>
-				<Route
-					exact
-					path="/categories"
-					render={() => (
-						<Categories
-							expCategories={expCategories}
-							incCategories={incCategories}
-							addCategory={addCategory}
-							removeCategory={removeCategory}
-							onSortEnd={onSortEnd}
-						/>
-					)}
-				/>
-				<Redirect to="/" />
-			</Switch>
-		</div>
+		<ThemeProvider theme={theme}>
+			<div className="App">
+				<Sidebar />
+				<Switch>
+					<Route
+						exact
+						path="/"
+						render={() => (
+							<Transactions
+								expCategories={expCategories}
+								incCategories={incCategories}
+							/>
+						)}
+					/>
+					<Route
+						exact
+						path="/categories"
+						render={() => (
+							<Categories
+								expCategories={expCategories}
+								incCategories={incCategories}
+								addCategory={addCategory}
+								removeCategory={removeCategory}
+								onSortEnd={onSortEnd}
+							/>
+						)}
+					/>
+					<Route
+						exact
+						path="/budget"
+						render={() => (
+							<div
+								style={{
+									height: '100vh',
+									marginTop: '30vh'
+								}}>
+								<Typography align="center" variant="h1" component="h2">
+									Coming Soon!
+								</Typography>
+							</div>
+						)}
+					/>{' '}
+					<Route
+						exact
+						path="/reports"
+						render={() => (
+							<div
+								style={{
+									height: '100vh',
+									marginTop: '30vh'
+								}}>
+								<Typography align="center" variant="h1">
+									Coming Soon!
+								</Typography>
+							</div>
+						)}
+					/>
+					<Redirect to="/" />
+				</Switch>
+			</div>
+		</ThemeProvider>
 	);
 }
 

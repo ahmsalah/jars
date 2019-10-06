@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function SnackbarFeedback({ snackbarOpen, handleSnackbarClose }) {
+function SnackbarFeedback({ message, snackbarOpen, handleSnackbarClose }) {
 	const classes = useStyles();
 	return (
 		<Snackbar
@@ -32,9 +32,7 @@ function SnackbarFeedback({ snackbarOpen, handleSnackbarClose }) {
 			ContentProps={{
 				'aria-describedby': 'message-id'
 			}}
-			message={
-				<span id="message-id">New category has been added successfully</span>
-			}
+			message={<span id="message-id">{message}</span>}
 			action={[
 				<IconButton
 					key="close"

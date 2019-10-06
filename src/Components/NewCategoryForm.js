@@ -19,7 +19,6 @@ const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 });
 
 const useStyles = makeStyles(({ spacing }) => ({
-	button: {},
 	switch: {
 		margin: spacing(4, 0, 1),
 		display: 'flex',
@@ -66,11 +65,7 @@ function NewCategoryForm({ addCategory }) {
 
 	return (
 		<React.Fragment>
-			<Button
-				className={classes.button}
-				variant="contained"
-				color="primary"
-				onClick={handleDialogClickOpen}>
+			<Button variant="contained" color="primary" onClick={handleDialogClickOpen}>
 				Create Category
 			</Button>
 			<Dialog
@@ -116,6 +111,7 @@ function NewCategoryForm({ addCategory }) {
 			<SnackbarFeedback
 				snackbarOpen={snackbarOpen}
 				handleSnackbarClose={handleSnackbarClose}
+				message={'New Category has been added successfully'}
 			/>
 		</React.Fragment>
 	);

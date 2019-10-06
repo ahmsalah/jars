@@ -10,20 +10,22 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(({ spacing }) => ({
 	root: {
-		padding: theme.spacing(1, 6),
+		padding: spacing(1, 6),
 		justifyContent: 'flex-end'
+	},
+	formControl: {
+		margin: spacing(1, 2, 0.5),
+		minWidth: 120
 	},
 	input: {
 		'& div': {
-			minWidth: '70px',
-			paddingTop: theme.spacing(1.3),
-			paddingBottom: theme.spacing(1.3)
+			paddingTop: spacing(1.3),
+			paddingBottom: spacing(1.3)
 		}
 	},
 	reverseButton: {
-		marginLeft: theme.spacing(2),
 		backgroundColor: 'transparent',
 		'& svg': {
 			width: '1.5em',
@@ -43,7 +45,7 @@ function Filters({ toggleListReverse, handleChange, orderBy }) {
 	return (
 		<React.Fragment>
 			<Toolbar className={classes.root}>
-				<FormControl variant="outlined">
+				<FormControl variant="outlined" className={classes.formControl}>
 					<InputLabel ref={inputLabel} htmlFor="orderBy">
 						Sorting by
 					</InputLabel>
