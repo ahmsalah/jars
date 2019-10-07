@@ -76,6 +76,7 @@ function Transactions({ expCategories, incCategories }) {
 						toggleListReverse={() => {
 							toggleIsReversed();
 						}}
+						isReversed={isReversed}
 						handleChange={handleChange}
 						orderBy={orderBy}
 					/>
