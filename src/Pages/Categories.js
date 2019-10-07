@@ -1,8 +1,22 @@
 import React from 'react';
 import Navbar from '../Components/Navbar';
 import CategoryList from '../Components/CategoryList';
-import useStyles from '../styles/CategoriesStyles';
 // import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(({ spacing }) => ({
+	root: {
+		flex: '1'
+	},
+	content: {
+		margin: `${spacing(15)}px auto ${spacing(5)}px`,
+		maxWidth: spacing(80),
+		display: 'flex',
+		flexWrap: 'wrap',
+		justifyContent: 'space-between',
+		alignItems: 'flex-start'
+	}
+}));
 
 function Categories({
 	expCategories,

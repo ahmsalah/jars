@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import useToggleState from '../hooks/useToggleState';
-import useStyles from '../styles/SidebarStyles';
+import useStyles from './SidebarStyles';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';

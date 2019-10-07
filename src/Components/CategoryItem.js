@@ -5,7 +5,27 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import useStyles from '../styles/CategoryItemStyles';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(() => ({
+	root: {
+		backgroundColor: '#fff',
+		cursor: 'grab',
+		'&:active': {
+			cursor: 'grabbing '
+		},
+		'&:hover button': {
+			opacity: '1'
+		}
+	},
+	deleteButton: {
+		opacity: '0',
+		transition: 'opacity .3s',
+		'&:hover': {
+			backgroundColor: 'transparent'
+		}
+	}
+}));
 
 const CategoryItem = SortableElement(({ id, type, name, removeCategory }) => {
 	const classes = useStyles();
