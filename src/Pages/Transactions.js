@@ -6,10 +6,9 @@ import TransactionsList from '../Components/TransactionsList';
 import Filters from '../Components/Filters';
 
 import useToggleState from '../hooks/useToggleState';
-import { sortList, pushToArrays } from '../helpers';
+import { sortList, pushToArrays, sumTotal } from '../helpers';
 import { Paper } from '@material-ui/core';
 import { initialTransactions } from '../initialData';
-import { sumTotal } from '../helpers';
 
 function Transactions({ expCategories, incCategories }) {
 	const [ transactions, setTransactions ] = useState(initialTransactions);
@@ -76,7 +75,10 @@ function Transactions({ expCategories, incCategories }) {
 				}}>
 				<Summary totalInc={totalInc} totalExp={totalExp} />
 
-				<Paper>
+				<Paper
+					style={{
+						overflow: 'hidden'
+					}}>
 					<Filters
 						toggleListReverse={() => {
 							toggleIsReversed();

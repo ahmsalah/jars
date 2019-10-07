@@ -12,6 +12,7 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
 		margin: spacing(0, 2.5),
 		flex: '1',
 		padding: spacing(0, 0, 0.5),
+		overflow: 'hidden',
 		'& ul': {
 			padding: '0',
 			backgroundColor: palette.grey.light[5]
@@ -27,7 +28,7 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
 const CategoryList = SortableContainer(({ categories, removeCategory, type }) => {
 	const classes = useStyles();
 
-	return (
+	return categories.length !== 0 ? (
 		<Paper className={classes.root}>
 			<List>
 				<Typography className={classes.title} color="inherit">
@@ -49,7 +50,7 @@ const CategoryList = SortableContainer(({ categories, removeCategory, type }) =>
 				))}
 			</List>
 		</Paper>
-	);
+	) : null;
 });
 
 export default CategoryList;

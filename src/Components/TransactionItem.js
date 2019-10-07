@@ -14,7 +14,8 @@ const useStyles = makeStyles(({ spacing }) => ({
 	root: {
 		'&:hover button': {
 			opacity: '1'
-		}
+		},
+		backgroundColor: '#fff'
 	},
 	title: {
 		width: '42%',

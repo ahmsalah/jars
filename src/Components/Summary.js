@@ -13,7 +13,8 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles(({ spacing, palette }) => ({
 	root: {
 		marginBottom: spacing(5),
-		display: 'flex'
+		display: 'flex',
+		overflow: 'hidden'
 	},
 	report: {
 		flexBasis: '25%',
@@ -89,13 +90,19 @@ function Summary({ totalInc, totalExp }) {
 		true
 	);
 
-	return (
+	return totalInc !== 0 || totalExp !== 0 ? (
 		<Paper className={classes.root}>
 			<div className={classes.report}>
-				<Typography variant="h3">{parseInt(total / totalInc * 100)}%</Typography>
+				<Typography variant="h3">
+					{totalInc !== 0 ? `${parseInt(total / totalInc * 100)}%` : '0%'}
+				</Typography>
 				<Typography align="center" variant="body2">
-					{totalExp * -1 <= totalInc ? `Saved of` : `Spent more than`} your
-					income
+					{totalExp * -1 <= totalInc || totalInc === 0 ? (
+						`Saved of `
+					) : (
+						`Spent more than `
+					)}
+					your income
 				</Typography>
 			</div>
 
@@ -142,7 +149,7 @@ function Summary({ totalInc, totalExp }) {
 				</ListItem>
 			</List>
 		</Paper>
-	);
+	) : null;
 }
 
 export default Summary;
