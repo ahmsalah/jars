@@ -4,15 +4,32 @@ import { SortableContainer } from 'react-sortable-hoc';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import useStyles from '../styles/CategoryListStyles';
 import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(({ spacing, palette }) => ({
+	root: {
+		margin: spacing(0, 2.5),
+		flex: '1',
+		padding: spacing(0, 0, 0.5),
+		'& ul': {
+			padding: '0',
+			backgroundColor: palette.grey.light[5]
+		}
+	},
+	title: {
+		backgroundColor: palette.grey.light[1],
+		padding: spacing(2, 4, 1.5),
+		fontWeight: '500'
+	}
+}));
 
 const CategoryList = SortableContainer(({ categories, removeCategory, type }) => {
 	const classes = useStyles();
 
 	return (
 		<Paper className={classes.root}>
-			<List className={classes.list}>
+			<List>
 				<Typography className={classes.title} color="inherit">
 					{type === 'exp' ? 'Expenses' : 'Income'}
 				</Typography>
@@ -27,9 +44,7 @@ const CategoryList = SortableContainer(({ categories, removeCategory, type }) =>
 							removeCategory={removeCategory}
 							collection={type}
 						/>
-						{i < categories.length - 1 && (
-							<Divider className={classes.divider} />
-						)}
+						{i < categories.length - 1 && <Divider />}
 					</React.Fragment>
 				))}
 			</List>

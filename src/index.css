@@ -1,9 +1,6 @@
-:root {
-	/* --color-primary: #eb2f64; */
-	/* --color-secondary: #282c34; */
-	--color-blue: #1976d2;
-	--color-red: #dc004e;
-
+/* :root {
+	--color-primary: #eb2f64;
+	--color-secondary: #282c34;
 	--color-grey-light-1: #faf9f9;
 	--color-grey-light-2: rgb(244, 242, 242);
 	--color-grey-light-3: rgb(240, 240, 240);
@@ -15,7 +12,7 @@
 	--color-grey-dark-3: #999;
 
 	--line: 1px solid var(--color-grey-light-3);
-}
+} */
 
 *,
 *::before,
@@ -27,12 +24,10 @@
 
 html {
 	box-sizing: border-box;
-	/* font-size: 62.5%; */
 }
 
 body {
-	background-color: var(--color-grey-light-4);
-	color: var(--color-secondary);
+	background-color: rgb(238, 238, 238);
 	margin: 0;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
 		"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;

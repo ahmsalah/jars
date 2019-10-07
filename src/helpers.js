@@ -93,10 +93,17 @@ function formatDate(date) {
 /**
 |--------------------------------------------------
 | Function to format number to currency
+| @param {number} the amount to be formated
+| @param {boolean} whether to include a plus/minus sign or not
+| @param {string}	currency symbol
+| @param {number} numbers of decimals
+| @param {string} decimal character
+| @param {string} thousands sperator character
 |--------------------------------------------------
 */
 function formatAmount(
 	amount,
+	includePlusMinusSymbol = true,
 	currency = '£',
 	decimalCount = 2,
 	decimal = '.',
@@ -105,8 +112,8 @@ function formatAmount(
 	try {
 		decimalCount = Math.abs(decimalCount);
 		decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
-
-		const negativeSign = amount < 0 ? '-' : '+';
+		let plusMinusSymbol = '';
+		includePlusMinusSymbol && (plusMinusSymbol = amount < 0 ? '-' : '+');
 
 		let i = parseInt(
 			(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount))
@@ -114,7 +121,7 @@ function formatAmount(
 		let j = i.length > 3 ? i.length % 3 : 0;
 
 		return (
-			negativeSign +
+			plusMinusSymbol +
 			currency +
 			' ' +
 			(j ? i.substr(0, j) + thousands : '') +
@@ -128,4 +135,32 @@ function formatAmount(
 	}
 }
 
-export { sortList, sumTotal, pushToArrays, formatDate, formatAmount };
+/**
+|--------------------------------------------------
+| Function, returns the percentages of two numbers in relation to each other
+| @param {number} first number
+| @param {number} second number
+| @param {boolean} if true, multiplies the results by 1.2 if both the results are less than 80
+|--------------------------------------------------
+*/
+const getPercentageOfTwoNumbers = (num1, num2, multiply) => {
+	const lowerNum = 100 / (Math.max(num1, num2) / Math.min(num1, num2) + 1);
+	const higherNum = 100 - lowerNum;
+
+	let result1 = num1 > num2 ? higherNum : lowerNum;
+	let result2 = num2 > num1 ? higherNum : lowerNum;
+	if (multiply && Math.max(result1, result2) < 80) {
+		result1 *= 1.2;
+		result2 *= 1.2;
+	}
+	return [ result1, result2 ];
+};
+
+export {
+	sortList,
+	sumTotal,
+	pushToArrays,
+	formatDate,
+	formatAmount,
+	getPercentageOfTwoNumbers
+};

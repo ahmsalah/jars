@@ -9,6 +9,7 @@ import useToggleState from '../hooks/useToggleState';
 import { sortList, pushToArrays } from '../helpers';
 import { Paper } from '@material-ui/core';
 import { initialTransactions } from '../initialData';
+import { sumTotal } from '../helpers';
 
 function Transactions({ expCategories, incCategories }) {
 	const [ transactions, setTransactions ] = useState(initialTransactions);
@@ -55,6 +56,10 @@ function Transactions({ expCategories, incCategories }) {
 	};
 	//-------------------------------------------//
 
+	const [ totalInc, totalExp ] = [
+		sumTotal(incTransactions),
+		sumTotal(expTransactions)
+	];
 	return (
 		<React.Fragment>
 			<Navbar
@@ -69,7 +74,7 @@ function Transactions({ expCategories, incCategories }) {
 					margin: '120px auto 50px',
 					flex: 1
 				}}>
-				<Summary exp={expTransactions} inc={incTransactions} />
+				<Summary totalInc={totalInc} totalExp={totalExp} />
 
 				<Paper>
 					<Filters

@@ -10,33 +10,35 @@ import FolderIcon from '@material-ui/icons/Folder';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(({ spacing }) => ({
 	root: {
 		'&:hover button': {
 			opacity: '1'
 		}
 	},
 	title: {
-		width: '44%',
-		'& span': {
-			fontSize: '1rem'
-		}
+		width: '42%',
+		'& span': {}
 	},
 	date: {
-		width: '35%',
+		width: '27%',
 		'& span': {
 			fontWeight: 500,
 			color: 'rgba(0,0,0,.5)'
 		}
 	},
 	amount: {
-		width: '21%',
+		width: '31%',
+		display: 'flex',
 		'& span': {
-			fontSize: '1rem'
+			fontSize: '1rem',
+			fontWeight: 500,
+			marginLeft: 'auto',
+			marginRight: spacing(2.5)
 		}
 	},
 	deleteButton: {
-		marginRight: 0,
+		marginRight: '-5px',
 		opacity: '0',
 		transition: 'opacity .3s'
 	}
@@ -66,7 +68,6 @@ function TransactionItem({
 					className={classes.title}
 					primary={category}
 					secondary={description}
-					primaryTypographyProps={{ variant: 'h5' }}
 				/>
 				<ListItemText
 					className={classes.date}
@@ -76,7 +77,7 @@ function TransactionItem({
 				<ListItemText
 					className={classes.amount}
 					primary={formatAmount(amount)}
-					primaryTypographyProps={{ color: color, variant: 'h6' }}
+					primaryTypographyProps={{ color: color }}
 				/>
 				<ListItemSecondaryAction>
 					<IconButton
