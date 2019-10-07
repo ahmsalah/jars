@@ -10,7 +10,7 @@ function sortList(array, sortBy, isReversed) {
 	let arr = [ ...array ];
 	let sortedList;
 	if (sortBy === 'date') {
-		sortedList = arr.sort((a, b) => (isReversed ? a.date - b.date : a.date - b.date));
+		sortedList = arr.sort((a, b) => (isReversed ? a.date - b.date : b.date - a.date));
 	} else if (sortBy === 'amount') {
 		sortedList = arr.sort(
 			(a, b) => (isReversed ? a.amount - b.amount : b.amount - a.amount)
@@ -81,8 +81,8 @@ function formatDate(date) {
 		'Nov',
 		'Dec'
 	];
-	const d = date.getDate();
-	// const d = date.getDate().toString().padStart(2, '0');
+	// const d = date.getDate();
+	const d = date.getDate().toString().padStart(2, '0');
 	const m = monthsArr[date.getMonth()];
 	// const m = date.getMonth() + 1;
 	const y = date.getFullYear();
@@ -90,4 +90,42 @@ function formatDate(date) {
 	return `${d}-${m}-${y}`;
 }
 
-export { sortList, sumTotal, pushToArrays, formatDate };
+/**
+|--------------------------------------------------
+| Function to format number to currency
+|--------------------------------------------------
+*/
+function formatAmount(
+	amount,
+	currency = '£',
+	decimalCount = 2,
+	decimal = '.',
+	thousands = ','
+) {
+	try {
+		decimalCount = Math.abs(decimalCount);
+		decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
+
+		const negativeSign = amount < 0 ? '-' : '+';
+
+		let i = parseInt(
+			(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount))
+		).toString();
+		let j = i.length > 3 ? i.length % 3 : 0;
+
+		return (
+			negativeSign +
+			currency +
+			' ' +
+			(j ? i.substr(0, j) + thousands : '') +
+			i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + thousands) +
+			(decimalCount
+				? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2)
+				: '')
+		);
+	} catch (e) {
+		console.log(e);
+	}
+}
+
+export { sortList, sumTotal, pushToArrays, formatDate, formatAmount };

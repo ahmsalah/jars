@@ -8,9 +8,10 @@ import Filters from '../Components/Filters';
 import useToggleState from '../hooks/useToggleState';
 import { sortList, pushToArrays } from '../helpers';
 import { Paper } from '@material-ui/core';
+import { initialTransactions } from '../initialData';
 
 function Transactions({ expCategories, incCategories }) {
-	const [ transactions, setTransactions ] = useState([]);
+	const [ transactions, setTransactions ] = useState(initialTransactions);
 	const [ displayTransactions, setDisplayTransactions ] = useState(transactions);
 	const [ expTransactions, setExpTransactions ] = useState([]);
 	const [ incTransactions, setIncTransactions ] = useState([]);
@@ -36,6 +37,7 @@ function Transactions({ expCategories, incCategories }) {
 
 	//------ Adding & Removing Transactions -----//
 	const addTransaction = newTransaction => {
+		console.log(newTransaction);
 		isReversed
 			? setTransactions([ ...transactions, newTransaction ])
 			: setTransactions([ newTransaction, ...transactions ]);
@@ -64,7 +66,8 @@ function Transactions({ expCategories, incCategories }) {
 			<div
 				style={{
 					maxWidth: '650px',
-					margin: '120px auto 50px'
+					margin: '120px auto 50px',
+					flex: 1
 				}}>
 				<Summary exp={expTransactions} inc={incTransactions} />
 

@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import uuid from 'uuid/v4';
-import './App.css';
 import Transactions from './Pages/Transactions';
 import Categories from './Pages/Categories';
 import Sidebar from './Components/Sidebar';
 import arrayMove from 'array-move';
-import { pushToArrays } from './helpers';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import { pushToArrays } from './helpers';
+import { initialCategories } from './initialData';
 
 const theme = createMuiTheme({
 	palette: {
@@ -19,23 +18,6 @@ const theme = createMuiTheme({
 });
 
 function App() {
-	const initialCategories = [
-		{ id: uuid(), name: 'Groceries', type: 'exp' },
-		{ id: uuid(), name: 'Internet', type: 'exp' },
-		{ id: uuid(), name: 'Phone', type: 'exp' },
-		{ id: uuid(), name: 'Transportation', type: 'exp' },
-		{ id: uuid(), name: 'Gas', type: 'exp' },
-		{ id: uuid(), name: 'Electricity', type: 'exp' },
-		{ id: uuid(), name: 'Shopping', type: 'exp' },
-
-		{ id: uuid(), name: 'Salary', type: 'inc' },
-		{ id: uuid(), name: 'Savings', type: 'inc' },
-		{ id: uuid(), name: 'Bonus', type: 'inc' },
-		{ id: uuid(), name: 'Others', type: 'inc' },
-		{ id: uuid(), name: 'Gifts', type: 'inc' },
-		{ id: uuid(), name: 'Interest Money', type: 'inc' }
-	];
-
 	const [ allCategories, setAllCategories ] = useState(initialCategories);
 	const [ expCategories, setExpCategories ] = useState([]);
 	const [ incCategories, setIncCategories ] = useState([]);
@@ -73,7 +55,7 @@ function App() {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<div className="App">
+			<div style={{ displau: 'flex' }}>
 				<Sidebar />
 				<Switch>
 					<Route
