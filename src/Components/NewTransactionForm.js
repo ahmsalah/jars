@@ -18,6 +18,8 @@ import SnackbarFeedback from './SnackbarFeedback';
 import MenuItem from '@material-ui/core/MenuItem';
 import clsx from 'clsx';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 
 const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 	return <Grow {...props} />;
@@ -59,6 +61,11 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 	const [ dialogOpen, setDialogOpen ] = React.useState(false);
 	const [ snackbarOpen, setSnackbarOpen ] = React.useState(false);
 	const [ selectedDate, setSelectedDate ] = React.useState(new Date());
+	const theme = createMuiTheme({
+		palette: {
+			primary: { main: isExpense ? '#de474e' : '#1aa333' }
+		}
+	});
 
 	const handleSnackbarClose = (event, reason) => {
 		if (reason === 'clickaway') {
@@ -114,96 +121,94 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 					onClick={handleDialogClickOpen}>
 					Add Transaction
 				</Button>
-				<Dialog
-					open={dialogOpen}
-					onClose={handleDialogClose}
-					TransitionComponent={TransitionGrow}
-					aria-labelledby="form-dialog-title">
-					<DialogTitle id="form-dialog-title">Add Transaction</DialogTitle>
+				<ThemeProvider theme={theme}>
+					<Dialog
+						open={dialogOpen}
+						onClose={handleDialogClose}
+						TransitionComponent={TransitionGrow}
+						aria-labelledby="form-dialog-title">
+						<DialogTitle id="form-dialog-title">Add Transaction</DialogTitle>
 
-					<DialogContent>
-						<DialogContentText className={classes.dialogText}>
-							To add a new transaction, please choose the transaction type
-							and fill in the fields below. You can list a new category in
-							the cateogries tab.
-						</DialogContentText>
-						<div className={classes.inputsContainer}>
-							<div className={classes.switch}>
-								<BtnSwitch
-									toggleExpense={() => toggleIsExpense()}
-									isExpense={isExpense}
+						<DialogContent>
+							<DialogContentText className={classes.dialogText}>
+								To add a new transaction, please choose the transaction
+								type and fill in the fields below. You can list a new
+								category in the cateogries tab.
+							</DialogContentText>
+							<div className={classes.inputsContainer}>
+								<div className={classes.switch}>
+									<BtnSwitch
+										toggleExpense={() => toggleIsExpense()}
+										isExpense={isExpense}
+									/>
+								</div>
+								<TextField
+									select
+									className={clsx(classes.margin, classes.textField)}
+									variant="outlined"
+									label="Select Category"
+									name="category"
+									value={category}
+									onChange={handleCategoryChange}
+									required>
+									{isExpense ? (
+										expCategories.map(ct => (
+											<MenuItem key={ct.id} value={ct.name}>
+												{ct.name}
+											</MenuItem>
+										))
+									) : (
+										incCategories.map(ct => (
+											<MenuItem key={ct.id} value={ct.name}>
+												{ct.name}
+											</MenuItem>
+										))
+									)}
+								</TextField>
+								<TextField
+									className={clsx(classes.margin, classes.textField)}
+									variant="outlined"
+									label="Description"
+									name="description"
+									value={description}
+									onChange={handleDescriptionChange}
+								/>{' '}
+								<br />
+								<TextField
+									className={clsx(classes.margin, classes.textField)}
+									variant="outlined"
+									label="Amount"
+									type="number"
+									name="amount"
+									value={amount}
+									onChange={handleAmountChange}
+									required
+								/>
+								<KeyboardDatePicker
+									margin="normal"
+									className={clsx(classes.margin, classes.textField)}
+									id="date-picker-dialog"
+									label="Choose Date"
+									format="MM/dd/yyyy"
+									inputVariant="outlined"
+									value={selectedDate}
+									onChange={handleDateChange}
+									KeyboardButtonProps={{
+										'aria-label': 'change date'
+									}}
 								/>
 							</div>
-							<TextField
-								select
-								className={clsx(classes.margin, classes.textField)}
-								variant="outlined"
-								label="Select Category"
-								name="category"
-								value={category}
-								onChange={handleCategoryChange}
-								required>
-								{isExpense ? (
-									expCategories.map(ct => (
-										<MenuItem key={ct.id} value={ct.name}>
-											{ct.name}
-										</MenuItem>
-									))
-								) : (
-									incCategories.map(ct => (
-										<MenuItem key={ct.id} value={ct.name}>
-											{ct.name}
-										</MenuItem>
-									))
-								)}
-							</TextField>
-							<TextField
-								className={clsx(classes.margin, classes.textField)}
-								variant="outlined"
-								label="Description"
-								name="description"
-								value={description}
-								onChange={handleDescriptionChange}
-							/>{' '}
-							<br />
-							<TextField
-								className={clsx(classes.margin, classes.textField)}
-								variant="outlined"
-								label="Amount"
-								type="number"
-								name="amount"
-								value={amount}
-								onChange={handleAmountChange}
-								required
-							/>
-							<KeyboardDatePicker
-								margin="normal"
-								className={clsx(
-									classes.margin,
-									classes.textField,
-									classes.date
-								)}
-								id="date-picker-dialog"
-								label="Choose Date"
-								format="MM/dd/yyyy"
-								inputVariant="outlined"
-								value={selectedDate}
-								onChange={handleDateChange}
-								KeyboardButtonProps={{
-									'aria-label': 'change date'
-								}}
-							/>
-						</div>
-					</DialogContent>
-					<DialogActions>
-						<Button onClick={handleDialogClose} color="primary">
-							Cancel
-						</Button>
-						<Button onClick={handleSubmit} color="primary">
-							Add
-						</Button>
-					</DialogActions>
-				</Dialog>
+						</DialogContent>
+						<DialogActions>
+							<Button onClick={handleDialogClose} color="primary">
+								Cancel
+							</Button>
+							<Button onClick={handleSubmit} color="primary">
+								Add
+							</Button>
+						</DialogActions>
+					</Dialog>
+				</ThemeProvider>
 				<SnackbarFeedback
 					snackbarOpen={snackbarOpen}
 					handleSnackbarClose={handleSnackbarClose}

@@ -13,6 +13,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import Grow from '@material-ui/core/Grow';
 import SnackbarFeedback from './SnackbarFeedback';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 
 const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 	return <Grow {...props} />;
@@ -37,6 +39,11 @@ function NewCategoryForm({ addCategory }) {
 	const [ isExpense, toggleIsExpense ] = useToggleState(true);
 	const [ dialogOpen, setDialogOpen ] = React.useState(false);
 	const [ snackbarOpen, setSnackbarOpen ] = React.useState(false);
+	const theme = createMuiTheme({
+		palette: {
+			primary: { main: isExpense ? '#de474e' : '#1aa333' }
+		}
+	});
 
 	const handleSnackbarClose = (event, reason) => {
 		if (reason === 'clickaway') {
@@ -68,46 +75,50 @@ function NewCategoryForm({ addCategory }) {
 			<Button variant="contained" color="primary" onClick={handleDialogClickOpen}>
 				Create Category
 			</Button>
-			<Dialog
-				open={dialogOpen}
-				onClose={handleDialogClose}
-				TransitionComponent={TransitionGrow}
-				aria-labelledby="form-dialog-title">
-				<DialogTitle id="form-dialog-title">Create Category</DialogTitle>
+			<ThemeProvider theme={theme}>
+				<Dialog
+					open={dialogOpen}
+					onClose={handleDialogClose}
+					TransitionComponent={TransitionGrow}
+					aria-labelledby="form-dialog-title">
+					<DialogTitle id="form-dialog-title">Create Category</DialogTitle>
 
-				<DialogContent>
-					<DialogContentText>
-						To add a new category, please <br />choose category name and type.
-					</DialogContentText>
-					<div className={classes.switch}>
-						<BtnSwitch
-							toggleExpense={() => toggleIsExpense()}
-							isExpense={isExpense}
-						/>
-					</div>
-					<div className={classes.inputText}>
-						<TextField
-							autoFocus
-							margin="dense"
-							id="name"
-							label="New Category"
-							type="text"
-							value={name}
-							onChange={handleChange}
-							required
-							variant="outlined"
-						/>
-					</div>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={handleDialogClose} color="primary">
-						Cancel
-					</Button>
-					<Button onClick={handleSubmit} color="primary">
-						Add
-					</Button>
-				</DialogActions>
-			</Dialog>
+					<DialogContent>
+						<DialogContentText>
+							To add a new category, please <br />choose category name and
+							type.
+						</DialogContentText>
+						<div className={classes.switch}>
+							<BtnSwitch
+								toggleExpense={() => toggleIsExpense()}
+								isExpense={isExpense}
+							/>
+						</div>
+						<div className={classes.inputText}>
+							<TextField
+								autoFocus
+								margin="dense"
+								id="name"
+								label="New Category"
+								type="text"
+								value={name}
+								onChange={handleChange}
+								required
+								variant="outlined"
+							/>
+						</div>
+					</DialogContent>
+					<DialogActions>
+						<Button onClick={handleDialogClose} color="primary">
+							Cancel
+						</Button>
+						<Button onClick={handleSubmit} color="primary">
+							Add
+						</Button>
+					</DialogActions>
+				</Dialog>
+			</ThemeProvider>
+
 			<SnackbarFeedback
 				snackbarOpen={snackbarOpen}
 				handleSnackbarClose={handleSnackbarClose}

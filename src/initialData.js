@@ -49,7 +49,7 @@ export const initialTransactions = [
 	{
 		amount: -400,
 		category: 'Groceries',
-		date: new Date('2019-10-06'),
+		date: new Date('2019-10-26'),
 		description: `For next week's party`,
 		id: uuid(),
 		type: 'exp'
@@ -73,7 +73,7 @@ export const initialTransactions = [
 	{
 		amount: -700,
 		category: 'Shopping',
-		date: new Date('2019-10-06'),
+		date: new Date('2019-10-15'),
 		description: 'Bought a new jeans',
 		id: uuid(),
 		type: 'exp'
@@ -89,7 +89,7 @@ export const initialTransactions = [
 	{
 		amount: -350,
 		category: 'Gas',
-		date: new Date('2019-10-15'),
+		date: new Date('2019-10-06'),
 		description: '',
 		id: uuid(),
 		type: 'exp'
@@ -97,7 +97,7 @@ export const initialTransactions = [
 	{
 		amount: -3000,
 		category: 'Pay off debt',
-		date: new Date('2019-10-25'),
+		date: new Date('2019-10-07'),
 		description: '',
 		id: uuid(),
 		type: 'exp'

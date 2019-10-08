@@ -1,7 +1,5 @@
 import React from 'react';
 import { Toolbar } from '@material-ui/core';
-// import IconButton from '@material-ui/core/IconButton';
-// import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import SwapVertIcon from '@material-ui/icons/SwapVert';
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,15 +22,11 @@ const useStyles = makeStyles(({ spacing }) => ({
 	input: {
 		'& div': {
 			paddingTop: spacing(1.3),
-			paddingBottom: spacing(1.3)
+			paddingBottom: spacing(1.3),
+			color: 'rgba(0,0,0,.75)'
 		}
 	},
 	reverseButton: {
-		// backgroundColor: 'transparent',
-		// '& svg': {
-		// width: '1.5em',
-		// height: '1.5em'
-		// },
 		'& button': {
 			borderColor: 'rgba(0,0,0,.25)',
 			width: spacing(6),
@@ -70,11 +64,6 @@ function Filters({ isReversed, toggleListReverse, handleChange, orderBy }) {
 						<MenuItem value="category">Category</MenuItem>
 					</Select>
 				</FormControl>
-				{/* <Avatar className={classes.reverseButton}>
-					<IconButton onClick={toggleListReverse}>
-					</IconButton>
-				</Avatar> */}
-
 				<ToggleButtonGroup
 					className={classes.reverseButton}
 					value={reversed}
