@@ -41,6 +41,7 @@ const CategoryList = SortableContainer(({ categories, removeCategory, type }) =>
 							index={i}
 							id={ct.id}
 							name={ct.name}
+							icon={ct.icon}
 							type={ct.type}
 							removeCategory={removeCategory}
 							collection={type}

@@ -1,27 +1,32 @@
 import uuid from 'uuid/v4';
 
 export const initialCategories = [
-	{ id: uuid(), name: 'Groceries', type: 'exp' },
-	{ id: uuid(), name: 'Internet', type: 'exp' },
-	{ id: uuid(), name: 'Phone', type: 'exp' },
-	{ id: uuid(), name: 'Transportation', type: 'exp' },
-	{ id: uuid(), name: 'Gas', type: 'exp' },
-	{ id: uuid(), name: 'Electricity', type: 'exp' },
-	{ id: uuid(), name: 'Shopping', type: 'exp' },
-	{ id: uuid(), name: 'Food', type: 'exp' },
-	{ id: uuid(), name: 'Pay off debt', type: 'exp' },
-	{ id: uuid(), name: 'Installment', type: 'exp' },
+	{ id: uuid(), name: 'Groceries', type: 'exp', icon: 'icon_3' },
+	{ id: uuid(), name: 'Internet', type: 'exp', icon: 'icon_126' },
+	{ id: uuid(), name: 'Phone', type: 'exp', icon: 'icon_134' },
+	{ id: uuid(), name: 'Transportation', type: 'exp', icon: 'icon_127' },
+	{ id: uuid(), name: 'Travel', type: 'exp', icon: 'icon_5' },
+	{ id: uuid(), name: 'Gas', type: 'exp', icon: 'icon_129' },
+	{ id: uuid(), name: 'Electricity', type: 'exp', icon: 'icon_125' },
+	{ id: uuid(), name: 'Rent', type: 'exp', icon: 'icon_136' },
+	{ id: uuid(), name: 'Shopping', type: 'exp', icon: 'icon_7' },
+	{ id: uuid(), name: 'Food', type: 'exp', icon: 'icon_133' },
+	{ id: uuid(), name: 'Pay off debt', type: 'exp', icon: 'icon_140' },
+	{ id: uuid(), name: 'Installment', type: 'exp', icon: 'icon_112' },
+	{ id: uuid(), name: 'Entertainment', type: 'exp', icon: 'icon_6' },
+	{ id: uuid(), name: 'Café', type: 'exp', icon: 'icon_105' },
+	{ id: uuid(), name: 'Others', type: 'exp', icon: 'ic_category_other_expense' },
 
-	{ id: uuid(), name: 'Initial balance', type: 'inc' },
-	{ id: uuid(), name: 'Salary', type: 'inc' },
-	{ id: uuid(), name: 'Savings', type: 'inc' },
-	{ id: uuid(), name: 'Bonus', type: 'inc' },
-	{ id: uuid(), name: 'Others', type: 'inc' },
-	{ id: uuid(), name: 'Gifts', type: 'inc' },
-	{ id: uuid(), name: 'Interest money', type: 'inc' }
+	{ id: uuid(), name: 'Initial balance', type: 'inc', icon: 'icon_109' },
+	{ id: uuid(), name: 'Salary', type: 'inc', icon: 'ic_category_salary' },
+	{ id: uuid(), name: 'Savings', type: 'inc', icon: 'icon_141' },
+	{ id: uuid(), name: 'Bonus', type: 'inc', icon: 'icon_57' },
+	{ id: uuid(), name: 'Others', type: 'inc', icon: 'ic_category_other_income' },
+	{ id: uuid(), name: 'Gifts', type: 'inc', icon: 'ic_category_give' },
+	{ id: uuid(), name: 'Interest money', type: 'inc', icon: 'ic_category_interestmoney' }
 ];
 
-export const initialTransactions = [
+const transactions = [
 	{
 		amount: 3500,
 		category: 'Initial balance',
@@ -103,3 +108,10 @@ export const initialTransactions = [
 		type: 'exp'
 	}
 ];
+
+export const initialTransactions = transactions.map(function(tr) {
+	let displayIcon = Object.assign({}, tr);
+
+	displayIcon.icon = initialCategories.filter(ct => ct.name === tr.category)[0].icon;
+	return displayIcon;
+});

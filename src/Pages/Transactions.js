@@ -37,7 +37,6 @@ function Transactions({ expCategories, incCategories }) {
 
 	//------ Adding & Removing Transactions -----//
 	const addTransaction = newTransaction => {
-		console.log(newTransaction);
 		isReversed
 			? setTransactions([ ...transactions, newTransaction ])
 			: setTransactions([ newTransaction, ...transactions ]);

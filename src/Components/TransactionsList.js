@@ -26,6 +26,7 @@ function TransactionsList({ transactions, removeTransaction }) {
 						id={tr.id}
 						type={tr.type}
 						category={tr.category}
+						icon={tr.icon}
 						description={tr.description}
 						amount={tr.amount}
 						date={tr.date}

@@ -96,8 +96,14 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 		} else {
 			type = 'inc';
 		}
+
+		const displayIcon = isExpense
+			? expCategories.filter(ct => ct.name === category)[0].icon
+			: incCategories.filter(ct => ct.name === category)[0].icon;
+
 		const transaction = {
 			category: category,
+			icon: displayIcon,
 			description: description,
 			amount: newAmount,
 			date: selectedDate,

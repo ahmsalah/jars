@@ -1,12 +1,11 @@
 import React from 'react';
 import { formatDate, formatAmount } from '../helpers';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import FolderIcon from '@material-ui/icons/Folder';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -17,19 +16,26 @@ const useStyles = makeStyles(({ spacing }) => ({
 		},
 		backgroundColor: '#fff'
 	},
+	iconContainer: {
+		width: '12%'
+	},
+	icon: {
+		width: '55px',
+		height: '55px'
+	},
 	title: {
-		width: '42%',
+		width: '40%',
 		'& span': {}
 	},
 	date: {
-		width: '27%',
+		width: '15%',
 		'& span': {
 			fontWeight: 500,
 			color: 'rgba(0,0,0,.5)'
 		}
 	},
 	amount: {
-		width: '31%',
+		width: '33%',
 		display: 'flex',
 		'& span': {
 			fontSize: '1rem',
@@ -48,6 +54,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 function TransactionItem({
 	id,
 	category,
+	icon,
 	description,
 	date,
 	amount,
@@ -55,15 +62,16 @@ function TransactionItem({
 	removeTransaction
 }) {
 	const classes = useStyles();
-
 	let color = type === 'exp' ? 'secondary' : 'primary';
 	return (
 		<div className={classes.root}>
 			<ListItem>
-				<ListItemAvatar>
-					<Avatar>
-						<FolderIcon />
-					</Avatar>
+				<ListItemAvatar className={classes.iconContainer}>
+					<Avatar
+						className={classes.icon}
+						src={require(`../icons/${icon}.png`)}
+						alt={category}
+					/>
 				</ListItemAvatar>
 				<ListItemText
 					className={classes.title}
