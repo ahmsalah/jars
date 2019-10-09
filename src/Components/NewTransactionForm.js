@@ -20,6 +20,8 @@ import clsx from 'clsx';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import Avatar from '@material-ui/core/Avatar';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 	return <Grow {...props} />;
@@ -37,7 +39,16 @@ const useStyles = makeStyles(({ spacing }) => ({
 	},
 	textField: {
 		width: 200,
-		minWidth: 180
+		minWidth: 180,
+		maxHeight: 56,
+
+		'& div': {
+			maxHeight: 56,
+			'& img': {
+				height: '90%',
+				width: '90%'
+			}
+		}
 	},
 	inputsContainer: {
 		display: 'flex',
@@ -48,6 +59,18 @@ const useStyles = makeStyles(({ spacing }) => ({
 	dialogText: {
 		overflowWrap: 'break-word',
 		maxWidth: 440
+	},
+	textFieledSelect: {
+		'& div': {
+			display: 'flex',
+			alignItems: 'center'
+		}
+	},
+	menuItem: {
+		padding: spacing(0.5, 2)
+	},
+	avatar: {
+		margin: spacing(0, 2, 0, 0)
 	}
 }));
 
@@ -150,22 +173,39 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 								</div>
 								<TextField
 									select
-									className={clsx(classes.margin, classes.textField)}
+									className={clsx(
+										classes.margin,
+										classes.textField,
+										classes.textFieledSelect
+									)}
 									variant="outlined"
 									label="Select Category"
 									name="category"
 									value={category}
-									onChange={handleCategoryChange}
-									required>
+									onChange={handleCategoryChange}>
 									{isExpense ? (
 										expCategories.map(ct => (
-											<MenuItem key={ct.id} value={ct.name}>
+											<MenuItem
+												key={ct.id}
+												value={ct.name}
+												className={classes.menuItem}>
+												<Avatar
+													className={classes.avatar}
+													src={require(`../icons/${ct.icon}.png`)}
+												/>
 												{ct.name}
 											</MenuItem>
 										))
 									) : (
 										incCategories.map(ct => (
-											<MenuItem key={ct.id} value={ct.name}>
+											<MenuItem
+												key={ct.id}
+												value={ct.name}
+												className={classes.menuItem}>
+												<Avatar
+													className={classes.avatar}
+													src={require(`../icons/${ct.icon}.png`)}
+												/>
 												{ct.name}
 											</MenuItem>
 										))
@@ -178,7 +218,7 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 									name="description"
 									value={description}
 									onChange={handleDescriptionChange}
-								/>{' '}
+								/>
 								<br />
 								<TextField
 									className={clsx(classes.margin, classes.textField)}
@@ -188,7 +228,13 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 									name="amount"
 									value={amount}
 									onChange={handleAmountChange}
-									required
+									InputProps={{
+										startAdornment: (
+											<InputAdornment position="start">
+												£
+											</InputAdornment>
+										)
+									}}
 								/>
 								<KeyboardDatePicker
 									margin="normal"

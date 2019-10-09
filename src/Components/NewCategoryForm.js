@@ -16,20 +16,37 @@ import SnackbarFeedback from './SnackbarFeedback';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 
+import Avatar from '@material-ui/core/Avatar';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import SelectIconDialog from './SelectIconDialog';
+
 const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 	return <Grow {...props} />;
 });
 
+const inputsHeight = '56px';
 const useStyles = makeStyles(({ spacing }) => ({
 	switch: {
-		margin: spacing(4, 0, 1),
+		margin: spacing(3, 0, 1),
 		display: 'flex',
 		justifyContent: 'center'
 	},
-	inputText: {
+	inputsContainer: {
 		margin: spacing(2, 0, 2),
 		display: 'flex',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		'& > *': {
+			height: inputsHeight
+		}
+	},
+	iconButton: {},
+	textField: {
+		margin: spacing(0, 0, 0, 2),
+		flex: 1
+	},
+	input: {
+		height: inputsHeight,
+		padding: '0 14px'
 	}
 }));
 
@@ -39,11 +56,21 @@ function NewCategoryForm({ addCategory }) {
 	const [ isExpense, toggleIsExpense ] = useToggleState(true);
 	const [ dialogOpen, setDialogOpen ] = React.useState(false);
 	const [ snackbarOpen, setSnackbarOpen ] = React.useState(false);
+	const [ iconDialogOpen, setIconDialogOpen ] = React.useState(false);
+	const [ icon, setIcon ] = React.useState('icon_not_selected');
+
 	const theme = createMuiTheme({
 		palette: {
 			primary: { main: isExpense ? '#de474e' : '#1aa333' }
 		}
 	});
+
+	const handleCloseCategoryDialog = newValue => {
+		setIconDialogOpen(false);
+		if (newValue) {
+			setIcon(newValue);
+		}
+	};
 
 	const handleSnackbarClose = (event, reason) => {
 		if (reason === 'clickaway') {
@@ -63,7 +90,7 @@ function NewCategoryForm({ addCategory }) {
 	const handleSubmit = evt => {
 		evt.preventDefault();
 		const type = isExpense ? 'exp' : 'inc';
-		const newCategory = { name: name, id: uuid(), type: type };
+		const newCategory = { name: name, id: uuid(), type: type, icon: icon };
 		addCategory(newCategory);
 		reset();
 		setDialogOpen(false);
@@ -77,6 +104,7 @@ function NewCategoryForm({ addCategory }) {
 			</Button>
 			<ThemeProvider theme={theme}>
 				<Dialog
+					maxWidth="xs"
 					open={dialogOpen}
 					onClose={handleDialogClose}
 					TransitionComponent={TransitionGrow}
@@ -85,8 +113,7 @@ function NewCategoryForm({ addCategory }) {
 
 					<DialogContent>
 						<DialogContentText>
-							To add a new category, please <br />choose category name and
-							type.
+							To add a new category, please choose category name and type.
 						</DialogContentText>
 						<div className={classes.switch}>
 							<BtnSwitch
@@ -94,8 +121,19 @@ function NewCategoryForm({ addCategory }) {
 								isExpense={isExpense}
 							/>
 						</div>
-						<div className={classes.inputText}>
+						<div className={classes.inputsContainer}>
+							<Button
+								className={classes.iconButton}
+								disableRipple
+								variant="outlined"
+								onClick={() => {
+									setIconDialogOpen(true);
+								}}>
+								<Avatar src={require(`../icons/${icon}.png`)} />
+								<ExpandMoreIcon />
+							</Button>
 							<TextField
+								className={classes.textField}
 								autoFocus
 								margin="dense"
 								id="name"
@@ -103,8 +141,13 @@ function NewCategoryForm({ addCategory }) {
 								type="text"
 								value={name}
 								onChange={handleChange}
-								required
 								variant="outlined"
+								InputLabelProps={{
+									style: {
+										height: inputsHeight
+									}
+								}}
+								InputProps={{ classes: { input: classes.input } }}
 							/>
 						</div>
 					</DialogContent>
@@ -119,6 +162,11 @@ function NewCategoryForm({ addCategory }) {
 				</Dialog>
 			</ThemeProvider>
 
+			<SelectIconDialog
+				TransitionComponent={TransitionGrow}
+				open={iconDialogOpen}
+				onClose={handleCloseCategoryDialog}
+			/>
 			<SnackbarFeedback
 				snackbarOpen={snackbarOpen}
 				handleSnackbarClose={handleSnackbarClose}

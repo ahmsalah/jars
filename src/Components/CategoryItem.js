@@ -29,10 +29,7 @@ const useStyles = makeStyles(() => ({
 	},
 	deleteButton: {
 		opacity: '0',
-		transition: 'opacity .3s',
-		'&:hover': {
-			backgroundColor: 'transparent'
-		}
+		transition: 'opacity .3s'
 	}
 }));
 
