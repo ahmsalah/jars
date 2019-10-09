@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
 		backgroundColor: '#fff',
 		cursor: 'grab',
 		'&:active': {
-			cursor: 'grabbing '
+			cursor: 'grabbing'
 		},
 		'&:hover button': {
 			opacity: '1'

@@ -27,7 +27,7 @@ const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 const inputsHeight = '56px';
 const useStyles = makeStyles(({ spacing }) => ({
 	switch: {
-		margin: spacing(3, 0, 1),
+		margin: spacing(3, 0),
 		display: 'flex',
 		justifyContent: 'center'
 	},
@@ -155,7 +155,10 @@ function NewCategoryForm({ addCategory }) {
 						<Button onClick={handleDialogClose} color="primary">
 							Cancel
 						</Button>
-						<Button onClick={handleSubmit} color="primary">
+						<Button
+							disabled={name.length === 0 || icon === 'icon_not_selected'}
+							onClick={handleSubmit}
+							color="primary">
 							Add
 						</Button>
 					</DialogActions>

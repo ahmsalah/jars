@@ -109,6 +109,11 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 		setSelectedDate(date);
 	};
 
+	const handleToggleIsExpense = () => {
+		toggleIsExpense();
+		resetCategory();
+	};
+
 	const handleSubmit = evt => {
 		evt.preventDefault();
 		let newAmount = parseInt(amount);
@@ -167,7 +172,7 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 							<div className={classes.inputsContainer}>
 								<div className={classes.switch}>
 									<BtnSwitch
-										toggleExpense={() => toggleIsExpense()}
+										toggleExpense={handleToggleIsExpense}
 										isExpense={isExpense}
 									/>
 								</div>
@@ -241,7 +246,7 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 									className={clsx(classes.margin, classes.textField)}
 									id="date-picker-dialog"
 									label="Choose Date"
-									format="MM/dd/yyyy"
+									format="dd/MM/yyyy"
 									inputVariant="outlined"
 									value={selectedDate}
 									onChange={handleDateChange}
@@ -255,7 +260,15 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 							<Button onClick={handleDialogClose} color="primary">
 								Cancel
 							</Button>
-							<Button onClick={handleSubmit} color="primary">
+							<Button
+								disabled={
+									category.length === 0 ||
+									amount.length === 0 ||
+									amount === '0' ||
+									Date.parse(selectedDate).toString().length < 10
+								}
+								onClick={handleSubmit}
+								color="primary">
 								Add
 							</Button>
 						</DialogActions>
