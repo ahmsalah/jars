@@ -116,18 +116,17 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 
 	const handleSubmit = evt => {
 		evt.preventDefault();
-		let newAmount = parseInt(amount);
-		let type;
+
+		let type, displayIcon, newAmount;
 		if (isExpense) {
-			newAmount = newAmount * -1;
 			type = 'exp';
+			newAmount = amount * -1;
+			displayIcon = expCategories.filter(ct => ct.name === category)[0].icon;
 		} else {
 			type = 'inc';
+			newAmount = amount;
+			displayIcon = incCategories.filter(ct => ct.name === category)[0].icon;
 		}
-
-		const displayIcon = isExpense
-			? expCategories.filter(ct => ct.name === category)[0].icon
-			: incCategories.filter(ct => ct.name === category)[0].icon;
 
 		const transaction = {
 			category: category,

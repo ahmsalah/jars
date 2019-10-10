@@ -10,6 +10,7 @@
     "@material-ui/lab": "^4.0.0-alpha.28",
     "@material-ui/pickers": "^3.2.6",
     "@material-ui/styles": "^4.5.0",
+    "@types/react-transition-group": "^4.2.3",
     "array-move": "^2.1.0",
     "date-fns": "^2.0.0-beta.5",
     "react": "^16.9.0",
