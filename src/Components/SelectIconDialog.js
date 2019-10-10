@@ -44,7 +44,7 @@ function SelectIconDialog({ onClose, open, TransitionComponent }) {
 		onClose(selectedIcon);
 	};
 
-	const icons = [ ...new Array(144) ].map((v, i) => (v = `icon_${i}`));
+	const icons = [ ...new Array(144) ].map((v, i) => `icon_${i}`);
 	return (
 		<Dialog TransitionComponent={TransitionComponent} maxWidth="sm" open={open}>
 			<div className={classes.titleContainer}>

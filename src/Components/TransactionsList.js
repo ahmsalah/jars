@@ -19,7 +19,7 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
 function TransactionsList({ transactions, removeTransaction }) {
 	const classes = useStyles();
 	return transactions.length !== 0 ? (
-		<List className={classes.root}>
+		<List component="div" className={classes.root}>
 			{transactions.map((tr, i) => (
 				<React.Fragment key={tr.id}>
 					<TransactionItem

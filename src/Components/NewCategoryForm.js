@@ -95,6 +95,7 @@ function NewCategoryForm({ addCategory }) {
 		reset();
 		setDialogOpen(false);
 		setSnackbarOpen(true);
+		setIcon('icon_not_selected');
 	};
 
 	return (

@@ -10,11 +10,11 @@ const useStyles = makeStyles(({ spacing }) => ({
 		flex: '1'
 	},
 	content: {
-		margin: `${spacing(15)}px auto ${spacing(5)}px`,
-		maxWidth: spacing(80),
+		margin: `${spacing(12)}px auto ${spacing(2)}px`,
+		maxWidth: spacing(82),
 		display: 'flex',
 		flexWrap: 'wrap',
-		justifyContent: 'space-between',
+		justifyContent: 'center',
 		alignItems: 'flex-start'
 	},
 	noCategories: {

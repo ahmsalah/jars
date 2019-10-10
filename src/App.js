@@ -9,9 +9,11 @@ import { ThemeProvider } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import { pushToArrays } from './helpers';
 import { initialCategories } from './initialData';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 const theme = createMuiTheme({
 	palette: {
+		background: { default: 'rgb(232, 232, 232)' },
 		primary: { main: '#1aa333' },
 		secondary: { main: '#de474e' },
 		tertiary: { main: '#334960', sub: '#68788d' },
@@ -27,6 +29,15 @@ const theme = createMuiTheme({
 				1: '#333',
 				2: '#777',
 				3: '#999'
+			}
+		}
+	},
+	overrides: {
+		MuiCssBaseline: {
+			'@global': {
+				body: {
+					backgroundColor: 'rgb(232, 232, 232)'
+				}
 			}
 		}
 	}
@@ -70,7 +81,9 @@ function App() {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<div style={{ displau: 'flex' }}>
+			<CssBaseline />
+
+			<div>
 				<Sidebar />
 				<Switch>
 					<Route

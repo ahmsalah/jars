@@ -9,11 +9,13 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
 	root: {
-		margin: spacing(0, 2.5),
+		margin: spacing(3),
 		flex: '1',
+		minWidth: spacing(33),
+		maxWidth: spacing(50),
 		padding: spacing(0, 0, 0.5),
 		overflow: 'hidden',
-		'& ul': {
+		'& > div': {
 			padding: '0',
 			backgroundColor: palette.grey.light[5]
 		}
@@ -30,7 +32,7 @@ const CategoryList = SortableContainer(({ categories, removeCategory, type }) =>
 
 	return categories.length !== 0 ? (
 		<Paper className={classes.root}>
-			<List>
+			<List component="div">
 				<Typography className={classes.title} color="inherit">
 					{type === 'exp' ? 'Expenses' : 'Income'}
 				</Typography>

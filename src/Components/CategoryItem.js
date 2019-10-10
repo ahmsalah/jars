@@ -38,7 +38,7 @@ const CategoryItem = SortableElement(({ id, type, name, icon, removeCategory }) 
 
 	return (
 		<div className={classes.root}>
-			<ListItem>
+			<ListItem component="div" ContainerComponent="div">
 				<ListItemAvatar className={classes.iconContainer}>
 					<Avatar
 						className={classes.icon}

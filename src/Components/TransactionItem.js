@@ -65,7 +65,7 @@ function TransactionItem({
 	let color = type === 'exp' ? 'secondary' : 'primary';
 	return (
 		<div className={classes.root}>
-			<ListItem>
+			<ListItem component="div">
 				<ListItemAvatar className={classes.iconContainer}>
 					<Avatar
 						className={classes.icon}
