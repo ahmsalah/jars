@@ -15,8 +15,6 @@ function Transactions({ expCategories, incCategories }) {
 	const [ transactions, setTransactions ] = useState(initialTransactions);
 	const [ sortedTransactions, setSortedTransactions ] = useState(transactions);
 	const [ filteredTransactions, setFilteredTransactions ] = useState(sortedTransactions);
-	const [ expTransactions, setExpTransactions ] = useState([]);
-	const [ incTransactions, setIncTransactions ] = useState([]);
 	const [ sortBy, handleSortByChange ] = useInputState('date');
 	const [ isReversed, toggleIsReversed ] = useToggleState(false);
 	const [ selectedDate, handleDateChange ] = useState(new Date());
@@ -37,15 +35,6 @@ function Transactions({ expCategories, incCategories }) {
 		[ sortBy, filteredTransactions, isReversed ]
 	);
 
-	useEffect(
-		() => {
-			const [ incArray, expArray ] = pushToArrays(filteredTransactions, 'amount');
-			setExpTransactions(expArray);
-			setIncTransactions(incArray);
-		},
-		[ filteredTransactions ]
-	);
-
 	//------ Adding & Removing Transactions -----//
 	const addTransaction = newTransaction => {
 		isReversed
@@ -59,7 +48,8 @@ function Transactions({ expCategories, incCategories }) {
 	};
 	//-------------------------------------------//
 
-	const [ totalInc, totalExp ] = [ sumTotal(incTransactions), sumTotal(expTransactions) ];
+	const [ incArray, expArray ] = pushToArrays(filteredTransactions, 'amount');
+	const [ totalInc, totalExp ] = [ sumTotal(incArray), sumTotal(expArray) ];
 
 	return (
 		<React.Fragment>
