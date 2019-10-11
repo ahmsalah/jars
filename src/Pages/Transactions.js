@@ -6,33 +6,44 @@ import TransactionsList from '../Components/TransactionsList';
 import Filters from '../Components/Filters';
 
 import useToggleState from '../hooks/useToggleState';
-import { sortList, pushToArrays, sumTotal } from '../helpers';
+import { sortList, pushToArrays, sumTotal, filterArrayByDate } from '../helpers';
 import { Paper } from '@material-ui/core';
 import { initialTransactions } from '../initialData';
+import useInputState from '../hooks/useInputState';
 
 function Transactions({ expCategories, incCategories }) {
 	const [ transactions, setTransactions ] = useState(initialTransactions);
-	const [ displayTransactions, setDisplayTransactions ] = useState(transactions);
+	const [ sortedTransactions, setSortedTransactions ] = useState(transactions);
+	const [ filteredTransactions, setFilteredTransactions ] = useState(sortedTransactions);
 	const [ expTransactions, setExpTransactions ] = useState([]);
 	const [ incTransactions, setIncTransactions ] = useState([]);
-	const [ orderBy, setOrderBy ] = useState('date');
+	const [ sortBy, handleSortByChange ] = useInputState('date');
 	const [ isReversed, toggleIsReversed ] = useToggleState(false);
+	const [ selectedDate, handleDateChange ] = useState(new Date());
 
 	useEffect(
 		() => {
-			const sortedTransactions = sortList(transactions, orderBy, isReversed);
-			setDisplayTransactions(sortedTransactions);
+			const updatedTransactions = filterArrayByDate(transactions, selectedDate);
+			setFilteredTransactions(updatedTransactions);
 		},
-		[ orderBy, transactions, isReversed ]
+		[ transactions, selectedDate ]
 	);
 
 	useEffect(
 		() => {
-			const [ incArray, expArray ] = pushToArrays(transactions, 'amount');
+			const updatedTransactions = sortList(filteredTransactions, sortBy, isReversed);
+			setSortedTransactions(updatedTransactions);
+		},
+		[ sortBy, filteredTransactions, isReversed ]
+	);
+
+	useEffect(
+		() => {
+			const [ incArray, expArray ] = pushToArrays(filteredTransactions, 'amount');
 			setExpTransactions(expArray);
 			setIncTransactions(incArray);
 		},
-		[ transactions ]
+		[ filteredTransactions ]
 	);
 
 	//------ Adding & Removing Transactions -----//
@@ -48,22 +59,15 @@ function Transactions({ expCategories, incCategories }) {
 	};
 	//-------------------------------------------//
 
-	//--------- Sorting Transactions ------------//
-	const handleChange = evt => {
-		setOrderBy(evt.target.value);
-	};
-	//-------------------------------------------//
+	const [ totalInc, totalExp ] = [ sumTotal(incTransactions), sumTotal(expTransactions) ];
 
-	const [ totalInc, totalExp ] = [
-		sumTotal(incTransactions),
-		sumTotal(expTransactions)
-	];
 	return (
 		<React.Fragment>
 			<Navbar
 				addTransaction={addTransaction}
 				expCategories={expCategories}
 				incCategories={incCategories}
+				selectedDate={selectedDate}
 			/>
 
 			<div
@@ -83,12 +87,14 @@ function Transactions({ expCategories, incCategories }) {
 							toggleIsReversed();
 						}}
 						isReversed={isReversed}
-						handleChange={handleChange}
-						orderBy={orderBy}
+						handleChange={handleSortByChange}
+						sortBy={sortBy}
+						selectedDate={selectedDate}
+						handleDateChange={handleDateChange}
 					/>
 
 					<TransactionsList
-						transactions={displayTransactions}
+						transactions={sortedTransactions}
 						removeTransaction={removeTransaction}
 					/>
 				</Paper>

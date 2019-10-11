@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import uuid from 'uuid/v4';
@@ -74,21 +74,34 @@ const useStyles = makeStyles(({ spacing }) => ({
 	}
 }));
 
-function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
+function NewTransactionForm({
+	expCategories,
+	incCategories,
+	addTransaction,
+	selectedDate
+}) {
 	const classes = useStyles();
 
 	const [ category, handleCategoryChange, resetCategory ] = useInputState('');
 	const [ description, handleDescriptionChange, resetDescription ] = useInputState('');
 	const [ amount, handleAmountChange, resetAmount ] = useInputState('');
 	const [ isExpense, toggleIsExpense ] = useToggleState(true);
-	const [ dialogOpen, setDialogOpen ] = React.useState(false);
-	const [ snackbarOpen, setSnackbarOpen ] = React.useState(false);
-	const [ selectedDate, setSelectedDate ] = React.useState(new Date());
+	const [ dialogOpen, setDialogOpen ] = useState(false);
+	const [ snackbarOpen, setSnackbarOpen ] = useState(false);
+	const [ date, setDate ] = useState(selectedDate);
+
 	const theme = createMuiTheme({
 		palette: {
 			primary: { main: isExpense ? '#de474e' : '#1aa333' }
 		}
 	});
+
+	useEffect(
+		() => {
+			setDate(selectedDate);
+		},
+		[ selectedDate ]
+	);
 
 	const handleSnackbarClose = (event, reason) => {
 		if (reason === 'clickaway') {
@@ -106,7 +119,7 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 	};
 
 	const handleDateChange = date => {
-		setSelectedDate(date);
+		setDate(date);
 	};
 
 	const handleToggleIsExpense = () => {
@@ -124,7 +137,7 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 			displayIcon = expCategories.filter(ct => ct.name === category)[0].icon;
 		} else {
 			type = 'inc';
-			newAmount = amount;
+			newAmount = parseFloat(amount);
 			displayIcon = incCategories.filter(ct => ct.name === category)[0].icon;
 		}
 
@@ -133,7 +146,7 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 			icon: displayIcon,
 			description: description,
 			amount: newAmount,
-			date: selectedDate,
+			date: date,
 			id: uuid(),
 			type: type
 		};
@@ -143,6 +156,7 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 		resetAmount();
 		setDialogOpen(false);
 		setSnackbarOpen(true);
+		setDate(selectedDate);
 	};
 
 	return (
@@ -247,7 +261,7 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 									label="Choose Date"
 									format="dd/MM/yyyy"
 									inputVariant="outlined"
-									value={selectedDate}
+									value={date}
 									onChange={handleDateChange}
 									KeyboardButtonProps={{
 										'aria-label': 'change date'
@@ -264,7 +278,7 @@ function NewTransactionForm({ expCategories, incCategories, addTransaction }) {
 									category.length === 0 ||
 									amount.length === 0 ||
 									amount === '0' ||
-									Date.parse(selectedDate).toString().length < 10
+									Date.parse(date).toString().length < 10
 								}
 								onClick={handleSubmit}
 								color="primary">

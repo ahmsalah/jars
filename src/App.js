@@ -60,6 +60,7 @@ function App() {
 		[ allCategories ]
 	);
 
+	//------ Dragging Categories -----//
 	const onSortEnd = ({ oldIndex, newIndex, collection }) => {
 		collection === 'exp'
 			? setExpCategories(expCategories =>
@@ -70,6 +71,7 @@ function App() {
 				);
 	};
 
+	//------ Adding & Removing Categories -----//
 	const removeCategory = id => {
 		const updatedCategories = allCategories.filter(ct => ct.id !== id);
 		setAllCategories(updatedCategories);
@@ -78,6 +80,7 @@ function App() {
 	const addCategory = newCategory => {
 		setAllCategories([ ...allCategories, newCategory ]);
 	};
+	//-------------------------------------------//
 
 	return (
 		<ThemeProvider theme={theme}>

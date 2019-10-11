@@ -12,9 +12,7 @@ function sortList(array, sortBy, isReversed) {
 	if (sortBy === 'date') {
 		sortedList = arr.sort((a, b) => (isReversed ? a.date - b.date : b.date - a.date));
 	} else if (sortBy === 'amount') {
-		sortedList = arr.sort(
-			(a, b) => (isReversed ? a.amount - b.amount : b.amount - a.amount)
-		);
+		sortedList = arr.sort((a, b) => (isReversed ? a.amount - b.amount : b.amount - a.amount));
 	} else if (sortBy === 'category') {
 		sortedList = arr.sort(
 			(a, b) =>
@@ -24,6 +22,23 @@ function sortList(array, sortBy, isReversed) {
 		);
 	}
 	return sortedList;
+}
+
+/**
+|--------------------------------------------------
+| Function to sort an array of objects by some specific key.
+| @param {Array} array to be filtered.
+| @param {Date Object} the date object that the array will be sorted by.
+|--------------------------------------------------
+*/
+function filterArrayByDate(array, date) {
+	let arr = [ ...array ];
+	const filteredArray = arr.filter(v => {
+		const arrayDate = `${v.date.getMonth()} ${v.date.getFullYear()}`;
+		const dt = `${date.getMonth()} ${date.getFullYear()}`;
+		return dt === arrayDate;
+	});
+	return filteredArray;
 }
 
 /**
@@ -115,9 +130,7 @@ function formatAmount(
 		let plusMinusSymbol = '';
 		includePlusMinusSymbol && (plusMinusSymbol = amount < 0 ? '-' : '+');
 
-		let i = parseInt(
-			(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount))
-		).toString();
+		let i = parseInt((amount = Math.abs(Number(amount) || 0).toFixed(decimalCount))).toString();
 		let j = i.length > 3 ? i.length % 3 : 0;
 
 		return (
@@ -126,9 +139,7 @@ function formatAmount(
 			' ' +
 			(j ? i.substr(0, j) + thousands : '') +
 			i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + thousands) +
-			(decimalCount
-				? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2)
-				: '')
+			(decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : '')
 		);
 	} catch (e) {
 		console.log(e);
@@ -162,5 +173,6 @@ export {
 	pushToArrays,
 	formatDate,
 	formatAmount,
-	getPercentageOfTwoNumbers
+	getPercentageOfTwoNumbers,
+	filterArrayByDate
 };

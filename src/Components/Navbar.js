@@ -17,7 +17,14 @@ const useStyles = makeStyles(({ spacing }) => ({
 	}
 }));
 
-function Navbar({ display, expCategories, incCategories, addTransaction, addCategory }) {
+function Navbar({
+	display,
+	expCategories,
+	incCategories,
+	addTransaction,
+	addCategory,
+	selectedDate
+}) {
 	const classes = useStyles();
 	return (
 		<AppBar color="inherit" className={classes.root}>
@@ -29,6 +36,7 @@ function Navbar({ display, expCategories, incCategories, addTransaction, addCate
 						addTransaction={addTransaction}
 						expCategories={expCategories}
 						incCategories={incCategories}
+						selectedDate={selectedDate}
 					/>
 				)}
 			</Toolbar>
