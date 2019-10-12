@@ -6,15 +6,15 @@ import TransactionsList from '../Components/TransactionsList';
 import Filters from '../Components/Filters';
 
 import useToggleState from '../hooks/useToggleState';
-import { sortList, pushToArrays, sumTotal, filterArrayByDate } from '../helpers';
+import { sortList, calcExpInc, filterArrayByDate } from '../helpers';
 import { Paper } from '@material-ui/core';
 import { initialTransactions } from '../initialData';
 import useInputState from '../hooks/useInputState';
 
 function Transactions({ expCategories, incCategories }) {
 	const [ transactions, setTransactions ] = useState(initialTransactions);
-	const [ sortedTransactions, setSortedTransactions ] = useState(transactions);
-	const [ filteredTransactions, setFilteredTransactions ] = useState(sortedTransactions);
+	const [ filteredTransactions, setFilteredTransactions ] = useState(transactions);
+	const [ sortedTransactions, setSortedTransactions ] = useState(filteredTransactions);
 	const [ sortBy, handleSortByChange ] = useInputState('date');
 	const [ isReversed, toggleIsReversed ] = useToggleState(false);
 	const [ selectedDate, handleDateChange ] = useState(new Date());
@@ -48,9 +48,7 @@ function Transactions({ expCategories, incCategories }) {
 	};
 	//-------------------------------------------//
 
-	const [ incArray, expArray ] = pushToArrays(filteredTransactions, 'amount');
-	const [ totalInc, totalExp ] = [ sumTotal(incArray), sumTotal(expArray) ];
-
+	const [ totalExp, totalInc ] = calcExpInc(filteredTransactions);
 	return (
 		<React.Fragment>
 			<Navbar

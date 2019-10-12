@@ -26,7 +26,7 @@ function SnackbarFeedback({ message, snackbarOpen, handleSnackbarClose }) {
 				horizontal: 'left'
 			}}
 			open={snackbarOpen}
-			autoHideDuration={4000}
+			autoHideDuration={3300}
 			onClose={handleSnackbarClose}
 			TransitionComponent={TransitionSlide}
 			ContentProps={{

@@ -10,18 +10,13 @@ function sortList(array, sortBy, isReversed) {
 	let arr = [ ...array ];
 	let sortedList;
 	if (sortBy === 'date') {
-		sortedList = arr.sort((a, b) => (isReversed ? a.date - b.date : b.date - a.date));
+		sortedList = arr.sort((a, b) => b.date - a.date);
 	} else if (sortBy === 'amount') {
-		sortedList = arr.sort((a, b) => (isReversed ? a.amount - b.amount : b.amount - a.amount));
+		sortedList = arr.sort((a, b) => b.amount - a.amount);
 	} else if (sortBy === 'category') {
-		sortedList = arr.sort(
-			(a, b) =>
-				isReversed
-					? b.category.localeCompare(a.category)
-					: a.category.localeCompare(b.category)
-		);
+		sortedList = arr.sort((a, b) => a.category.localeCompare(b.category));
 	}
-	return sortedList;
+	return isReversed ? sortedList.reverse() : sortedList;
 }
 
 /**
@@ -44,7 +39,7 @@ function filterArrayByDate(array, date) {
 /**
 |--------------------------------------------------
 | Function to sum the values of an array.
-| @param {Array} array that its values to be summed.
+| @param {Array} array with the values to be summed.
 |--------------------------------------------------
 */
 function sumTotal(arr) {
@@ -74,6 +69,22 @@ function pushToArrays(arr, condt) {
 
 	return [ incArray, expArray ];
 }
+
+/**
+|--------------------------------------------------
+| Calculate the total expenses and total income from the transactions array.
+| @param {Array} transactions.
+|--------------------------------------------------
+*/
+const calcExpInc = arr => {
+	const totalExp = arr
+		.filter(tr => tr.type === 'exp')
+		.reduce((acc, curr) => acc + curr.amount, 0);
+	const totalInc = arr
+		.filter(tr => tr.type === 'inc')
+		.reduce((acc, curr) => acc + curr.amount, 0);
+	return [ totalExp, totalInc ];
+};
 
 /**
 |--------------------------------------------------
@@ -171,6 +182,7 @@ export {
 	sortList,
 	sumTotal,
 	pushToArrays,
+	calcExpInc,
 	formatDate,
 	formatAmount,
 	getPercentageOfTwoNumbers,
