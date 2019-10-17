@@ -4,6 +4,7 @@ import CategoryList from '../Components/CategoryList';
 // import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Sidebar from '../Components/Sidebar';
 
 const useStyles = makeStyles(({ spacing }) => ({
 	root: {
@@ -36,6 +37,7 @@ function Categories({
 	const classes = useStyles();
 	return (
 		<div className={classes.root}>
+			<Sidebar />
 			<Navbar display="categories" addCategory={addCategory} />
 			<div className={classes.content}>
 				{incCategories.length !== 0 || expCategories.length !== 0 ? (

@@ -4,6 +4,7 @@ import NewCategoryForm from './NewCategoryForm';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
+import firebase from '../firebase/firebase';
 
 const useStyles = makeStyles(({ spacing }) => ({
 	root: {
@@ -39,6 +40,11 @@ function Navbar({
 						selectedDate={selectedDate}
 					/>
 				)}
+				<button
+					style={{ marginLeft: '20px' }}
+					onClick={() => firebase.auth().signOut()}>
+					Sign Out
+				</button>
 			</Toolbar>
 		</AppBar>
 	);
