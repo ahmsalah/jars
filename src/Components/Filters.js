@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { TransactionsContext } from '../context/transactions.context';
 import { Toolbar } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import SwapVertIcon from '@material-ui/icons/SwapVert';
@@ -54,22 +55,22 @@ const useStyles = makeStyles(({ spacing }) => ({
 	}
 }));
 
-function Filters({
-	isReversed,
-	toggleListReverse,
-	handleChange,
-	sortBy,
-	selectedDate,
-	handleDateChange
-}) {
+function Filters() {
 	const classes = useStyles();
+	const {
+		isReversed,
+		toggleListReverse,
+		sortBy,
+		handleSortByChange,
+		selectedDate,
+		handleDateChange
+	} = useContext(TransactionsContext);
 
 	const nextPreviousMonth = acc => {
 		const newDate = selectedDate.setMonth(selectedDate.getMonth() + acc);
 		handleDateChange(new Date(newDate));
 	};
 
-	const reversed = isReversed ? 'reversed' : '';
 	return (
 		<React.Fragment>
 			<MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -101,15 +102,15 @@ function Filters({
 						label="Sorting by"
 						value={sortBy}
 						className={classes.sortBy}
-						onChange={handleChange}>
+						onChange={handleSortByChange}>
 						<MenuItem value="date">Date</MenuItem>
 						<MenuItem value="amount">Amount</MenuItem>
 						<MenuItem value="category">Category</MenuItem>
 					</TextField>
 					<ToggleButtonGroup
 						className={classes.reverseButton}
-						value={reversed}
-						onChange={toggleListReverse}
+						value={isReversed && 'reversed'}
+						onChange={() => toggleListReverse()}
 						arial-label="text formatting">
 						<ToggleButton value="reversed" aria-label="bold">
 							<SwapVertIcon />

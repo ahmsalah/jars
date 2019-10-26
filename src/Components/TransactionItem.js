@@ -1,4 +1,5 @@
-import React, { memo } from 'react';
+import React, { memo, useContext } from 'react';
+import { DispatchContext } from '../context/transactions.context';
 import { formatDate, formatAmount } from '../helpers';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -51,17 +52,10 @@ const useStyles = makeStyles(({ spacing }) => ({
 	}
 }));
 
-function TransactionItem({
-	id,
-	category,
-	icon,
-	description,
-	date,
-	amount,
-	type,
-	removeTransaction
-}) {
+function TransactionItem({ id, category, icon, description, date, amount, type }) {
 	const classes = useStyles();
+	const dispatch = useContext(DispatchContext);
+
 	let color = type === 'exp' ? 'secondary' : 'primary';
 	return (
 		<div className={classes.root}>
@@ -92,7 +86,7 @@ function TransactionItem({
 					<IconButton
 						edge="end"
 						aria-label="Delete"
-						onClick={() => removeTransaction(id)}
+						onClick={() => dispatch({ type: 'REMOVE_TRANSACTION', id })}
 						className={classes.deleteButton}>
 						<DeleteIcon />
 					</IconButton>

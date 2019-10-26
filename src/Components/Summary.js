@@ -1,5 +1,6 @@
-import React from 'react';
-import { getPercentageOfTwoNumbers } from '../helpers';
+import React, { useContext } from 'react';
+import { TransactionsContext } from '../context/transactions.context';
+import { getPercentageOfTwoNumbers, calcExpInc } from '../helpers';
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -79,16 +80,14 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
 	}
 }));
 
-function Summary({ totalInc, totalExp }) {
+function Summary() {
 	const classes = useStyles();
+	const { transactions } = useContext(TransactionsContext);
+
+	const [ totalExp, totalInc ] = calcExpInc(transactions);
 	const total = totalInc + totalExp;
 	const colorTotal = total < 0 ? 'secondary' : 'primary';
-
-	const [ incBarWidth, expBarWidth ] = getPercentageOfTwoNumbers(
-		totalInc,
-		totalExp * -1,
-		true
-	);
+	const [ incBarWidth, expBarWidth ] = getPercentageOfTwoNumbers(totalInc, totalExp * -1, true);
 
 	return totalInc !== 0 || totalExp !== 0 ? (
 		<Paper className={classes.root}>
@@ -97,11 +96,7 @@ function Summary({ totalInc, totalExp }) {
 					{totalInc !== 0 ? `${parseInt(total / totalInc * 100)}%` : '0%'}
 				</Typography>
 				<Typography align="center" variant="body2">
-					{totalExp * -1 <= totalInc || totalInc === 0 ? (
-						`Saved of `
-					) : (
-						`Spent more than `
-					)}
+					{totalExp * -1 <= totalInc || totalInc === 0 ? `Saved of ` : `Spent more than `}
 					your income
 				</Typography>
 			</div>

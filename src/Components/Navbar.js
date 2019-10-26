@@ -18,19 +18,12 @@ const useStyles = makeStyles(({ spacing }) => ({
 	}
 }));
 
-function Navbar({ display, addTransaction, selectedDate }) {
+function Navbar({ display }) {
 	const classes = useStyles();
 	return (
 		<AppBar color="inherit" className={classes.root}>
 			<Toolbar>
-				{display === 'categories' ? (
-					<NewCategoryForm />
-				) : (
-					<NewTransactionForm
-						addTransaction={addTransaction}
-						selectedDate={selectedDate}
-					/>
-				)}
+				{display === 'categories' ? <NewCategoryForm /> : <NewTransactionForm />}
 				<button style={{ marginLeft: '20px' }} onClick={() => firebase.auth().signOut()}>
 					Sign Out
 				</button>

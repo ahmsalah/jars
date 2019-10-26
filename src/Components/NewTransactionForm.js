@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { CategoriesContext } from '../context/categories.context';
-import { AuthContext } from '../Auth';
-import firebase from '../firebase/firebase';
+import { TransactionsContext } from '../context/transactions.context';
+import { DispatchContext } from '../context/transactions.context';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import uuid from 'uuid/v4';
@@ -77,9 +77,11 @@ const useStyles = makeStyles(({ spacing }) => ({
 	}
 }));
 
-function NewTransactionForm({ addTransaction, selectedDate }) {
+function NewTransactionForm() {
 	const classes = useStyles();
-	const { currentUser } = useContext(AuthContext);
+	const { expCategories, incCategories } = useContext(CategoriesContext);
+	const { selectedDate } = useContext(TransactionsContext);
+	const dispatch = useContext(DispatchContext);
 
 	const [ category, handleCategoryChange, resetCategory ] = useInputState('');
 	const [ description, handleDescriptionChange, resetDescription ] = useInputState('');
@@ -88,8 +90,6 @@ function NewTransactionForm({ addTransaction, selectedDate }) {
 	const [ dialogOpen, setDialogOpen ] = useState(false);
 	const [ snackbarOpen, setSnackbarOpen ] = useState(false);
 	const [ date, setDate ] = useState(selectedDate);
-
-	const { expCategories, incCategories } = useContext(CategoriesContext);
 
 	const theme = createMuiTheme({
 		palette: {
@@ -151,32 +151,15 @@ function NewTransactionForm({ addTransaction, selectedDate }) {
 			id: uuid(),
 			type: type
 		};
+		dispatch({ type: 'ADD_TRANSACTION', transaction });
 		resetCategory();
-		addTransaction(transaction);
 		resetDescription();
 		resetAmount();
 		setDialogOpen(false);
 		setSnackbarOpen(true);
 		setDate(selectedDate);
 	};
-	// const getCategories = type => {
-	// 	let cats;
-	// 	firebase
-	// 	.firestore()
-	// 	.collection('users')
-	// 	.doc(currentUser.uid)
-	// 	.collection('categories')
-	// 	.where('type', '==', type)
-	// 	.onSnapshot(snapshot => {
-	// 		let categories = [];
-	// 			snapshot.forEach(doc => {
-	// 				categories.push(doc.data());
-	// 			});
-	// 			return categories;
-	// 		})
-	// 	// console.log();
-	// };
-	// // console.log(getCategories('inc'));
+
 	return (
 		<MuiPickersUtilsProvider utils={DateFnsUtils}>
 			<React.Fragment>

@@ -11,6 +11,7 @@ import { AuthProvider } from './Auth';
 import PrivateRoute from './PrivateRoute';
 import theme from './muiTheme';
 import { CategoriesProvider } from './context/categories.context';
+import { TransactionsProvider } from './context/transactions.context';
 
 function App() {
 	return (
@@ -21,16 +22,18 @@ function App() {
 				<div>
 					<Switch>
 						<CategoriesProvider>
-							<PrivateRoute
-								exact
-								path="/"
-								// component={props => (
-								// 	<Transactions
-								// 		{...props}
-								// 	/>
-								// )}
-								component={Transactions}
-							/>
+							<TransactionsProvider>
+								<PrivateRoute
+									exact
+									path="/"
+									// component={props => (
+									// 	<Transactions
+									// 		{...props}
+									// 	/>
+									// )}
+									component={Transactions}
+								/>
+							</TransactionsProvider>
 							<Route exact path="/login" component={Login} />
 							<PrivateRoute exact path="/categories" component={Categories} />
 							<PrivateRoute

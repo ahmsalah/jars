@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { TransactionsContext } from '../context/transactions.context';
 import TransactionItem from './TransactionItem';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -16,8 +17,10 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
 	}
 }));
 
-function TransactionsList({ transactions, removeTransaction }) {
+function TransactionsList() {
 	const classes = useStyles();
+	const { transactions } = useContext(TransactionsContext);
+
 	return transactions.length !== 0 ? (
 		<List component="div" className={classes.root}>
 			{transactions.map((tr, i) => (
@@ -30,7 +33,6 @@ function TransactionsList({ transactions, removeTransaction }) {
 						description={tr.description}
 						amount={tr.amount}
 						date={tr.date}
-						removeTransaction={removeTransaction}
 					/>
 					{i < transactions.length - 1 && <Divider />}
 				</React.Fragment>
