@@ -1,10 +1,11 @@
-import React from 'react';
-import Navbar from '../Components/Navbar';
-import CategoryList from '../Components/CategoryList';
+import React, { useContext } from 'react';
+import { CategoriesContext } from '../context/categories.context';
+import Navbar from '../components/Navbar';
+import CategoryList from '../components/CategoryList';
 // import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Sidebar from '../Components/Sidebar';
+import Sidebar from '../components/Sidebar';
 
 const useStyles = makeStyles(({ spacing }) => ({
 	root: {
@@ -27,25 +28,20 @@ const useStyles = makeStyles(({ spacing }) => ({
 	}
 }));
 
-function Categories({
-	expCategories,
-	incCategories,
-	addCategory,
-	removeCategory,
-	onSortEnd
-}) {
+function Categories() {
 	const classes = useStyles();
+	const { expCategories, incCategories, onSortEnd } = useContext(CategoriesContext);
+
 	return (
 		<div className={classes.root}>
 			<Sidebar />
-			<Navbar display="categories" addCategory={addCategory} />
+			<Navbar display="categories" />
 			<div className={classes.content}>
 				{incCategories.length !== 0 || expCategories.length !== 0 ? (
 					<React.Fragment>
 						<CategoryList
 							type="exp"
 							categories={expCategories}
-							removeCategory={removeCategory}
 							onSortEnd={onSortEnd}
 							distance={10}
 							style={{ display: 'none' }}
@@ -54,7 +50,6 @@ function Categories({
 						<CategoryList
 							type="inc"
 							categories={incCategories}
-							removeCategory={removeCategory}
 							onSortEnd={onSortEnd}
 							distance={10}
 							// pressDelay={100}

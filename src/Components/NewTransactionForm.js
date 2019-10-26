@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { CategoriesContext } from '../context/categories.context';
+import { AuthContext } from '../Auth';
+import firebase from '../firebase/firebase';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import uuid from 'uuid/v4';
@@ -74,13 +77,9 @@ const useStyles = makeStyles(({ spacing }) => ({
 	}
 }));
 
-function NewTransactionForm({
-	expCategories,
-	incCategories,
-	addTransaction,
-	selectedDate
-}) {
+function NewTransactionForm({ addTransaction, selectedDate }) {
 	const classes = useStyles();
+	const { currentUser } = useContext(AuthContext);
 
 	const [ category, handleCategoryChange, resetCategory ] = useInputState('');
 	const [ description, handleDescriptionChange, resetDescription ] = useInputState('');
@@ -89,6 +88,8 @@ function NewTransactionForm({
 	const [ dialogOpen, setDialogOpen ] = useState(false);
 	const [ snackbarOpen, setSnackbarOpen ] = useState(false);
 	const [ date, setDate ] = useState(selectedDate);
+
+	const { expCategories, incCategories } = useContext(CategoriesContext);
 
 	const theme = createMuiTheme({
 		palette: {
@@ -158,14 +159,28 @@ function NewTransactionForm({
 		setSnackbarOpen(true);
 		setDate(selectedDate);
 	};
-
+	// const getCategories = type => {
+	// 	let cats;
+	// 	firebase
+	// 	.firestore()
+	// 	.collection('users')
+	// 	.doc(currentUser.uid)
+	// 	.collection('categories')
+	// 	.where('type', '==', type)
+	// 	.onSnapshot(snapshot => {
+	// 		let categories = [];
+	// 			snapshot.forEach(doc => {
+	// 				categories.push(doc.data());
+	// 			});
+	// 			return categories;
+	// 		})
+	// 	// console.log();
+	// };
+	// // console.log(getCategories('inc'));
 	return (
 		<MuiPickersUtilsProvider utils={DateFnsUtils}>
 			<React.Fragment>
-				<Button
-					variant="contained"
-					color="primary"
-					onClick={handleDialogClickOpen}>
+				<Button variant="contained" color="primary" onClick={handleDialogClickOpen}>
 					Add Transaction
 				</Button>
 				<ThemeProvider theme={theme}>
@@ -178,9 +193,9 @@ function NewTransactionForm({
 
 						<DialogContent>
 							<DialogContentText className={classes.dialogText}>
-								To add a new transaction, please choose the transaction
-								type and fill in the fields below. You can list a new
-								category in the cateogries tab.
+								To add a new transaction, please choose the transaction type and
+								fill in the fields below. You can list a new category in the
+								cateogries tab.
 							</DialogContentText>
 							<div className={classes.inputsContainer}>
 								<div className={classes.switch}>
@@ -248,9 +263,7 @@ function NewTransactionForm({
 									onChange={handleAmountChange}
 									InputProps={{
 										startAdornment: (
-											<InputAdornment position="start">
-												£
-											</InputAdornment>
+											<InputAdornment position="start">£</InputAdornment>
 										)
 									}}
 								/>

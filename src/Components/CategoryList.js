@@ -27,7 +27,7 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
 	}
 }));
 
-const CategoryList = SortableContainer(({ categories, removeCategory, type }) => {
+const CategoryList = SortableContainer(({ categories, type }) => {
 	const classes = useStyles();
 
 	return categories.length !== 0 ? (
@@ -45,7 +45,6 @@ const CategoryList = SortableContainer(({ categories, removeCategory, type }) =>
 							name={ct.name}
 							icon={ct.icon}
 							type={ct.type}
-							removeCategory={removeCategory}
 							collection={type}
 						/>
 						{i < categories.length - 1 && <Divider />}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { formatDate, formatAmount } from '../helpers';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -102,4 +102,4 @@ function TransactionItem({
 	);
 }
 
-export default TransactionItem;
+export default memo(TransactionItem);

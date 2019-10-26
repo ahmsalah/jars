@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
+import { DispatchContext } from '../context/categories.context';
 import uuid from 'uuid/v4';
 import BtnSwitch from './BtnSwitch';
 import useInputState from '../hooks/useInputState';
@@ -15,7 +16,6 @@ import Grow from '@material-ui/core/Grow';
 import SnackbarFeedback from './SnackbarFeedback';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-
 import Avatar from '@material-ui/core/Avatar';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SelectIconDialog from './SelectIconDialog';
@@ -50,14 +50,15 @@ const useStyles = makeStyles(({ spacing }) => ({
 	}
 }));
 
-function NewCategoryForm({ addCategory }) {
+function NewCategoryForm() {
 	const classes = useStyles();
+	const dispatch = useContext(DispatchContext);
 	const [ name, handleChange, reset ] = useInputState('');
 	const [ isExpense, toggleIsExpense ] = useToggleState(true);
-	const [ dialogOpen, setDialogOpen ] = React.useState(false);
-	const [ snackbarOpen, setSnackbarOpen ] = React.useState(false);
-	const [ iconDialogOpen, setIconDialogOpen ] = React.useState(false);
-	const [ icon, setIcon ] = React.useState('icon_not_selected');
+	const [ dialogOpen, setDialogOpen ] = useState(false);
+	const [ snackbarOpen, setSnackbarOpen ] = useState(false);
+	const [ iconDialogOpen, setIconDialogOpen ] = useState(false);
+	const [ icon, setIcon ] = useState('icon_not_selected');
 
 	const theme = createMuiTheme({
 		palette: {
@@ -91,7 +92,7 @@ function NewCategoryForm({ addCategory }) {
 		evt.preventDefault();
 		const type = isExpense ? 'exp' : 'inc';
 		const newCategory = { name: name, id: uuid(), type: type, icon: icon };
-		addCategory(newCategory);
+		dispatch({ type: 'ADD_CATEGORY', category: newCategory });
 		reset();
 		setDialogOpen(false);
 		setSnackbarOpen(true);

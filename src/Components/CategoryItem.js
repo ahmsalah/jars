@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { memo, useContext } from 'react';
+import { DispatchContext } from '../context/categories.context';
 import { SortableElement } from 'react-sortable-hoc';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -33,8 +34,9 @@ const useStyles = makeStyles(() => ({
 	}
 }));
 
-const CategoryItem = SortableElement(({ id, type, name, icon, removeCategory }) => {
+const CategoryItem = SortableElement(({ id, type, name, icon }) => {
 	const classes = useStyles();
+	const dispatch = useContext(DispatchContext);
 
 	return (
 		<div className={classes.root}>
@@ -51,7 +53,7 @@ const CategoryItem = SortableElement(({ id, type, name, icon, removeCategory }) 
 				<ListItemSecondaryAction>
 					<IconButton
 						aria-label="Delete"
-						onClick={() => removeCategory(id)}
+						onClick={() => dispatch({ type: 'REMOVE_CATEGORY', id })}
 						className={classes.deleteButton}
 						disableRipple>
 						<DeleteIcon />
@@ -62,4 +64,4 @@ const CategoryItem = SortableElement(({ id, type, name, icon, removeCategory }) 
 	);
 });
 
-export default CategoryItem;
+export default memo(CategoryItem);
