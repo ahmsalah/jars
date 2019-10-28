@@ -8,6 +8,7 @@ function useCategoriesReducer(categoriesReducer) {
 	const [ allCategories, dispatch ] = useReducer(categoriesReducer, []);
 	const [ expCategories, setExpCategories ] = useState([]);
 	const [ incCategories, setIncCategories ] = useState([]);
+	const [ isLoading, setIsLoading ] = useState(true);
 
 	useEffect(
 		() => {
@@ -57,6 +58,7 @@ function useCategoriesReducer(categoriesReducer) {
 							...doc.data()
 						}));
 						setExpCategories(categories);
+						setIsLoading(false);
 					});
 				return () => {
 					unsubscribe1();
@@ -74,6 +76,6 @@ function useCategoriesReducer(categoriesReducer) {
 			: setIncCategories(incCategories => arrayMove(incCategories, oldIndex, newIndex));
 	};
 
-	return { expCategories, incCategories, dispatch, onSortEnd };
+	return { expCategories, incCategories, dispatch, onSortEnd, isLoading };
 }
 export default useCategoriesReducer;

@@ -6,6 +6,7 @@ import CategoryList from '../components/CategoryList';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Sidebar from '../components/Sidebar';
+import Loader from '../components/Loader';
 
 const useStyles = makeStyles(({ spacing }) => ({
 	root: {
@@ -30,14 +31,16 @@ const useStyles = makeStyles(({ spacing }) => ({
 
 function Categories() {
 	const classes = useStyles();
-	const { expCategories, incCategories, onSortEnd } = useContext(CategoriesContext);
+	const { expCategories, incCategories, onSortEnd, isLoading } = useContext(CategoriesContext);
 
 	return (
 		<div className={classes.root}>
 			<Sidebar />
 			<Navbar display="categories" />
 			<div className={classes.content}>
-				{incCategories.length || expCategories.length ? (
+				{isLoading ? (
+					<Loader />
+				) : incCategories.length || expCategories.length ? (
 					<React.Fragment>
 						<CategoryList
 							type="exp"

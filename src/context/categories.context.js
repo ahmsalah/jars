@@ -6,7 +6,7 @@ export const CategoriesContext = createContext();
 export const DispatchContext = createContext();
 
 export function CategoriesProvider(props) {
-	const { expCategories, incCategories, dispatch, onSortEnd } = useCategoriesReducer(
+	const { expCategories, incCategories, dispatch, onSortEnd, isLoading } = useCategoriesReducer(
 		categoriesReducer
 	);
 
@@ -15,7 +15,8 @@ export function CategoriesProvider(props) {
 			value={{
 				expCategories,
 				incCategories,
-				onSortEnd
+				onSortEnd,
+				isLoading
 			}}>
 			<DispatchContext.Provider value={dispatch}>{props.children}</DispatchContext.Provider>
 		</CategoriesContext.Provider>

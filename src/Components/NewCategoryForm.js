@@ -157,7 +157,7 @@ function NewCategoryForm() {
 							Cancel
 						</Button>
 						<Button
-							disabled={name.length || icon === 'icon_not_selected'}
+							disabled={name.length === 0 || icon === 'icon_not_selected'}
 							onClick={handleSubmit}
 							color="primary">
 							Add

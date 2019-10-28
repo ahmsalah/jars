@@ -1,6 +1,8 @@
 import firebase from '../firebase/firebase';
 
-const userID = JSON.parse(window.localStorage.getItem('user')).uid;
+const userID =
+	JSON.parse(window.localStorage.getItem('user')) &&
+	JSON.parse(window.localStorage.getItem('user')).uid;
 
 const categoriesReducer = (state, action) => {
 	switch (action.type) {
