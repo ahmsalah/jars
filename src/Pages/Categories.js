@@ -37,7 +37,7 @@ function Categories() {
 			<Sidebar />
 			<Navbar display="categories" />
 			<div className={classes.content}>
-				{incCategories.length !== 0 || expCategories.length !== 0 ? (
+				{incCategories.length || expCategories.length ? (
 					<React.Fragment>
 						<CategoryList
 							type="exp"

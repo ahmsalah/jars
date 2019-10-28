@@ -1,9 +1,26 @@
+import firebase from '../firebase/firebase';
+
+const userID = JSON.parse(window.localStorage.getItem('user')).uid;
+
 const categoriesReducer = (state, action) => {
 	switch (action.type) {
+		case 'SET_CATEGORIES':
+			return action.categories;
 		case 'ADD_CATEGORY':
-			return [ ...state, action.category ];
+			return firebase
+				.firestore()
+				.collection('users')
+				.doc(userID)
+				.collection('categories')
+				.add(action.category);
 		case 'REMOVE_CATEGORY':
-			return state.filter(ct => ct.id !== action.id);
+			return firebase
+				.firestore()
+				.collection('users')
+				.doc(userID)
+				.collection('categories')
+				.doc(action.id)
+				.delete();
 		default:
 			return state;
 	}

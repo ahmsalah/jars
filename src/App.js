@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Transactions from './pages/Transactions';
 import Categories from './pages/Categories';
 import Login from './pages/Login';
@@ -7,7 +7,7 @@ import Sidebar from './components/Sidebar';
 import { ThemeProvider } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { AuthProvider } from './Auth';
+import { AuthProvider } from './context/auth.context';
 import PrivateRoute from './PrivateRoute';
 import theme from './muiTheme';
 import { CategoriesProvider } from './context/categories.context';
@@ -23,16 +23,7 @@ function App() {
 					<Switch>
 						<CategoriesProvider>
 							<TransactionsProvider>
-								<PrivateRoute
-									exact
-									path="/"
-									// component={props => (
-									// 	<Transactions
-									// 		{...props}
-									// 	/>
-									// )}
-									component={Transactions}
-								/>
+								<PrivateRoute exact path="/" component={Transactions} />
 							</TransactionsProvider>
 							<Route exact path="/login" component={Login} />
 							<PrivateRoute exact path="/categories" component={Categories} />
@@ -70,7 +61,6 @@ function App() {
 									</div>
 								)}
 							/>
-							<Redirect to="/" />
 						</CategoriesProvider>
 					</Switch>
 				</div>

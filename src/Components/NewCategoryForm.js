@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { DispatchContext } from '../context/categories.context';
-import uuid from 'uuid/v4';
 import BtnSwitch from './BtnSwitch';
 import useInputState from '../hooks/useInputState';
 import useToggleState from '../hooks/useToggleState';
@@ -91,7 +90,7 @@ function NewCategoryForm() {
 	const handleSubmit = evt => {
 		evt.preventDefault();
 		const type = isExpense ? 'exp' : 'inc';
-		const newCategory = { name: name, id: uuid(), type: type, icon: icon };
+		const newCategory = { name: name, type: type, icon: icon };
 		dispatch({ type: 'ADD_CATEGORY', category: newCategory });
 		reset();
 		setDialogOpen(false);
@@ -158,7 +157,7 @@ function NewCategoryForm() {
 							Cancel
 						</Button>
 						<Button
-							disabled={name.length === 0 || icon === 'icon_not_selected'}
+							disabled={name.length || icon === 'icon_not_selected'}
 							onClick={handleSubmit}
 							color="primary">
 							Add

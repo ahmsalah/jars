@@ -1,39 +1,54 @@
 import React, { useContext } from 'react';
 import firebase from '../firebase/firebase';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import { withRouter, Redirect } from 'react-router-dom';
-import { AuthContext } from '../Auth';
+import { Redirect } from 'react-router-dom';
+import { AuthContext } from '../context/auth.context';
+import { initialCategories, initialTransactions } from '../initialData';
 
-function Login({ history }) {
+function Login() {
+	const currentUser = useContext(AuthContext);
 	const uiConfig = {
-		// Popup signin flow rather than redirect flow.
 		signInFlow: 'popup',
-		// Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-		// signInSuccessUrl: '/',
+		signInSuccessUrl: '/',
 		callbacks: {
-			// 	// Avoid redirects after sign-in.
-			// signInSuccessWithAuthResult: () => {
-			// history.push('/');
-			// }
-			signInSuccessWithAuthResult: () => {
-				history.push('/');
+			signInSuccessWithAuthResult: authResult => {
+				const user = firebase.auth().currentUser;
+				if (authResult.additionalUserInfo.isNewUser) {
+					const userRef = firebase.firestore().collection('users').doc(user.uid);
+					userRef.set({
+						email: user.email,
+						name: user.displayName,
+						photoUrl: user.photoURL
+					});
+					initialCategories.map(ct =>
+						userRef.collection('categories').add({
+							name: ct.name,
+							type: ct.type,
+							icon: ct.icon
+						})
+					);
+					initialTransactions.map(tr =>
+						userRef.collection('transactions').add({
+							category: tr.category,
+							amount: tr.amount,
+							date: tr.date,
+							description: tr.description,
+							type: tr.type
+						})
+					);
+				}
 			}
 		},
 		signInOptions: [ firebase.auth.GoogleAuthProvider.PROVIDER_ID ]
 	};
-	const { currentUser } = useContext(AuthContext);
 	if (currentUser) {
 		return <Redirect to="/" />;
 	}
-
 	return (
 		<div>
-			<StyledFirebaseAuth
-				uiConfig={uiConfig}
-				firebaseAuth={firebase.auth()}
-			/>
+			<StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
 		</div>
 	);
 }
 
-export default withRouter(Login);
+export default Login;
