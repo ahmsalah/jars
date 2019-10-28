@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Transactions from './pages/Transactions';
 import Categories from './pages/Categories';
@@ -13,7 +13,9 @@ import theme from './muiTheme';
 import { CategoriesProvider } from './context/categories.context';
 import { TransactionsProvider } from './context/transactions.context';
 
-function App() {
+function App({ hideLoader }) {
+	useEffect(() => hideLoader(), [ hideLoader ]);
+
 	return (
 		<AuthProvider>
 			<ThemeProvider theme={theme}>
