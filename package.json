@@ -18,10 +18,9 @@
 		"react": "^16.9.0",
 		"react-dom": "^16.9.0",
 		"react-firebaseui": "^4.0.0",
-		"react-router-dom": "^5.1.0",
+		"react-router-dom": "^5.1.2",
 		"react-scripts": "3.1.2",
-		"react-sortable-hoc": "^1.10.1",
-		"uuid": "^3.3.3"
+		"react-sortable-hoc": "^1.10.1"
 	},
 	"scripts": {
 		"start": "react-scripts start",
@@ -34,7 +33,11 @@
 		"extends": "react-app"
 	},
 	"browserslist": {
-		"production": [ ">0.2%", "not dead", "not op_mini all" ],
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
 		"development": [
 			"last 1 chrome version",
 			"last 1 firefox version",

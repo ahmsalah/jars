@@ -1,16 +1,16 @@
 import React, { useContext } from 'react';
 import { CategoriesContext } from '../context/categories.context';
-import Navbar from '../components/Navbar';
 import CategoryList from '../components/CategoryList';
-// import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Sidebar from '../components/Sidebar';
 import Loader from '../components/Loader';
 
-const useStyles = makeStyles(({ spacing }) => ({
+const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
-		flex: '1'
+		flex: '1',
+		[breakpoints.up('lg')]: {
+			transform: 'translateX(-60px)'
+		}
 	},
 	content: {
 		margin: `${spacing(12)}px auto ${spacing(2)}px`,
@@ -35,8 +35,6 @@ function Categories() {
 
 	return (
 		<div className={classes.root}>
-			<Sidebar />
-			<Navbar display="categories" />
 			<div className={classes.content}>
 				{isLoading ? (
 					<Loader />

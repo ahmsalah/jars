@@ -1,32 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Transactions from './pages/Transactions';
 import Categories from './pages/Categories';
 import Login from './pages/Login';
 import Sidebar from './components/Sidebar';
-import { ThemeProvider } from '@material-ui/styles';
+import Navbar from './components/Navbar';
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { AuthProvider } from './context/auth.context';
-import PrivateRoute from './PrivateRoute';
-import theme from './muiTheme';
+import { ThemeProvider } from '@material-ui/styles';
 import { CategoriesProvider } from './context/categories.context';
 import { TransactionsProvider } from './context/transactions.context';
+import PrivateRoute from './PrivateRoute';
+import theme from './muiTheme';
+import { AuthContext } from './context/auth.context';
 
 function App({ hideLoader }) {
 	useEffect(() => hideLoader(), [ hideLoader ]);
+	const currentUser = useContext(AuthContext);
 
 	return (
-		<AuthProvider>
-			<ThemeProvider theme={theme}>
-				<CssBaseline />
-
-				<div>
-					<Switch>
-						<CategoriesProvider>
-							<TransactionsProvider>
-								<PrivateRoute exact path="/" component={Transactions} />
-							</TransactionsProvider>
+		<ThemeProvider theme={theme}>
+			<CssBaseline />
+			<CategoriesProvider>
+				<TransactionsProvider>
+					{currentUser && <Navbar />}
+					<div style={{ display: 'flex' }}>
+						{currentUser && <Sidebar />}
+						<Switch>
+							<PrivateRoute exact path="/" component={Transactions} />
 							<Route exact path="/login" component={Login} />
 							<PrivateRoute exact path="/categories" component={Categories} />
 							<PrivateRoute
@@ -36,16 +37,14 @@ function App({ hideLoader }) {
 									<div
 										style={{
 											height: '100vh',
-											marginTop: '30vh'
+											margin: '30vh auto 20px'
 										}}>
-										<Sidebar />
-
 										<Typography align="center" variant="h1" component="h2">
 											Coming Soon!
 										</Typography>
 									</div>
 								)}
-							/>{' '}
+							/>
 							<PrivateRoute
 								exact
 								path="/reports"
@@ -53,21 +52,19 @@ function App({ hideLoader }) {
 									<div
 										style={{
 											height: '100vh',
-											marginTop: '30vh'
+											margin: '30vh auto 20px'
 										}}>
-										<Sidebar />
-
 										<Typography align="center" variant="h1">
 											Coming Soon!
 										</Typography>
 									</div>
 								)}
 							/>
-						</CategoriesProvider>
-					</Switch>
-				</div>
-			</ThemeProvider>
-		</AuthProvider>
+						</Switch>
+					</div>
+				</TransactionsProvider>
+			</CategoriesProvider>
+		</ThemeProvider>
 	);
 }
 

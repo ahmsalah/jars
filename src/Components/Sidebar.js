@@ -1,32 +1,29 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import useToggleState from '../hooks/useToggleState';
-import useStyles from './SidebarStyles';
+import useStyles from './styles/sidebar.styles';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
 import CategoryIcon from '@material-ui/icons/Category';
 import CollectionsBookmarkIcon from '@material-ui/icons/CollectionsBookmark';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
 function Sidebar() {
 	const classes = useStyles();
-	const [ open, toggleOpen ] = useToggleState(false);
+	const history = useHistory();
+	const [ open, toggleOpen ] = useToggleState(true);
+	const [ value, setValue ] = useState('/');
 
-	const tabs = [ 'Transactions', 'Categories', 'Budget', 'Reports' ];
-	const generateIcons = val => {
-		if (val === 'Transactions') return <HomeIcon />;
-		else if (val === 'Categories') return <CategoryIcon />;
-		else if (val === 'Budget') return <AssignmentIcon />;
-		else if (val === 'Reports') return <CollectionsBookmarkIcon />;
+	const handleChange = (event, newValue) => {
+		setValue(newValue);
+		history.push(newValue);
 	};
 
 	return (
@@ -49,20 +46,23 @@ function Sidebar() {
 				</IconButton>
 			</div>
 			<Divider />
-			<List>
-				{tabs.map((text, index) => (
-					<ListItem
-						key={text}
-						button
-						component={NavLink}
-						exact
-						activeClassName={classes.active}
-						to={index > 0 ? `/${text.toLowerCase()}` : '/'}>
-						<ListItemIcon>{generateIcons(text)}</ListItemIcon>
-						<ListItemText primary={text} />
-					</ListItem>
-				))}
-			</List>
+
+			<Tabs
+				indicatorColor="primary"
+				orientation="vertical"
+				value={value}
+				onChange={handleChange}
+				aria-label="Vertical tabs example"
+				className={classes.tabs}>
+				<Tab label={open && 'Transactions'} icon={<HomeIcon />} value="/" />
+				<Tab label={open && 'Categories'} icon={<CategoryIcon />} value="/categories" />
+				<Tab label={open && 'Budget'} icon={<AssignmentIcon />} value="/budget" />
+				<Tab
+					label={open && 'Reports'}
+					icon={<CollectionsBookmarkIcon />}
+					value="/reports"
+				/>
+			</Tabs>
 		</Drawer>
 	);
 }

@@ -14,6 +14,7 @@ const theme = createMuiTheme({
 		},
 		grey: {
 			light: {
+				0: 'rgb(250,250,250)',
 				1: 'rgb(245,245,245)',
 				2: 'rgb(242,242,242)',
 				3: 'rgb(240, 240, 240)',

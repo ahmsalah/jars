@@ -1,31 +1,35 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
 import Summary from '../components/Summary';
 import TransactionsList from '../components/TransactionsList';
 import Filters from '../components/Filters';
-import Sidebar from '../components/Sidebar';
 import { Paper } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(({ spacing, breakpoints }) => ({
+	root: {
+		maxWidth: spacing(82),
+		margin: `${spacing(15)}px auto ${spacing(6)}px`,
+		flex: 1,
+		[breakpoints.up('lg')]: {
+			transform: 'translateX(-60px)'
+		}
+	},
+	content: {
+		overflow: 'hidden'
+	}
+}));
 
 function Transactions() {
+	const classes = useStyles();
 	return (
-		<React.Fragment>
-			<Sidebar />
-			<Navbar />
+		<div className={classes.root}>
+			<Summary />
 
-			<div
-				style={{
-					maxWidth: '650px',
-					margin: '120px auto 50px',
-					flex: 1
-				}}>
-				<Summary />
-
-				<Paper style={{ overflow: 'hidden' }}>
-					<Filters />
-					<TransactionsList />
-				</Paper>
-			</div>
-		</React.Fragment>
+			<Paper className={classes.content}>
+				<Filters />
+				<TransactionsList />
+			</Paper>
+		</div>
 	);
 }
 
