@@ -31,9 +31,10 @@ function Login() {
 						userRef.collection('transactions').add({
 							category: tr.category,
 							amount: tr.amount,
-							date: tr.date,
+							dateTimestamp: tr.date,
 							description: tr.description,
-							type: tr.type
+							type: tr.type,
+							icon: tr.icon
 						})
 					);
 				}

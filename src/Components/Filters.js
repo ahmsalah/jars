@@ -59,7 +59,7 @@ function Filters() {
 	const classes = useStyles();
 	const {
 		isReversed,
-		toggleListReverse,
+		toggleIsReversed,
 		sortBy,
 		handleSortByChange,
 		selectedDate,
@@ -103,14 +103,14 @@ function Filters() {
 						value={sortBy}
 						className={classes.sortBy}
 						onChange={handleSortByChange}>
-						<MenuItem value="date">Date</MenuItem>
+						<MenuItem value="dateTimestamp">Date</MenuItem>
 						<MenuItem value="amount">Amount</MenuItem>
 						<MenuItem value="category">Category</MenuItem>
 					</TextField>
 					<ToggleButtonGroup
 						className={classes.reverseButton}
 						value={isReversed && 'reversed'}
-						onChange={() => toggleListReverse()}
+						onChange={() => toggleIsReversed()}
 						arial-label="text formatting">
 						<ToggleButton value="reversed" aria-label="bold">
 							<SwapVertIcon />

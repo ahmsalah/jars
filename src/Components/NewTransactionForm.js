@@ -2,9 +2,10 @@ import React, { useState, useEffect, useContext } from 'react';
 import { CategoriesContext } from '../context/categories.context';
 import { TransactionsContext } from '../context/transactions.context';
 import { DispatchContext } from '../context/transactions.context';
+import { getExactTime } from '../helpers';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
-import uuid from 'uuid/v4';
+import isValid from 'date-fns/isValid';
 import BtnSwitch from './BtnSwitch';
 import useInputState from '../hooks/useInputState';
 import useToggleState from '../hooks/useToggleState';
@@ -147,8 +148,7 @@ function NewTransactionForm() {
 			icon: displayIcon,
 			description: description,
 			amount: newAmount,
-			date: date,
-			id: uuid(),
+			dateTimestamp: getExactTime(date),
 			type: type
 		};
 		dispatch({ type: 'ADD_TRANSACTION', transaction });
@@ -274,7 +274,7 @@ function NewTransactionForm() {
 									category.length === 0 ||
 									amount.length === 0 ||
 									amount === '0' ||
-									Date.parse(date).toString().length < 10
+									!isValid(date)
 								}
 								onClick={handleSubmit}
 								color="primary">

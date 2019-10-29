@@ -1,14 +1,28 @@
-// import { TransactionsContext } from '../context/transactions.context';
-// import React, { useContext } from 'react';
-// const { isReversed } = useContext(TransactionsContext);
+import firebase from '../firebase/firebase';
+
+const userID =
+	JSON.parse(window.localStorage.getItem('user')) &&
+	JSON.parse(window.localStorage.getItem('user')).uid;
 
 const transactionsReducer = (state, action) => {
 	switch (action.type) {
+		case 'SET_TRANSACTIONS':
+			return action.transactions;
 		case 'ADD_TRANSACTION':
-			// return isReversed ? [ ...state, action.transaction ] : [ action.transaction, ...state ];
-			return [ action.transaction, ...state ];
+			return firebase
+				.firestore()
+				.collection('users')
+				.doc(userID)
+				.collection('transactions')
+				.add(action.transaction);
 		case 'REMOVE_TRANSACTION':
-			return state.filter(tr => tr.id !== action.id);
+			return firebase
+				.firestore()
+				.collection('users')
+				.doc(userID)
+				.collection('transactions')
+				.doc(action.id)
+				.delete();
 		default:
 			return state;
 	}

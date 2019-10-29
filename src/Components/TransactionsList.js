@@ -5,6 +5,7 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Loader from './Loader';
 
 const useStyles = makeStyles(({ palette, spacing }) => ({
 	root: {},
@@ -19,9 +20,11 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
 
 function TransactionsList() {
 	const classes = useStyles();
-	const { transactions } = useContext(TransactionsContext);
+	const { transactions, isLoading } = useContext(TransactionsContext);
 
-	return transactions.length !== 0 ? (
+	return isLoading ? (
+		<Loader />
+	) : transactions.length !== 0 ? (
 		<List component="div" className={classes.root}>
 			{transactions.map((tr, i) => (
 				<React.Fragment key={tr.id}>

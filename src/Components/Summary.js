@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
 import { TransactionsContext } from '../context/transactions.context';
-import { getPercentageOfTwoNumbers, calcExpInc } from '../helpers';
+import { getPercentageOfTwoNumbers, calcExpInc, formatAmount } from '../helpers';
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
-import { formatAmount } from '../helpers';
 import clsx from 'clsx';
 import Typography from '@material-ui/core/Typography';
 

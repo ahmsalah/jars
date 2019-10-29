@@ -1,73 +1,20 @@
-/**
-|--------------------------------------------------
-| Function to sort an array of objects by some specific key.
-| @param {Array} array to be sorted.
-| @param {String} value that the array will be sorted by.
-| @param {boolean} if true, reverse the order of the array.
-|--------------------------------------------------
-*/
-function sortList(array, sortBy, isReversed) {
-	let arr = [ ...array ];
-	let sortedList;
-	if (sortBy === 'date') {
-		sortedList = arr.sort((a, b) => b.date - a.date);
-	} else if (sortBy === 'amount') {
-		sortedList = arr.sort((a, b) => b.amount - a.amount);
-	} else if (sortBy === 'category') {
-		sortedList = arr.sort((a, b) => a.category.localeCompare(b.category));
-	}
-	return isReversed ? sortedList.reverse() : sortedList;
-}
+import endOfMonth from 'date-fns/endOfMonth';
+import startOfMonth from 'date-fns/startOfMonth';
 
 /**
 |--------------------------------------------------
-| Function to sort an array of objects by some specific key.
+| Function to filter an array of objects by month.
 | @param {Array} array to be filtered.
-| @param {Date Object} the date object that the array will be sorted by.
+| @param {Date Object} the date object that the array will be filtered by.
 |--------------------------------------------------
 */
-function filterArrayByDate(array, date) {
-	let arr = [ ...array ];
-	const filteredArray = arr.filter(v => {
-		const arrayDate = `${v.date.getMonth()} ${v.date.getFullYear()}`;
-		const dt = `${date.getMonth()} ${date.getFullYear()}`;
-		return dt === arrayDate;
-	});
+function filterArrayByMonth(array, date) {
+	const filteredArray = array.filter(
+		v =>
+			new Date(v.dateTimestamp.seconds * 1000) > startOfMonth(date) &&
+			new Date(v.dateTimestamp.seconds * 1000) < endOfMonth(date)
+	);
 	return filteredArray;
-}
-
-/**
-|--------------------------------------------------
-| Function to sum the values of an array.
-| @param {Array} array with the values to be summed.
-|--------------------------------------------------
-*/
-function sumTotal(arr) {
-	const reducer = (acc, curr) => acc + curr;
-	return arr.length > 0 ? arr.reduce(reducer) : 0;
-}
-
-/**
-|--------------------------------------------------
-| Function to push the values (or the objects) of an array of objects' values to 2 arrays based on a condition.
-| @param {Array} array of objects that its values will be pushed to 2 new arrays.
-| @param {String} or {boolean} if a second parameter is passed, push the object amount value.
-|--------------------------------------------------
-*/
-function pushToArrays(arr, condt) {
-	let incArray = [];
-	let expArray = [];
-	arr.forEach(i => {
-		// if a second parameter is passed, push the object amount value
-		let val = condt ? i.amount : i;
-		if (i.type === 'inc') {
-			incArray.push(val);
-		} else if (i.type === 'exp') {
-			expArray.push(val);
-		}
-	});
-
-	return [ incArray, expArray ];
 }
 
 /**
@@ -114,6 +61,22 @@ function formatDate(date) {
 	const y = date.getFullYear();
 
 	return `${d}-${m}-${y}`;
+}
+
+/**
+|--------------------------------------------------
+| Function to capture the current time(hour-minute-second) and set it to the passed date object
+| @param {Date} the date to set the current time on
+|--------------------------------------------------
+*/
+function getExactTime(date) {
+	const newDate = new Date();
+	const d = date.getDate();
+	const m = date.getMonth();
+	const y = date.getFullYear();
+	const parsedDate = newDate.setFullYear(y, m, d);
+	const updatedDate = new Date(parsedDate);
+	return updatedDate;
 }
 
 /**
@@ -178,13 +141,15 @@ const getPercentageOfTwoNumbers = (num1, num2, multiply) => {
 	return [ result1, result2 ];
 };
 
+/**
+|--------------------------------------------------
+*/
+
 export {
-	sortList,
-	sumTotal,
-	pushToArrays,
+	filterArrayByMonth,
 	calcExpInc,
 	formatDate,
+	getExactTime,
 	formatAmount,
-	getPercentageOfTwoNumbers,
-	filterArrayByDate
+	getPercentageOfTwoNumbers
 };
