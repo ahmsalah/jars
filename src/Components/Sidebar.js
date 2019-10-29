@@ -44,7 +44,7 @@ function Sidebar() {
 			}}
 			open={open}>
 			<div className={classes.toolbar}>
-				<IconButton onClick={() => toggleOpen()}>
+				<IconButton className={classes.chevronButton} onClick={() => toggleOpen()}>
 					{open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
 				</IconButton>
 			</div>

@@ -5,7 +5,13 @@ const theme = createMuiTheme({
 		background: { default: 'rgb(232, 232, 232)' },
 		primary: { main: '#1aa333' },
 		secondary: { main: '#de474e' },
-		tertiary: { main: '#334960', sub: '#68788d' },
+		tertiary: {
+			main: '#334960',
+			sub: '#68788d',
+			1: 'rgb(60, 65, 78)',
+			2: 'rgb(56, 60, 74)',
+			3: 'rgb(47, 52, 63)'
+		},
 		grey: {
 			light: {
 				1: 'rgb(245,245,245)',

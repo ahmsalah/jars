@@ -5,7 +5,12 @@ export default makeStyles(theme => ({
 	drawer: {
 		width: drawerWidth,
 		flexShrink: 0,
-		whiteSpace: 'nowrap'
+		whiteSpace: 'nowrap',
+		'& > div': {
+			border: 'none',
+			boxShadow:
+				'0px 2px 2px -1px rgba(0,0,0,0.1), 0px 4px 2px 0px rgba(0,0,0,0.04), 0px 1px 4px 0px rgba(0,0,0,0.1)'
+		}
 	},
 	drawerOpen: {
 		zIndex: 300,
@@ -26,11 +31,17 @@ export default makeStyles(theme => ({
 			width: theme.spacing(7) + 1
 		}
 	},
+	chevronButton: {
+		'& svg': {
+			fill: '#fff'
+		}
+	},
 	toolbar: {
+		backgroundColor: theme.palette.tertiary[2],
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'flex-end',
-		padding: theme.spacing(0, 1),
+		padding: theme.spacing(0, 0.5),
 		...theme.mixins.toolbar
 	},
 	active: {
