@@ -5,32 +5,41 @@ import NewCategoryForm from './NewCategoryForm';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import useStyles from './styles/navbar.styles';
-import firebase from '../firebase/firebase';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import { AuthContext } from '../context/auth.context';
-import Popover from '@material-ui/core/Popover';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import HamburgerMenuPopover from './HamburgerMenuPopover';
+import ProfilePopover from './ProfilePopover';
+import Hidden from '@material-ui/core/Hidden';
+import MenuIcon from '@material-ui/icons/Menu';
 
 function Navbar() {
 	const classes = useStyles();
 	const currentUser = useContext(AuthContext);
 	const location = useHistory().location.pathname;
-	const [ anchorEl, setAnchorEl ] = useState(null);
-	const open = Boolean(anchorEl);
-	const id = open ? 'simple-popover' : undefined;
+	const [ anchorProfile, setAnchorProfile ] = useState(null);
+	const [ anchorMenu, setAnchorMenu ] = useState(null);
 
 	return (
-		<AppBar color="inherit" className={classes.root}>
-			<Toolbar>
-				{location === '/' && <NewTransactionForm />}
-				{location === '/categories' && <NewCategoryForm />}
+		<AppBar position="sticky" className={classes.root}>
+			<Toolbar className={classes.toolbar}>
+				<Hidden smUp>
+					<IconButton
+						onClick={e => setAnchorMenu(e.currentTarget)}
+						className={classes.menuButton}
+						aria-label="menu">
+						<MenuIcon />
+					</IconButton>
+				</Hidden>
+				<div className={classes.addButton}>
+					{location === '/' && <NewTransactionForm />}
+					{location === '/categories' && <NewCategoryForm />}
+				</div>
 
 				<IconButton
-					onClick={e => setAnchorEl(e.currentTarget)}
+					onClick={e => setAnchorProfile(e.currentTarget)}
 					className={classes.avatarButton}
-					aria-label="delete">
+					aria-label="sign out">
 					<Avatar
 						alt={currentUser.displayName}
 						src={currentUser.photoURL}
@@ -38,45 +47,8 @@ function Navbar() {
 					/>
 				</IconButton>
 
-				<Popover
-					id={id}
-					open={open}
-					anchorEl={anchorEl}
-					onClose={() => setAnchorEl(null)}
-					anchorOrigin={{
-						vertical: 'bottom',
-						horizontal: 'center'
-					}}
-					transformOrigin={{
-						vertical: 'top',
-						horizontal: 'center'
-					}}>
-					<div className={classes.popover}>
-						<Avatar
-							alt={currentUser.displayName}
-							src={currentUser.photoURL}
-							className={classes.popoverAvatar}
-						/>
-						<div className={classes.popoverContent}>
-							<Typography variant="body2" className={classes.typography}>
-								Signed in as{' '}
-								<span className={classes.bolder}>{currentUser.displayName}</span>
-							</Typography>
-							<Typography variant="caption" className={classes.typography}>
-								{currentUser.email}
-							</Typography>
-
-							<Button
-								variant="contained"
-								color="primary"
-								size="small"
-								className={classes.signOutButton}
-								onClick={() => firebase.auth().signOut()}>
-								Sign Out
-							</Button>
-						</div>
-					</div>
-				</Popover>
+				<HamburgerMenuPopover anchorEl={anchorMenu} setAnchorEl={setAnchorMenu} />
+				<ProfilePopover anchorEl={anchorProfile} setAnchorEl={setAnchorProfile} />
 			</Toolbar>
 		</AppBar>
 	);

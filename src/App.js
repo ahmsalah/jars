@@ -13,6 +13,7 @@ import { TransactionsProvider } from './context/transactions.context';
 import PrivateRoute from './PrivateRoute';
 import theme from './muiTheme';
 import { AuthContext } from './context/auth.context';
+import Hidden from '@material-ui/core/Hidden';
 
 function App({ hideLoader }) {
 	useEffect(() => hideLoader(), [ hideLoader ]);
@@ -25,7 +26,8 @@ function App({ hideLoader }) {
 				<TransactionsProvider>
 					{currentUser && <Navbar />}
 					<div style={{ display: 'flex' }}>
-						{currentUser && <Sidebar />}
+						<Hidden xsDown>{currentUser && <Sidebar />}</Hidden>
+
 						<Switch>
 							<PrivateRoute exact path="/" component={Transactions} />
 							<Route exact path="/login" component={Login} />

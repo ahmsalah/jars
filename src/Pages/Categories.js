@@ -13,7 +13,7 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 		}
 	},
 	content: {
-		margin: `${spacing(12)}px auto ${spacing(2)}px`,
+		margin: `${spacing(5)}px auto ${spacing(2)}px`,
 		maxWidth: spacing(82),
 		display: 'flex',
 		flexWrap: 'wrap',

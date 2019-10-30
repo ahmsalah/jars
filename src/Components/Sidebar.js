@@ -20,7 +20,7 @@ function Sidebar() {
 	const history = useHistory();
 	const matches = useMediaQuery('(min-width:800px)');
 	const [ isOpen, setIsOpen ] = useState(matches);
-	const [ value, setValue ] = useState('/');
+	const [ value, setValue ] = useState(history.location.pathname);
 
 	useEffect(
 		() => {
@@ -58,7 +58,7 @@ function Sidebar() {
 			<Tabs
 				indicatorColor="primary"
 				orientation="vertical"
-				value={value}
+				value={value === '/login' ? '/' : value}
 				onChange={handleChange}
 				aria-label="Vertical tabs example"
 				className={classes.tabs}>

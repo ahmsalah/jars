@@ -15,7 +15,6 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grow from '@material-ui/core/Grow';
 import SnackbarFeedback from './SnackbarFeedback';
@@ -26,14 +25,23 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import HelpMeExpansionPanel from './HelpMeExpansionPanel';
 
 const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 	return <Grow {...props} />;
 });
 
-const useStyles = makeStyles(({ spacing }) => ({
+const useStyles = makeStyles(({ spacing, breakpoints }) => ({
+	dialog: {
+		'& > div > div': {
+			maxWidth: 320,
+			[breakpoints.up('sm')]: {
+				maxWidth: 600
+			}
+		}
+	},
 	switch: {
-		margin: spacing(2, 0, 1),
+		margin: spacing(2.5, 0, 1),
 		display: 'flex',
 		justifyContent: 'center',
 		width: '100%'
@@ -41,11 +49,16 @@ const useStyles = makeStyles(({ spacing }) => ({
 	margin: {
 		margin: spacing(1)
 	},
+	inputsContainer: {
+		display: 'flex',
+		justifyContent: 'center',
+		flexWrap: 'wrap',
+		maxWidth: 440
+	},
 	textField: {
 		width: 200,
 		minWidth: 180,
 		maxHeight: 56,
-
 		'& div': {
 			maxHeight: 56,
 			'& img': {
@@ -53,16 +66,6 @@ const useStyles = makeStyles(({ spacing }) => ({
 				width: '90%'
 			}
 		}
-	},
-	inputsContainer: {
-		display: 'flex',
-		justifyContent: 'center',
-		flexWrap: 'wrap',
-		maxWidth: 440
-	},
-	dialogText: {
-		overflowWrap: 'break-word',
-		maxWidth: 440
 	},
 	textFieledSelect: {
 		'& div': {
@@ -80,6 +83,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 
 function NewTransactionForm() {
 	const classes = useStyles();
+
 	const { expCategories, incCategories } = useContext(CategoriesContext);
 	const { selectedDate } = useContext(TransactionsContext);
 	const dispatch = useContext(DispatchContext);
@@ -110,18 +114,6 @@ function NewTransactionForm() {
 			return;
 		}
 		setSnackbarOpen(false);
-	};
-
-	const handleDialogClickOpen = () => {
-		setDialogOpen(true);
-	};
-
-	const handleDialogClose = () => {
-		setDialogOpen(false);
-	};
-
-	const handleDateChange = date => {
-		setDate(date);
 	};
 
 	const handleToggleIsExpense = () => {
@@ -163,23 +155,21 @@ function NewTransactionForm() {
 	return (
 		<MuiPickersUtilsProvider utils={DateFnsUtils}>
 			<React.Fragment>
-				<Button variant="contained" color="primary" onClick={handleDialogClickOpen}>
+				<Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>
 					Add Transaction
 				</Button>
 				<ThemeProvider theme={theme}>
 					<Dialog
+						className={classes.dialog}
 						open={dialogOpen}
-						onClose={handleDialogClose}
+						onClose={() => setDialogOpen(false)}
 						TransitionComponent={TransitionGrow}
 						aria-labelledby="form-dialog-title">
 						<DialogTitle id="form-dialog-title">Add Transaction</DialogTitle>
 
 						<DialogContent>
-							<DialogContentText className={classes.dialogText}>
-								To add a new transaction, please choose the transaction type and
-								fill in the fields below. You can list a new category in the
-								cateogries tab.
-							</DialogContentText>
+							<HelpMeExpansionPanel />
+
 							<div className={classes.inputsContainer}>
 								<div className={classes.switch}>
 									<BtnSwitch
@@ -258,7 +248,7 @@ function NewTransactionForm() {
 									format="dd/MM/yyyy"
 									inputVariant="outlined"
 									value={date}
-									onChange={handleDateChange}
+									onChange={() => setDate(date)}
 									KeyboardButtonProps={{
 										'aria-label': 'change date'
 									}}
@@ -266,7 +256,7 @@ function NewTransactionForm() {
 							</div>
 						</DialogContent>
 						<DialogActions>
-							<Button onClick={handleDialogClose} color="primary">
+							<Button onClick={() => setDialogOpen(false)} color="primary">
 								Cancel
 							</Button>
 							<Button

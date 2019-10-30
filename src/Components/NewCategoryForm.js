@@ -17,6 +17,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Paper from '@material-ui/core/Paper';
 import SelectIconDialog from './SelectIconDialog';
 
 const TransitionGrow = React.forwardRef(function Transition(props, ref) {
@@ -30,6 +31,14 @@ const useStyles = makeStyles(({ spacing }) => ({
 		display: 'flex',
 		justifyContent: 'center'
 	},
+	dialogText: {
+		padding: spacing(1.5, 3, 1.5),
+		backgroundColor: 'rgba(0, 0, 0, .03)',
+		'& > p': {
+			color: 'rgba(0, 0, 0, 0.74)',
+			marginBottom: 0
+		}
+	},
 	inputsContainer: {
 		margin: spacing(2, 0, 2),
 		display: 'flex',
@@ -38,7 +47,6 @@ const useStyles = makeStyles(({ spacing }) => ({
 			height: inputsHeight
 		}
 	},
-	iconButton: {},
 	textField: {
 		margin: spacing(0, 0, 0, 2),
 		flex: 1
@@ -79,14 +87,6 @@ function NewCategoryForm() {
 		setSnackbarOpen(false);
 	};
 
-	const handleDialogClickOpen = () => {
-		setDialogOpen(true);
-	};
-
-	const handleDialogClose = () => {
-		setDialogOpen(false);
-	};
-
 	const handleSubmit = evt => {
 		evt.preventDefault();
 		const type = isExpense ? 'exp' : 'inc';
@@ -100,22 +100,24 @@ function NewCategoryForm() {
 
 	return (
 		<React.Fragment>
-			<Button variant="contained" color="primary" onClick={handleDialogClickOpen}>
+			<Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>
 				Create Category
 			</Button>
 			<ThemeProvider theme={theme}>
 				<Dialog
 					maxWidth="xs"
 					open={dialogOpen}
-					onClose={handleDialogClose}
+					onClose={() => setDialogOpen(false)}
 					TransitionComponent={TransitionGrow}
 					aria-labelledby="form-dialog-title">
 					<DialogTitle id="form-dialog-title">Create Category</DialogTitle>
 
 					<DialogContent>
-						<DialogContentText>
-							To add a new category, please choose category name and type.
-						</DialogContentText>
+						<Paper className={classes.dialogText}>
+							<DialogContentText>
+								To add a new category, choose category type, name and icon.
+							</DialogContentText>
+						</Paper>
 						<div className={classes.switch}>
 							<BtnSwitch
 								toggleExpense={() => toggleIsExpense()}
@@ -124,7 +126,6 @@ function NewCategoryForm() {
 						</div>
 						<div className={classes.inputsContainer}>
 							<Button
-								className={classes.iconButton}
 								disableRipple
 								variant="outlined"
 								onClick={() => {
@@ -153,7 +154,7 @@ function NewCategoryForm() {
 						</div>
 					</DialogContent>
 					<DialogActions>
-						<Button onClick={handleDialogClose} color="primary">
+						<Button onClick={() => setDialogOpen(false)} color="primary">
 							Cancel
 						</Button>
 						<Button
