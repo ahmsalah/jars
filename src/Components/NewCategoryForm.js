@@ -12,20 +12,20 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import Grow from '@material-ui/core/Grow';
-import SnackbarFeedback from './SnackbarFeedback';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Paper from '@material-ui/core/Paper';
 import SelectIconDialog from './SelectIconDialog';
+import { SnackbarActionContext } from '../context/snackbar.context';
 
 const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 	return <Grow {...props} />;
 });
 
 const inputsHeight = '56px';
-const useStyles = makeStyles(({ spacing }) => ({
+const useStyles = makeStyles(({ spacing, palette }) => ({
 	switch: {
 		margin: spacing(3, 0),
 		display: 'flex',
@@ -35,7 +35,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 		padding: spacing(1.5, 3, 1.5),
 		backgroundColor: 'rgba(0, 0, 0, .03)',
 		'& > p': {
-			color: 'rgba(0, 0, 0, 0.74)',
+			color: palette.text.secondary,
 			marginBottom: 0
 		}
 	},
@@ -60,10 +60,10 @@ const useStyles = makeStyles(({ spacing }) => ({
 function NewCategoryForm() {
 	const classes = useStyles();
 	const dispatch = useContext(DispatchContext);
+	const { snackbarAddCategory } = useContext(SnackbarActionContext);
 	const [ name, handleChange, reset ] = useInputState('');
 	const [ isExpense, toggleIsExpense ] = useToggleState(true);
 	const [ dialogOpen, setDialogOpen ] = useState(false);
-	const [ snackbarOpen, setSnackbarOpen ] = useState(false);
 	const [ iconDialogOpen, setIconDialogOpen ] = useState(false);
 	const [ icon, setIcon ] = useState('icon_not_selected');
 
@@ -80,13 +80,6 @@ function NewCategoryForm() {
 		}
 	};
 
-	const handleSnackbarClose = (event, reason) => {
-		if (reason === 'clickaway') {
-			return;
-		}
-		setSnackbarOpen(false);
-	};
-
 	const handleSubmit = evt => {
 		evt.preventDefault();
 		const type = isExpense ? 'exp' : 'inc';
@@ -94,7 +87,7 @@ function NewCategoryForm() {
 		dispatch({ type: 'ADD_CATEGORY', category: newCategory });
 		reset();
 		setDialogOpen(false);
-		setSnackbarOpen(true);
+		snackbarAddCategory();
 		setIcon('icon_not_selected');
 	};
 
@@ -171,11 +164,6 @@ function NewCategoryForm() {
 				TransitionComponent={TransitionGrow}
 				open={iconDialogOpen}
 				onClose={handleCloseCategoryDialog}
-			/>
-			<SnackbarFeedback
-				snackbarOpen={snackbarOpen}
-				handleSnackbarClose={handleSnackbarClose}
-				message={'New Category has been added successfully'}
 			/>
 		</React.Fragment>
 	);

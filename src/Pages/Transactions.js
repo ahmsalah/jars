@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Summary from '../components/Summary';
 import TransactionsList from '../components/TransactionsList';
 import Filters from '../components/Filters';
 import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import Loader from '../components/Loader';
+import { TransactionsContext } from '../context/transactions.context';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
@@ -27,14 +29,21 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 
 function Transactions() {
 	const classes = useStyles();
+	const { isLoading } = useContext(TransactionsContext);
+
 	return (
 		<div className={classes.root}>
-			<Summary />
-
-			<Paper className={classes.content}>
-				<Filters />
-				<TransactionsList />
-			</Paper>
+			{isLoading ? (
+				<Loader />
+			) : (
+				<React.Fragment>
+					<Summary />
+					<Paper className={classes.content}>
+						<Filters />
+						<TransactionsList />
+					</Paper>
+				</React.Fragment>
+			)}
 		</div>
 	);
 }

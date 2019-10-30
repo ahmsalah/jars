@@ -17,7 +17,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grow from '@material-ui/core/Grow';
-import SnackbarFeedback from './SnackbarFeedback';
 import MenuItem from '@material-ui/core/MenuItem';
 import clsx from 'clsx';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
@@ -26,6 +25,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import HelpMeExpansionPanel from './HelpMeExpansionPanel';
+import { SnackbarActionContext } from '../context/snackbar.context';
 
 const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 	return <Grow {...props} />;
@@ -93,8 +93,8 @@ function NewTransactionForm() {
 	const [ amount, handleAmountChange, resetAmount ] = useInputState('');
 	const [ isExpense, toggleIsExpense ] = useToggleState(true);
 	const [ dialogOpen, setDialogOpen ] = useState(false);
-	const [ snackbarOpen, setSnackbarOpen ] = useState(false);
 	const [ date, setDate ] = useState(selectedDate);
+	const { snackbarAddTransaction } = useContext(SnackbarActionContext);
 
 	const theme = createMuiTheme({
 		palette: {
@@ -108,13 +108,6 @@ function NewTransactionForm() {
 		},
 		[ selectedDate ]
 	);
-
-	const handleSnackbarClose = (event, reason) => {
-		if (reason === 'clickaway') {
-			return;
-		}
-		setSnackbarOpen(false);
-	};
 
 	const handleToggleIsExpense = () => {
 		toggleIsExpense();
@@ -148,8 +141,8 @@ function NewTransactionForm() {
 		resetDescription();
 		resetAmount();
 		setDialogOpen(false);
-		setSnackbarOpen(true);
 		setDate(selectedDate);
+		snackbarAddTransaction();
 	};
 
 	return (
@@ -273,11 +266,6 @@ function NewTransactionForm() {
 						</DialogActions>
 					</Dialog>
 				</ThemeProvider>
-				<SnackbarFeedback
-					snackbarOpen={snackbarOpen}
-					handleSnackbarClose={handleSnackbarClose}
-					message={'New Transaction has been added successfully'}
-				/>
 			</React.Fragment>
 		</MuiPickersUtilsProvider>
 	);

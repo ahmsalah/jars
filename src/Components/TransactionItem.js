@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
+import { SnackbarActionContext } from '../context/snackbar.context';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
@@ -64,6 +65,12 @@ function TransactionItem({ id, category, icon, description, date, amount, type }
 	const dispatch = useContext(DispatchContext);
 	const theme = useTheme();
 	const matches = useMediaQuery(theme.breakpoints.up('sm'));
+	const { snackbarDeleteTransaction } = useContext(SnackbarActionContext);
+
+	const handleDeleteItem = () => {
+		dispatch({ type: 'REMOVE_TRANSACTION', id });
+		snackbarDeleteTransaction();
+	};
 
 	let color = type === 'exp' ? 'secondary' : 'primary';
 	return (
@@ -98,7 +105,7 @@ function TransactionItem({ id, category, icon, description, date, amount, type }
 					<IconButton
 						edge="end"
 						aria-label="Delete"
-						onClick={() => dispatch({ type: 'REMOVE_TRANSACTION', id })}
+						onClick={handleDeleteItem}
 						className={classes.deleteButton}>
 						<DeleteIcon />
 					</IconButton>

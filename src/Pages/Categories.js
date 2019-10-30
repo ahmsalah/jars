@@ -15,6 +15,9 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	content: {
 		margin: `${spacing(5)}px auto ${spacing(2)}px`,
 		maxWidth: spacing(82),
+		[breakpoints.up('md')]: {
+			maxWidth: spacing(88)
+		},
 		display: 'flex',
 		flexWrap: 'wrap',
 		justifyContent: 'center',

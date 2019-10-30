@@ -10,10 +10,12 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/styles';
 import { CategoriesProvider } from './context/categories.context';
 import { TransactionsProvider } from './context/transactions.context';
+import { SnackbarProvider } from './context/snackbar.context';
 import PrivateRoute from './PrivateRoute';
 import theme from './muiTheme';
 import { AuthContext } from './context/auth.context';
 import Hidden from '@material-ui/core/Hidden';
+import SnackbarFeedback from './components/SnackbarFeedback';
 
 function App({ hideLoader }) {
 	useEffect(() => hideLoader(), [ hideLoader ]);
@@ -24,46 +26,49 @@ function App({ hideLoader }) {
 			<CssBaseline />
 			<CategoriesProvider>
 				<TransactionsProvider>
-					{currentUser && <Navbar />}
-					<div style={{ display: 'flex' }}>
-						<Hidden xsDown>{currentUser && <Sidebar />}</Hidden>
+					<SnackbarProvider>
+						<SnackbarFeedback />
+						{currentUser && <Navbar />}
+						<div style={{ display: 'flex' }}>
+							<Hidden xsDown>{currentUser && <Sidebar />}</Hidden>
 
-						<Switch>
-							<PrivateRoute exact path="/" component={Transactions} />
-							<Route exact path="/login" component={Login} />
-							<PrivateRoute exact path="/categories" component={Categories} />
-							<PrivateRoute
-								exact
-								path="/budget"
-								component={() => (
-									<div
-										style={{
-											height: '100vh',
-											margin: '30vh auto 20px'
-										}}>
-										<Typography align="center" variant="h1" component="h2">
-											Coming Soon!
-										</Typography>
-									</div>
-								)}
-							/>
-							<PrivateRoute
-								exact
-								path="/reports"
-								component={() => (
-									<div
-										style={{
-											height: '100vh',
-											margin: '30vh auto 20px'
-										}}>
-										<Typography align="center" variant="h1">
-											Coming Soon!
-										</Typography>
-									</div>
-								)}
-							/>
-						</Switch>
-					</div>
+							<Switch>
+								<PrivateRoute exact path="/" component={Transactions} />
+								<Route exact path="/login" component={Login} />
+								<PrivateRoute exact path="/categories" component={Categories} />
+								<PrivateRoute
+									exact
+									path="/budget"
+									component={() => (
+										<div
+											style={{
+												height: '100vh',
+												margin: '30vh auto 20px'
+											}}>
+											<Typography align="center" variant="h1" component="h2">
+												Coming Soon!
+											</Typography>
+										</div>
+									)}
+								/>
+								<PrivateRoute
+									exact
+									path="/reports"
+									component={() => (
+										<div
+											style={{
+												height: '100vh',
+												margin: '30vh auto 20px'
+											}}>
+											<Typography align="center" variant="h1">
+												Coming Soon!
+											</Typography>
+										</div>
+									)}
+								/>
+							</Switch>
+						</div>
+					</SnackbarProvider>
 				</TransactionsProvider>
 			</CategoriesProvider>
 		</ThemeProvider>
