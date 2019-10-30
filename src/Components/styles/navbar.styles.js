@@ -1,15 +1,18 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles(({ spacing, palette }) => ({
+export default makeStyles(({ spacing, palette, breakpoints }) => ({
 	root: {
 		backgroundColor: palette.tertiary[2],
 		zIndex: 280,
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'flex-end',
-		padding: spacing(0, 10, 0, 4),
 		boxShadow:
-			'0px 2px 2px -1px rgba(0,0,0,0.1), 0px 4px 2px 0px rgba(0,0,0,0.04), 0px 1px 4px 0px rgba(0,0,0,0.1)'
+			'0px 2px 2px -1px rgba(0,0,0,0.1), 0px 4px 2px 0px rgba(0,0,0,0.04), 0px 1px 4px 0px rgba(0,0,0,0.1)',
+		padding: spacing(0, 6, 0, 4),
+		[breakpoints.up('sm')]: {
+			padding: spacing(0, 10, 0, 4)
+		}
 	},
 	avatarButton: {
 		padding: 0,

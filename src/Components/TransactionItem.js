@@ -9,8 +9,11 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
+import Hidden from '@material-ui/core/Hidden';
 
-const useStyles = makeStyles(({ spacing }) => ({
+const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
 		'&:hover button': {
 			opacity: '1'
@@ -18,43 +21,49 @@ const useStyles = makeStyles(({ spacing }) => ({
 		backgroundColor: '#fff'
 	},
 	iconContainer: {
-		width: '12%'
+		width: '12%',
+		marginRight: spacing(1)
 	},
 	icon: {
 		width: '55px',
 		height: '55px'
 	},
 	title: {
-		width: '40%',
+		width: '39%',
 		'& span': {}
 	},
 	date: {
-		width: '15%',
+		width: '17%',
 		'& span': {
 			fontWeight: 500,
 			color: 'rgba(0,0,0,.5)'
 		}
 	},
 	amount: {
-		width: '33%',
+		width: '32%',
 		display: 'flex',
-		'& span': {
+		flexDirection: 'Column',
+		'& span, p': {
+			marginLeft: 'auto',
 			fontSize: '1rem',
 			fontWeight: 500,
-			marginLeft: 'auto',
 			marginRight: spacing(2.5)
 		}
 	},
 	deleteButton: {
 		marginRight: '-5px',
-		opacity: '0',
-		transition: 'opacity .3s'
+		[breakpoints.up('md')]: {
+			opacity: '0',
+			transition: 'opacity .3s'
+		}
 	}
 }));
 
 function TransactionItem({ id, category, icon, description, date, amount, type }) {
 	const classes = useStyles();
 	const dispatch = useContext(DispatchContext);
+	const theme = useTheme();
+	const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
 	let color = type === 'exp' ? 'secondary' : 'primary';
 	return (
@@ -72,14 +81,17 @@ function TransactionItem({ id, category, icon, description, date, amount, type }
 					primary={category}
 					secondary={description}
 				/>
-				<ListItemText
-					className={classes.date}
-					primary={formatDate(date)}
-					primaryTypographyProps={{ variant: 'body2' }}
-				/>
+				<Hidden xsDown>
+					<ListItemText
+						className={classes.date}
+						primary={formatDate(date, 'includeYear')}
+						primaryTypographyProps={{ variant: 'body2' }}
+					/>
+				</Hidden>
 				<ListItemText
 					className={classes.amount}
 					primary={formatAmount(amount)}
+					secondary={!matches && formatDate(date)}
 					primaryTypographyProps={{ color: color }}
 				/>
 				<ListItemSecondaryAction>

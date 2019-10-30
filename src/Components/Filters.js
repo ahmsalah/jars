@@ -15,16 +15,22 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 
-const useStyles = makeStyles(({ spacing }) => ({
+const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
-		padding: spacing(1, 6),
+		padding: spacing(1),
+		[breakpoints.up('sm')]: {
+			padding: spacing(1, 6)
+		},
 		justifyContent: 'flex-end',
 		alignItems: 'center'
 	},
 	sortBy: {
 		margin: spacing(0.9, 2, 0.5),
 		marginLeft: 'auto',
-		minWidth: 120,
+		minWidth: spacing(13.5),
+		[breakpoints.up('sm')]: {
+			minWidth: spacing(15)
+		},
 		'& div div': {
 			paddingTop: spacing(2),
 			paddingBottom: spacing(2),
@@ -43,11 +49,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 		justifySelf: 'flex-start',
 		minWidth: spacing(17.5),
 		maxWidth: spacing(19),
-		'& div div': {
-			// color: 'rgba(0,0,0,.75)'
-		},
 		'& input': {
-			// textAlign: 'center',
 			paddingTop: spacing(2),
 			paddingBottom: spacing(2),
 			cursor: 'pointer'

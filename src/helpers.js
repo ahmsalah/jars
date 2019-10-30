@@ -39,7 +39,7 @@ const calcExpInc = arr => {
 | @param {Date} the date to be formated
 |--------------------------------------------------
 */
-function formatDate(date) {
+function formatDate(date, includeYear) {
 	const monthsArr = [
 		'Jan',
 		'Feb',
@@ -60,7 +60,7 @@ function formatDate(date) {
 	// const m = date.getMonth() + 1;
 	const y = date.getFullYear();
 
-	return `${d}-${m}-${y}`;
+	return includeYear ? `${d}-${m}-${y}` : `${d}-${m}`;
 }
 
 /**

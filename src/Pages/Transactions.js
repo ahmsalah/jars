@@ -7,9 +7,15 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
-		maxWidth: spacing(82),
+		maxWidth: spacing(52),
 		margin: `${spacing(15)}px auto ${spacing(6)}px`,
 		flex: 1,
+		[breakpoints.up('sm')]: {
+			maxWidth: spacing(70)
+		},
+		[breakpoints.up('md')]: {
+			maxWidth: spacing(82)
+		},
 		[breakpoints.up('lg')]: {
 			transform: 'translateX(-60px)'
 		}

@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import useToggleState from '../hooks/useToggleState';
 import useStyles from './styles/sidebar.styles';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
@@ -14,12 +13,21 @@ import CollectionsBookmarkIcon from '@material-ui/icons/CollectionsBookmark';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 function Sidebar() {
 	const classes = useStyles();
 	const history = useHistory();
-	const [ open, toggleOpen ] = useToggleState(true);
+	const matches = useMediaQuery('(min-width:800px)');
+	const [ isOpen, setIsOpen ] = useState(matches);
 	const [ value, setValue ] = useState('/');
+
+	useEffect(
+		() => {
+			setIsOpen(matches);
+		},
+		[ matches ]
+	);
 
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
@@ -30,19 +38,19 @@ function Sidebar() {
 		<Drawer
 			variant="permanent"
 			className={clsx(classes.drawer, {
-				[classes.drawerOpen]: open,
-				[classes.drawerClose]: !open
+				[classes.drawerOpen]: isOpen,
+				[classes.drawerClose]: !isOpen
 			})}
 			classes={{
 				paper: clsx({
-					[classes.drawerOpen]: open,
-					[classes.drawerClose]: !open
+					[classes.drawerOpen]: isOpen,
+					[classes.drawerClose]: !isOpen
 				})
 			}}
-			open={open}>
+			open={isOpen}>
 			<div className={classes.toolbar}>
-				<IconButton className={classes.chevronButton} onClick={() => toggleOpen()}>
-					{open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+				<IconButton className={classes.chevronButton} onClick={() => setIsOpen(!isOpen)}>
+					{isOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
 				</IconButton>
 			</div>
 			<Divider />
@@ -54,11 +62,11 @@ function Sidebar() {
 				onChange={handleChange}
 				aria-label="Vertical tabs example"
 				className={classes.tabs}>
-				<Tab label={open && 'Transactions'} icon={<HomeIcon />} value="/" />
-				<Tab label={open && 'Categories'} icon={<CategoryIcon />} value="/categories" />
-				<Tab label={open && 'Budget'} icon={<AssignmentIcon />} value="/budget" />
+				<Tab label={isOpen && 'Transactions'} icon={<HomeIcon />} value="/" />
+				<Tab label={isOpen && 'Categories'} icon={<CategoryIcon />} value="/categories" />
+				<Tab label={isOpen && 'Budget'} icon={<AssignmentIcon />} value="/budget" />
 				<Tab
-					label={open && 'Reports'}
+					label={isOpen && 'Reports'}
 					icon={<CollectionsBookmarkIcon />}
 					value="/reports"
 				/>

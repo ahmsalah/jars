@@ -9,12 +9,16 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Typography from '@material-ui/core/Typography';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Hidden from '@material-ui/core/Hidden';
 
-const useStyles = makeStyles(({ spacing, palette }) => ({
+const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 	root: {
 		marginBottom: spacing(5),
-		display: 'flex',
-		overflow: 'hidden'
+		overflow: 'hidden',
+		[breakpoints.up('sm')]: {
+			display: 'flex'
+		}
 	},
 	report: {
 		flexBasis: '25%',
@@ -42,14 +46,18 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
 	},
 	title: {
 		width: '23%',
+		flex: 'none',
 		marginLeft: spacing(2),
 		'& span': {
 			fontWeight: 500
 		}
 	},
+	amountTitle: {
+		width: 'initial'
+	},
 	barContainer: {
 		flex: '1 1 auto',
-		width: '61%'
+		marginRight: 'auto'
 	},
 	bar: {
 		height: '15px',
@@ -62,18 +70,18 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
 		backgroundColor: palette.tertiary.sub
 	},
 	amount: {
-		width: '26%',
+		flex: 'none',
 		display: 'flex',
 		marginRight: spacing(2),
+		marginLeft: spacing(2),
 		'& span': {
-			marginLeft: 'auto',
 			fontSize: '1rem'
 		}
 	},
 	amountTotal: {
 		marginTop: 0,
+		marginLeft: 'auto',
 		'& span': {
-			marginLeft: 'auto',
 			fontSize: '1.25rem'
 		}
 	}
@@ -82,6 +90,12 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
 function Summary() {
 	const classes = useStyles();
 	const { transactions } = useContext(TransactionsContext);
+	const matches = useMediaQuery('(max-width:600px)');
+
+	const renderTotal = () => {
+		const percentage = totalInc && totalExp ? ` (${parseInt(total / totalInc * 100)}%)` : '';
+		return matches ? formatAmount(total, false) + percentage : formatAmount(total, false);
+	};
 
 	const [ totalExp, totalInc ] = calcExpInc(transactions);
 	const total = totalInc + totalExp;
@@ -90,15 +104,21 @@ function Summary() {
 
 	return totalInc !== 0 || totalExp !== 0 ? (
 		<Paper className={classes.root}>
-			<div className={classes.report}>
-				<Typography variant="h3">
-					{totalInc !== 0 ? `${parseInt(total / totalInc * 100)}%` : '0%'}
-				</Typography>
-				<Typography align="center" variant="body2">
-					{totalExp * -1 <= totalInc || totalInc === 0 ? `Saved of ` : `Spent more than `}
-					your income
-				</Typography>
-			</div>
+			<Hidden xsDown>
+				<div className={classes.report}>
+					<Typography variant="h3">
+						{totalInc !== 0 ? `${parseInt(total / totalInc * 100)}%` : '0%'}
+					</Typography>
+					<Typography align="center" variant="body2">
+						{totalExp * -1 <= totalInc || totalInc === 0 ? (
+							`Saved of `
+						) : (
+							`Spent more than `
+						)}
+						your income
+					</Typography>
+				</div>
+			</Hidden>
 
 			<List className={classes.list}>
 				<ListItem>
@@ -132,12 +152,12 @@ function Summary() {
 				<Divider variant="middle" />
 				<ListItem>
 					<ListItemText
-						className={classes.title}
+						className={clsx(classes.amountTitle, classes.title)}
 						primary={`${total < 0 ? 'Spent' : 'Saved'} this month`}
 					/>
 					<ListItemText
 						className={clsx(classes.amount, classes.amountTotal)}
-						primary={formatAmount(total, false)}
+						primary={renderTotal()}
 						primaryTypographyProps={{ color: colorTotal, variant: 'h6' }}
 					/>
 				</ListItem>

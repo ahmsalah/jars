@@ -10,7 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(({ breakpoints }) => ({
 	root: {
 		backgroundColor: '#fff',
 		cursor: 'grab',
@@ -29,8 +29,10 @@ const useStyles = makeStyles(() => ({
 		height: '50px'
 	},
 	deleteButton: {
-		opacity: '0',
-		transition: 'opacity .3s'
+		[breakpoints.up('md')]: {
+			opacity: '0',
+			transition: 'opacity .3s'
+		}
 	}
 }));
 
