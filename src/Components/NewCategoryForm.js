@@ -19,6 +19,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Paper from '@material-ui/core/Paper';
 import SelectIconDialog from './SelectIconDialog';
 import { SnackbarActionContext } from '../context/snackbar.context';
+import uuid from 'uuid/v4';
 
 const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 	return <Grow {...props} />;
@@ -83,8 +84,14 @@ function NewCategoryForm() {
 	const handleSubmit = evt => {
 		evt.preventDefault();
 		const type = isExpense ? 'exp' : 'inc';
-		const newCategory = { name: name, type: type, icon: icon };
-		dispatch({ type: 'ADD_CATEGORY', category: newCategory });
+		const id = `ctg-${uuid()}`;
+		const newCategory = { name, type, icon, id };
+		dispatch({
+			type: 'ADD_CATEGORY',
+			category: newCategory,
+			categoryType: type,
+			id
+		});
 		reset();
 		setDialogOpen(false);
 		snackbarAddCategory();

@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
-import { CategoriesContext } from '../context/categories.context';
+import React, { useContext, useState, useEffect } from 'react';
+import { CategoriesContext, DispatchContext } from '../context/categories.context';
 import CategoryList from '../components/CategoryList';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Loader from '../components/Loader';
+import arrayMove from 'array-move';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
@@ -34,30 +35,54 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 
 function Categories() {
 	const classes = useStyles();
-	const { expCategories, incCategories, onSortEnd, isLoading } = useContext(CategoriesContext);
+	const categories = useContext(CategoriesContext);
+	const dispatch = useContext(DispatchContext);
+
+	const [ isLoading, setIsLoading ] = useState(true);
+
+	useEffect(
+		() => {
+			categories !== undefined ? setIsLoading(false) : setIsLoading(true);
+		},
+		[ categories ]
+	);
+
+	//------ Dragging Categories -----//
+	const onSortEnd = ({ oldIndex, newIndex, collection }) => {
+		const categoryList = arrayMove(
+			categories.lists[collection].categoriesIds,
+			oldIndex,
+			newIndex
+		);
+		dispatch({ type: 'MOVE_CATEGORIES', categoryList, categoryType: collection });
+	};
 
 	return (
 		<div className={classes.root}>
 			<div className={classes.content}>
-				{isLoading ? (
+				{isLoading || !categories.lists ? (
 					<Loader />
-				) : incCategories.length || expCategories.length ? (
+				) : Object.keys(categories.allCategories).length ? (
 					<React.Fragment>
-						<CategoryList
-							type="exp"
-							categories={expCategories}
-							onSortEnd={onSortEnd}
-							distance={10}
-							style={{ display: 'none' }}
-							// pressDelay={100}
-						/>
-						<CategoryList
-							type="inc"
-							categories={incCategories}
-							onSortEnd={onSortEnd}
-							distance={10}
-							// pressDelay={100}
-						/>
+						{categories.listOrder.map(listID => {
+							const list = categories.lists[listID];
+
+							const categoriesList = list.categoriesIds.map(
+								ctID => categories.allCategories[ctID]
+							);
+
+							return (
+								<CategoryList
+									key={listID}
+									list={list}
+									type={listID}
+									collection={listID}
+									categories={categoriesList}
+									onSortEnd={onSortEnd}
+									distance={10}
+								/>
+							);
+						})}
 					</React.Fragment>
 				) : (
 					<div className={classes.noCategories}>

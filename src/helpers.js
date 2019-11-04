@@ -36,7 +36,8 @@ const calcExpInc = arr => {
 /**
 |--------------------------------------------------
 | Function to format the date to Day-Month-Year
-| @param {Date} the date to be formated
+| @param {Date} the date to be formatted
+| @param {Boolean} if true, include the year in the formatted date
 |--------------------------------------------------
 */
 function formatDate(date, includeYear) {
@@ -82,7 +83,7 @@ function getExactTime(date) {
 /**
 |--------------------------------------------------
 | Function to format number to currency
-| @param {number} the amount to be formated
+| @param {number} the amount to be formatted
 | @param {boolean} whether to include a plus/minus sign or not
 | @param {string}	currency symbol
 | @param {number} numbers of decimals
@@ -143,13 +144,31 @@ const getPercentageOfTwoNumbers = (num1, num2, multiply) => {
 
 /**
 |--------------------------------------------------
+| Filters an object by an object key
+| @param {Object}	the object to be filtered
+| @param {string} object key to filter by
+|--------------------------------------------------
 */
+const filterObjectByKey = (object, objKey) => {
+	const allowed = Object.keys(object).filter(key => key !== objKey);
 
+	return Object.keys(object).filter(key => allowed.includes(key)).reduce((obj, key) => {
+		return {
+			...obj,
+			[key]: object[key]
+		};
+	}, {});
+};
+
+/**
+|--------------------------------------------------
+*/
 export {
 	filterArrayByMonth,
 	calcExpInc,
 	formatDate,
 	getExactTime,
 	formatAmount,
-	getPercentageOfTwoNumbers
+	getPercentageOfTwoNumbers,
+	filterObjectByKey
 };

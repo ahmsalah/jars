@@ -19,28 +19,6 @@ function useTransactionsReducer(transactionsReducer) {
 	useEffect(
 		() => {
 			if (currentUser) {
-				const unsubscribe = firebase
-					.firestore()
-					.collection('users')
-					.doc(currentUser.uid)
-					.collection('transactions')
-					.onSnapshot(snapshot => {
-						const transactions = snapshot.docs.map(doc => ({
-							id: doc.id,
-							date: doc.data().dateTimestamp.toDate(),
-							...doc.data()
-						}));
-						dispatch({ type: 'SET_CATEGORIES', transactions });
-					});
-				return () => unsubscribe();
-			}
-		},
-		[ currentUser ]
-	);
-
-	useEffect(
-		() => {
-			if (currentUser) {
 				const orderDirection =
 					sortBy === 'dateTimestamp'
 						? isReversed ? 'asc' : 'desc'
@@ -57,6 +35,7 @@ function useTransactionsReducer(transactionsReducer) {
 							date: doc.data().dateTimestamp.toDate(),
 							...doc.data()
 						}));
+						dispatch({ type: 'SET_CATEGORIES', transactions });
 						setFilteredTransactions(filterArrayByMonth(transactions, selectedDate));
 						setIsLoading(false);
 					});

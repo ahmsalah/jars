@@ -19,6 +19,7 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(({ breakpoints, spacing }) => ({
 	root: {
+		userSelect: 'none',
 		backgroundColor: '#fff',
 		cursor: 'grab',
 		'&:active': {
@@ -53,7 +54,7 @@ const CategoryItem = SortableElement(({ id, type, name, icon }) => {
 	const [ dialogOpen, setDialogOpen ] = useState(false);
 
 	const handleDeleteItem = () => {
-		dispatch({ type: 'REMOVE_CATEGORY', id });
+		dispatch({ type: 'REMOVE_CATEGORY', id, categoryType: type });
 		setDialogOpen(false);
 		snackbarDeleteCategory();
 	};

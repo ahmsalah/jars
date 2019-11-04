@@ -27,14 +27,14 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
 	}
 }));
 
-const CategoryList = SortableContainer(({ categories, type }) => {
+const CategoryList = SortableContainer(({ categories, type, list }) => {
 	const classes = useStyles();
 
 	return categories.length ? (
 		<Paper className={classes.root}>
 			<List component="div">
 				<Typography className={classes.title} color="inherit">
-					{type === 'exp' ? 'Expenses' : 'Income'}
+					{list.title}
 				</Typography>
 
 				{categories.map((ct, i) => (

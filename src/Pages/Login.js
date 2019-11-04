@@ -15,18 +15,14 @@ function Login() {
 				const user = firebase.auth().currentUser;
 				if (authResult.additionalUserInfo.isNewUser) {
 					const userRef = firebase.firestore().collection('users').doc(user.uid);
+
 					userRef.set({
 						email: user.email,
 						name: user.displayName,
-						photoUrl: user.photoURL
+						photoUrl: user.photoURL,
+						categories: initialCategories
 					});
-					initialCategories.map(ct =>
-						userRef.collection('categories').add({
-							name: ct.name,
-							type: ct.type,
-							icon: ct.icon
-						})
-					);
+
 					initialTransactions.map(tr =>
 						userRef.collection('transactions').add({
 							category: tr.category,
