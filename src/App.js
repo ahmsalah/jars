@@ -29,7 +29,13 @@ function App({ hideLoader }) {
 					<SnackbarProvider>
 						<SnackbarFeedback />
 						{currentUser && <Navbar />}
-						<div style={{ display: 'flex' }}>
+						<div
+							style={
+								currentUser && {
+									display: 'flex',
+									backgroundColor: 'rgb(232, 232, 232)'
+								}
+							}>
 							<Hidden xsDown>{currentUser && <Sidebar />}</Hidden>
 
 							<Switch>

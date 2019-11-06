@@ -28,6 +28,17 @@ const theme = createMuiTheme({
 			}
 		}
 	},
+	breakpoints: {
+		keys: [ 'xs', 'sm', 'cmp', 'md', 'lg', 'xl' ],
+		values: {
+			xs: 0,
+			sm: 600,
+			cmp: 800,
+			md: 960,
+			lg: 1280,
+			xl: 1920
+		}
+	},
 	overrides: {
 		MuiCssBaseline: {
 			'@global': {

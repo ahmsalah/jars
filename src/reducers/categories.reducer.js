@@ -2,7 +2,7 @@ import firebase from '../firebase/firebase';
 import { filterObjectByKey } from '../helpers';
 
 const userID =
-	JSON.parse(window.localStorage.getItem('user')) &&
+	JSON.parse(window.localStorage.getItem('user')) !== null &&
 	JSON.parse(window.localStorage.getItem('user')).uid;
 
 const categoriesReducer = (state, action) => {
@@ -63,9 +63,10 @@ const categoriesReducer = (state, action) => {
 			);
 		case 'MOVE_CATEGORIES':
 			return (
-				firebase.firestore().collection('users').doc(userID).update({
-					[`categories.lists.${action.categoryType}.categoriesIds`]: action.categoryList
-				}),
+				userID &&
+					firebase.firestore().collection('users').doc(userID).update({
+						[`categories.lists.${action.categoryType}.categoriesIds`]: action.categoryList
+					}),
 				(state = {
 					...state,
 					lists: {

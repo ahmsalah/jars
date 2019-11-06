@@ -15,12 +15,13 @@
 		"date-fns": "^2.0.0-beta.5",
 		"express": "^4.17.1",
 		"firebase": "^7.2.0",
-		"react": "^16.9.0",
+		"react": "^16.11.0",
 		"react-dom": "^16.9.0",
 		"react-firebaseui": "^4.0.0",
 		"react-router-dom": "^5.1.2",
 		"react-scripts": "3.1.2",
 		"react-sortable-hoc": "^1.10.1",
+		"react-spring": "^8.0.27",
 		"uuid": "^3.3.3"
 	},
 	"scripts": {
