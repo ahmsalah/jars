@@ -26,6 +26,8 @@ import Avatar from '@material-ui/core/Avatar';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import HelpMeExpansionPanel from './HelpMeExpansionPanel';
 import { SnackbarActionContext } from '../context/snackbar.context';
+import AddIcon from '@material-ui/icons/Add';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 	return <Grow {...props} />;
@@ -33,7 +35,7 @@ const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 
 function NewTransactionForm() {
 	const classes = useStyles();
-
+	const matches = useMediaQuery('(min-width:370px)');
 	const categories = useContext(CategoriesContext);
 	const { selectedDate } = useContext(TransactionsContext);
 	const dispatch = useContext(DispatchContext);
@@ -93,7 +95,7 @@ function NewTransactionForm() {
 		<MuiPickersUtilsProvider utils={DateFnsUtils}>
 			<React.Fragment>
 				<Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>
-					Add Transaction
+					{matches ? 'Add Transaction' : <AddIcon />}
 				</Button>
 				<ThemeProvider theme={theme}>
 					<Dialog

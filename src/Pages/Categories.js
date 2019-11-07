@@ -25,11 +25,27 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 		alignItems: 'flex-start'
 	},
 	noCategories: {
-		padding: spacing(15, 6),
+		padding: spacing(6, 3),
 		margin: '0 auto',
 		display: 'flex',
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		flexDirection: 'column',
+		'& img': {
+			filter: 'grayscale(50%)',
+			opacity: 0.9,
+			width: spacing(25),
+			marginTop: spacing(2)
+		},
+		'& > h4': {
+			fontSize: '1.5rem',
+			color: 'rgba(0,0,0,0.5)',
+			textAlign: 'center',
+			marginBottom: spacing(1),
+			[breakpoints.up('sm')]: {
+				fontSize: '2.125rem'
+			}
+		}
 	}
 }));
 
@@ -87,7 +103,9 @@ function Categories() {
 					</React.Fragment>
 				) : (
 					<div className={classes.noCategories}>
-						<Typography variant="h2">{`No categories :)`}</Typography>
+						<Typography variant="h4">No categories here</Typography>
+						<Typography variant="h4">start adding now</Typography>
+						<img src={require(`../assets/sad-jar.png`)} alt="No Transactions" />
 					</div>
 				)}
 			</div>

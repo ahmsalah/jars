@@ -11,6 +11,7 @@ import CategoryIcon from '@material-ui/icons/Category';
 import CollectionsBookmarkIcon from '@material-ui/icons/CollectionsBookmark';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { makeStyles } from '@material-ui/core/styles';
+import JarIcon from './JarIcon';
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
 	popover: {
@@ -37,11 +38,12 @@ function HamburgerMenuPopover({ anchorEl, setAnchorEl }) {
 	const id = open ? 'simple-popover' : undefined;
 	const classes = useStyles();
 
-	const tabs = [ 'Transactions', 'Categories', 'Budget', 'Reports' ];
+	const tabs = [ 'Transactions', 'Categories', 'Budget', 'Jars', 'Reports' ];
 	const generateIcons = val => {
 		if (val === 'Transactions') return <HomeIcon />;
 		else if (val === 'Categories') return <CategoryIcon />;
 		else if (val === 'Budget') return <AssignmentIcon />;
+		else if (val === 'Jars') return <JarIcon />;
 		else if (val === 'Reports') return <CollectionsBookmarkIcon />;
 	};
 

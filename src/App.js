@@ -5,7 +5,6 @@ import Categories from './pages/Categories';
 import Login from './pages/Login';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
-import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/styles';
 import { CategoriesProvider } from './context/categories.context';
@@ -16,6 +15,9 @@ import theme from './muiTheme';
 import { AuthContext } from './context/auth.context';
 import SnackbarFeedback from './components/SnackbarFeedback';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Budget from './pages/Budget';
+import Jars from './pages/Jars';
+import Reports from './pages/Reports';
 
 function App({ hideLoader }) {
 	useEffect(() => hideLoader(), [ hideLoader ]);
@@ -37,36 +39,9 @@ function App({ hideLoader }) {
 								<PrivateRoute exact path="/" component={Transactions} />
 								<Route exact path="/login" component={Login} />
 								<PrivateRoute exact path="/categories" component={Categories} />
-								<PrivateRoute
-									exact
-									path="/budget"
-									component={() => (
-										<div
-											style={{
-												height: '100vh',
-												margin: '30vh auto 20px'
-											}}>
-											<Typography align="center" variant="h1" component="h2">
-												Coming Soon!
-											</Typography>
-										</div>
-									)}
-								/>
-								<PrivateRoute
-									exact
-									path="/reports"
-									component={() => (
-										<div
-											style={{
-												height: '100vh',
-												margin: '30vh auto 20px'
-											}}>
-											<Typography align="center" variant="h1">
-												Coming Soon!
-											</Typography>
-										</div>
-									)}
-								/>
+								<PrivateRoute exact path="/budget" component={Budget} />
+								<PrivateRoute exact path="/jars" component={Jars} />
+								<PrivateRoute exact path="/reports" component={Reports} />
 							</Switch>
 						</div>
 					</SnackbarProvider>

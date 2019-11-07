@@ -77,7 +77,7 @@ export const initialCategories = {
 
 const transactions = [
 	{
-		amount: 3500,
+		amount: 5000,
 		category: 'Initial balance',
 		date: new Date('2019-11-29'),
 		description: '',
@@ -136,6 +136,13 @@ const transactions = [
 		amount: -350,
 		category: 'Gas',
 		date: new Date('2019-11-06'),
+		description: '',
+		type: 'exp'
+	},
+	{
+		amount: -6500,
+		category: 'Rent',
+		date: new Date('2019-11-03'),
 		description: '',
 		type: 'exp'
 	}

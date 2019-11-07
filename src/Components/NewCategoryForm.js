@@ -20,6 +20,8 @@ import Paper from '@material-ui/core/Paper';
 import SelectIconDialog from './SelectIconDialog';
 import { SnackbarActionContext } from '../context/snackbar.context';
 import uuid from 'uuid/v4';
+import AddIcon from '@material-ui/icons/Add';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 	return <Grow {...props} />;
@@ -73,6 +75,7 @@ function NewCategoryForm() {
 	const [ dialogOpen, setDialogOpen ] = useState(false);
 	const [ iconDialogOpen, setIconDialogOpen ] = useState(false);
 	const [ icon, setIcon ] = useState('icon_not_selected');
+	const matches = useMediaQuery('(min-width:370px)');
 
 	const theme = createMuiTheme({
 		palette: {
@@ -107,7 +110,7 @@ function NewCategoryForm() {
 	return (
 		<React.Fragment>
 			<Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>
-				Create Category
+				{matches ? 'Create Category' : <AddIcon />}
 			</Button>
 			<ThemeProvider theme={theme}>
 				<Dialog

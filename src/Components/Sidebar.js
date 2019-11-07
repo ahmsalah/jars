@@ -14,6 +14,7 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import JarIcon from './JarIcon';
 
 function Sidebar() {
 	const classes = useStyles();
@@ -65,6 +66,7 @@ function Sidebar() {
 				<Tab label={isOpen && 'Transactions'} icon={<HomeIcon />} value="/" />
 				<Tab label={isOpen && 'Categories'} icon={<CategoryIcon />} value="/categories" />
 				<Tab label={isOpen && 'Budget'} icon={<AssignmentIcon />} value="/budget" />
+				<Tab label={isOpen && 'Jars'} icon={<JarIcon />} value="/jars" />
 				<Tab
 					label={isOpen && 'Reports'}
 					icon={<CollectionsBookmarkIcon />}
