@@ -79,7 +79,8 @@ function Categories() {
 									collection={listID}
 									categories={categoriesList}
 									onSortEnd={onSortEnd}
-									distance={10}
+									// distance={10}
+									pressDelay={200}
 								/>
 							);
 						})}

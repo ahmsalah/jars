@@ -12,13 +12,14 @@ const categoriesReducer = (state, action) => {
 
 		case 'ADD_CATEGORY':
 			return (
-				firebase.firestore().collection('users').doc(userID).update({
-					[`categories.allCategories.${action.id}`]: action.category,
+				userID &&
+					firebase.firestore().collection('users').doc(userID).update({
+						[`categories.allCategories.${action.id}`]: action.category,
 
-					[`categories.lists.${action.categoryType}.categoriesIds`]: firebase.firestore.FieldValue.arrayUnion(
-						action.id
-					)
-				}),
+						[`categories.lists.${action.categoryType}.categoriesIds`]: firebase.firestore.FieldValue.arrayUnion(
+							action.id
+						)
+					}),
 				(state = {
 					...state,
 					allCategories: {
@@ -40,13 +41,14 @@ const categoriesReducer = (state, action) => {
 
 		case 'REMOVE_CATEGORY':
 			return (
-				firebase.firestore().collection('users').doc(userID).update({
-					[`categories.allCategories.${action.id}`]: firebase.firestore.FieldValue.delete(),
+				userID &&
+					firebase.firestore().collection('users').doc(userID).update({
+						[`categories.allCategories.${action.id}`]: firebase.firestore.FieldValue.delete(),
 
-					[`categories.lists.${action.categoryType}.categoriesIds`]: firebase.firestore.FieldValue.arrayRemove(
-						action.id
-					)
-				}),
+						[`categories.lists.${action.categoryType}.categoriesIds`]: firebase.firestore.FieldValue.arrayRemove(
+							action.id
+						)
+					}),
 				(state = {
 					...state,
 					allCategories: filterObjectByKey(state.allCategories, action.id),

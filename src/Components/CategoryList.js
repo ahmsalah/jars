@@ -7,14 +7,17 @@ import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(({ spacing, palette }) => ({
+const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 	root: {
-		margin: spacing(3),
+		margin: spacing(3, 5),
 		flex: '1',
 		minWidth: spacing(33),
 		maxWidth: spacing(50),
 		padding: spacing(0, 0, 0.5),
 		overflow: 'hidden',
+		[breakpoints.up('sm')]: {
+			margin: spacing(3)
+		},
 		'& > div': {
 			padding: '0',
 			backgroundColor: palette.grey.light[5]

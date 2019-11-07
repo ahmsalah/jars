@@ -9,20 +9,26 @@ const transactionsReducer = (state, action) => {
 		case 'SET_TRANSACTIONS':
 			return action.transactions;
 		case 'ADD_TRANSACTION':
-			return firebase
-				.firestore()
-				.collection('users')
-				.doc(userID)
-				.collection('transactions')
-				.add(action.transaction);
+			return (
+				userID &&
+				firebase
+					.firestore()
+					.collection('users')
+					.doc(userID)
+					.collection('transactions')
+					.add(action.transaction)
+			);
 		case 'REMOVE_TRANSACTION':
-			return firebase
-				.firestore()
-				.collection('users')
-				.doc(userID)
-				.collection('transactions')
-				.doc(action.id)
-				.delete();
+			return (
+				userID &&
+				firebase
+					.firestore()
+					.collection('users')
+					.doc(userID)
+					.collection('transactions')
+					.doc(action.id)
+					.delete()
+			);
 		default:
 			return state;
 	}

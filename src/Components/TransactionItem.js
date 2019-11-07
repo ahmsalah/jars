@@ -103,7 +103,7 @@ function TransactionItem({ id, category, icon, description, date, amount, type }
 					<ListItemAvatar className={classes.iconContainer}>
 						<Avatar
 							className={classes.icon}
-							src={require(`../icons/${icon}.png`)}
+							src={require(`../assets/icons/${icon}.png`)}
 							alt={category}
 						/>
 					</ListItemAvatar>

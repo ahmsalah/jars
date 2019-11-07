@@ -26,7 +26,7 @@ const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 });
 
 const inputsHeight = '56px';
-const useStyles = makeStyles(({ spacing, palette }) => ({
+const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 	switch: {
 		margin: spacing(3, 0),
 		display: 'flex',
@@ -51,6 +51,12 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
 	textField: {
 		margin: spacing(0, 0, 0, 2),
 		flex: 1
+	},
+	iconField: {
+		padding: spacing(0.6, 1),
+		[breakpoints.up('sm')]: {
+			padding: '5px 15px'
+		}
 	},
 	input: {
 		height: inputsHeight,
@@ -128,15 +134,15 @@ function NewCategoryForm() {
 							<Button
 								disableRipple
 								variant="outlined"
+								className={classes.iconField}
 								onClick={() => {
 									setIconDialogOpen(true);
 								}}>
-								<Avatar src={require(`../icons/${icon}.png`)} />
+								<Avatar src={require(`../assets/icons/${icon}.png`)} />
 								<ExpandMoreIcon />
 							</Button>
 							<TextField
 								className={classes.textField}
-								autoFocus
 								margin="dense"
 								id="name"
 								label="New Category"

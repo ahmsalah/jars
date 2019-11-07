@@ -10,7 +10,8 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
 	titleContainer: {
 		display: 'flex',
 		justifyContent: 'space-between',
-		alignItems: 'center'
+		alignItems: 'center',
+		minHeight: spacing(7)
 	},
 	closeButton: {
 		marginRight: spacing(4),
