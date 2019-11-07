@@ -42,6 +42,12 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 		},
 		'& > li:nth-child(2)': {
 			paddingTop: 0
+		},
+		'& > li': {
+			[breakpoints.down('xs')]: {
+				paddingLeft: 0,
+				paddingRight: 0
+			}
 		}
 	},
 	title: {
@@ -49,7 +55,10 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 		flex: 'none',
 		marginLeft: spacing(2),
 		'& span': {
-			fontWeight: 500
+			fontWeight: 500,
+			[breakpoints.down('sm')]: {
+				fontSize: '.95rem'
+			}
 		}
 	},
 	amountTitle: {
@@ -61,7 +70,10 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 	},
 	bar: {
 		height: '15px',
-		borderRadius: '2px'
+		borderRadius: '2px',
+		[breakpoints.down('sm')]: {
+			height: '12px'
+		}
 	},
 	incBar: {
 		backgroundColor: palette.tertiary.main
@@ -75,14 +87,18 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 		marginRight: spacing(2),
 		marginLeft: spacing(2),
 		'& span': {
-			fontSize: '1rem'
+			[breakpoints.down('sm')]: {
+				fontSize: '.95rem'
+			}
 		}
 	},
 	amountTotal: {
 		marginTop: 0,
 		marginLeft: 'auto',
 		'& span': {
-			fontSize: '1.25rem'
+			[breakpoints.down('sm')]: {
+				fontSize: '1rem'
+			}
 		}
 	}
 }));

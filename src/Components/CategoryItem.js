@@ -97,7 +97,7 @@ const CategoryItem = SortableElement(({ id, type, name, icon }) => {
 						<ListItemAvatar className={classes.iconContainer}>
 							<Avatar
 								className={classes.icon}
-								src={require(`../icons/${icon}.png`)}
+								src={require(`../assets/icons/${icon}.png`)}
 								alt={name}
 							/>
 						</ListItemAvatar>

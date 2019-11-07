@@ -49,10 +49,7 @@ function SelectIconDialog({ onClose, open, TransitionComponent }) {
 		<Dialog TransitionComponent={TransitionComponent} maxWidth="sm" open={open}>
 			<div className={classes.titleContainer}>
 				<DialogTitle id="confirmation-dialog-title">Select icon</DialogTitle>
-				<IconButton
-					className={classes.closeButton}
-					disableRipple
-					onClick={() => onClose()}>
+				<IconButton className={classes.closeButton} disableRipple onClick={() => onClose()}>
 					<CloseIcon />
 				</IconButton>
 			</div>
@@ -68,7 +65,7 @@ function SelectIconDialog({ onClose, open, TransitionComponent }) {
 							<img
 								className={classes.icon}
 								value={icon}
-								src={require(`../icons/${icon}.png`)}
+								src={require(`../assets/icons/${icon}.png`)}
 								alt="icon"
 							/>
 						</div>

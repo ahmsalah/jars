@@ -9,8 +9,8 @@ import { TransactionsContext } from '../context/transactions.context';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
-		maxWidth: spacing(52),
-		margin: `${spacing(8)}px auto ${spacing(6)}px`,
+		maxWidth: '93vw',
+		margin: `${spacing(8, 2, 6)}`,
 		flex: 1,
 		[breakpoints.up('sm')]: {
 			maxWidth: spacing(70)

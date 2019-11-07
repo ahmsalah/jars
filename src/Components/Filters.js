@@ -18,11 +18,22 @@ import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
 		padding: spacing(1),
+		justifyContent: 'center',
+		alignItems: 'center',
+		flexWrap: 'wrap-reverse',
 		[breakpoints.up('sm')]: {
-			padding: spacing(1, 6)
-		},
-		justifyContent: 'flex-end',
-		alignItems: 'center'
+			flexWrap: 'nowrap',
+			padding: spacing(1, 6),
+			justifyContent: 'space-between'
+		}
+	},
+	flexContainer: {
+		display: 'flex',
+		alignItems: 'center',
+		marginBottom: spacing(1.5),
+		[breakpoints.up('sm')]: {
+			marginBottom: 0
+		}
 	},
 	sortBy: {
 		margin: spacing(0.9, 2, 0.5),
@@ -42,7 +53,7 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 			borderColor: 'rgba(0,0,0,.25)',
 			width: spacing(7),
 			height: spacing(6.375),
-			marginTop: spacing(0.4)
+			margin: spacing(0.4, 1, 0)
 		}
 	},
 	datePicker: {
@@ -77,47 +88,50 @@ function Filters() {
 		<React.Fragment>
 			<MuiPickersUtilsProvider utils={DateFnsUtils}>
 				<Toolbar className={classes.root}>
-					<IconButton onClick={() => nextPreviousMonth(-1)}>
-						<ArrowLeftIcon />
-					</IconButton>
+					<div className={classes.flexContainer}>
+						<IconButton onClick={() => nextPreviousMonth(-1)}>
+							<ArrowLeftIcon />
+						</IconButton>
 
-					<DatePicker
-						className={classes.datePicker}
-						showTodayButton
-						variant="dialog"
-						inputVariant="outlined"
-						openTo="month"
-						views={[ 'year', 'month' ]}
-						// label="Showing transactions for"
-						// helperText="Start from year selection"
-						value={selectedDate}
-						onChange={handleDateChange}
-						autoOk
-					/>
-					<IconButton onClick={() => nextPreviousMonth(+1)}>
-						<ArrowRightIcon />
-					</IconButton>
-
-					<TextField
-						select
-						variant="outlined"
-						label="Sorting by"
-						value={sortBy}
-						className={classes.sortBy}
-						onChange={handleSortByChange}>
-						<MenuItem value="dateTimestamp">Date</MenuItem>
-						<MenuItem value="amount">Amount</MenuItem>
-						<MenuItem value="category">Category</MenuItem>
-					</TextField>
-					<ToggleButtonGroup
-						className={classes.reverseButton}
-						value={isReversed && 'reversed'}
-						onChange={() => toggleIsReversed()}
-						arial-label="text formatting">
-						<ToggleButton value="reversed" aria-label="bold">
-							<SwapVertIcon />
-						</ToggleButton>
-					</ToggleButtonGroup>
+						<DatePicker
+							className={classes.datePicker}
+							showTodayButton
+							variant="dialog"
+							inputVariant="outlined"
+							openTo="month"
+							views={[ 'year', 'month' ]}
+							// label="Showing transactions for"
+							// helperText="Start from year selection"
+							value={selectedDate}
+							onChange={handleDateChange}
+							autoOk
+						/>
+						<IconButton onClick={() => nextPreviousMonth(+1)}>
+							<ArrowRightIcon />
+						</IconButton>
+					</div>
+					<div className={classes.flexContainer}>
+						<TextField
+							select
+							variant="outlined"
+							label="Sorting by"
+							value={sortBy}
+							className={classes.sortBy}
+							onChange={handleSortByChange}>
+							<MenuItem value="dateTimestamp">Date</MenuItem>
+							<MenuItem value="amount">Amount</MenuItem>
+							<MenuItem value="category">Category</MenuItem>
+						</TextField>
+						<ToggleButtonGroup
+							className={classes.reverseButton}
+							value={isReversed && 'reversed'}
+							onChange={() => toggleIsReversed()}
+							arial-label="text formatting">
+							<ToggleButton value="reversed" aria-label="bold">
+								<SwapVertIcon />
+							</ToggleButton>
+						</ToggleButtonGroup>
+					</div>
 				</Toolbar>
 				<Divider />
 			</MuiPickersUtilsProvider>

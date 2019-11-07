@@ -13,25 +13,35 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
 import { SnackbarActionContext } from '../context/snackbar.context';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
 		'&:hover button': {
 			opacity: '1'
 		},
+		// '& li div:last-child': {
+		// 	right: spacing(1)
+		// },
 		backgroundColor: '#fff'
 	},
 	iconContainer: {
-		width: '12%',
-		marginRight: spacing(1)
+		width: '10%',
+		[breakpoints.up('sm')]: {
+			marginRight: spacing(1)
+		}
 	},
 	icon: {
-		width: '55px',
-		height: '55px'
+		width: 48,
+		height: 48,
+		[breakpoints.up('sm')]: {
+			width: 55,
+			height: 55
+		}
 	},
 	title: {
-		width: '39%',
-		'& span': {}
+		width: '39%'
 	},
 	date: {
 		width: '17%',
@@ -41,19 +51,22 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 		}
 	},
 	amount: {
-		width: '32%',
+		[breakpoints.up('sm')]: {
+			width: '32%'
+		},
 		display: 'flex',
 		flexDirection: 'Column',
 		'& span, p': {
 			marginLeft: 'auto',
-			fontSize: '1rem',
 			fontWeight: 500,
-			marginRight: spacing(2.5)
+			[breakpoints.up('sm')]: {
+				marginRight: spacing(2.5)
+			}
 		}
 	},
 	deleteButton: {
-		marginRight: '-5px',
 		[breakpoints.up('md')]: {
+			marginRight: '-5px',
 			opacity: '0',
 			transition: 'opacity .3s'
 		}
@@ -63,9 +76,19 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 function TransactionItem({ id, category, icon, description, date, amount, type }) {
 	const classes = useStyles();
 	const dispatch = useContext(DispatchContext);
-	const theme = useTheme();
-	const matches = useMediaQuery(theme.breakpoints.up('sm'));
+	const themeBP = useTheme();
+	const matches = useMediaQuery(themeBP.breakpoints.up('sm'));
 	const { snackbarDeleteTransaction } = useContext(SnackbarActionContext);
+
+	const theme = createMuiTheme({
+		typography: {
+			fontSize: matches ? 14 : 12
+		},
+		palette: {
+			primary: { main: '#1aa333' },
+			secondary: { main: '#de474e' }
+		}
+	});
 
 	const handleDeleteItem = () => {
 		dispatch({ type: 'REMOVE_TRANSACTION', id });
@@ -75,42 +98,44 @@ function TransactionItem({ id, category, icon, description, date, amount, type }
 	let color = type === 'exp' ? 'secondary' : 'primary';
 	return (
 		<div className={classes.root}>
-			<ListItem component="div">
-				<ListItemAvatar className={classes.iconContainer}>
-					<Avatar
-						className={classes.icon}
-						src={require(`../icons/${icon}.png`)}
-						alt={category}
-					/>
-				</ListItemAvatar>
-				<ListItemText
-					className={classes.title}
-					primary={category}
-					secondary={description}
-				/>
-				<Hidden xsDown>
+			<ThemeProvider theme={theme}>
+				<ListItem component="div">
+					<ListItemAvatar className={classes.iconContainer}>
+						<Avatar
+							className={classes.icon}
+							src={require(`../icons/${icon}.png`)}
+							alt={category}
+						/>
+					</ListItemAvatar>
 					<ListItemText
-						className={classes.date}
-						primary={formatDate(date, 'includeYear')}
-						primaryTypographyProps={{ variant: 'body2' }}
+						className={classes.title}
+						primary={category}
+						secondary={description}
 					/>
-				</Hidden>
-				<ListItemText
-					className={classes.amount}
-					primary={formatAmount(amount)}
-					secondary={!matches && formatDate(date)}
-					primaryTypographyProps={{ color: color }}
-				/>
-				<ListItemSecondaryAction>
-					<IconButton
-						edge="end"
-						aria-label="Delete"
-						onClick={handleDeleteItem}
-						className={classes.deleteButton}>
-						<DeleteIcon />
-					</IconButton>
-				</ListItemSecondaryAction>
-			</ListItem>
+					<Hidden xsDown>
+						<ListItemText
+							className={classes.date}
+							primary={formatDate(date, 'includeYear')}
+							primaryTypographyProps={{ variant: 'body2' }}
+						/>
+					</Hidden>
+					<ListItemText
+						className={classes.amount}
+						primary={formatAmount(amount)}
+						secondary={!matches && formatDate(date)}
+						primaryTypographyProps={{ color: color }}
+					/>
+					<ListItemSecondaryAction>
+						<IconButton
+							edge="end"
+							aria-label="Delete"
+							onClick={handleDeleteItem}
+							className={classes.deleteButton}>
+							<DeleteIcon />
+						</IconButton>
+					</ListItemSecondaryAction>
+				</ListItem>
+			</ThemeProvider>
 		</div>
 	);
 }

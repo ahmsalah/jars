@@ -11,7 +11,7 @@ export const initialCategories = {
 		'ctg-9': { id: 'ctg-9', name: 'Shopping', type: 'exp', icon: 'icon_7' },
 		'ctg-10': { id: 'ctg-10', name: 'Food', type: 'exp', icon: 'icon_133' },
 		'ctg-11': { id: 'ctg-11', name: 'Pay off debt', type: 'exp', icon: 'icon_140' },
-		'ctg-12': { id: 'ctg-12', name: 'Installment', type: 'exp', icon: 'icon_112' },
+		'ctg-12': { id: 'ctg-12', name: 'Installments', type: 'exp', icon: 'icon_112' },
 		'ctg-13': { id: 'ctg-13', name: 'Entertainment', type: 'exp', icon: 'icon_6' },
 		'ctg-14': { id: 'ctg-14', name: 'Café', type: 'exp', icon: 'icon_105' },
 		'ctg-15': { id: 'ctg-15', name: 'Others', type: 'exp', icon: 'ic_category_other_expense' },
@@ -81,55 +81,48 @@ const transactions = [
 		category: 'Initial balance',
 		date: new Date('2019-11-01'),
 		description: '',
-
 		type: 'inc'
 	},
 	{
-		amount: -20,
+		amount: -70,
 		category: 'Transportation',
 		date: new Date('2019-11-04'),
 		description: 'Uber',
-
 		type: 'exp'
 	},
 	{
-		amount: -250,
+		amount: -350,
 		category: 'Phone',
 		date: new Date('2019-11-07'),
 		description: 'Phone bill',
-
 		type: 'exp'
 	},
 	{
-		amount: -4000,
+		amount: -1300,
 		category: 'Groceries',
 		date: new Date('2019-11-26'),
 		description: `For next week's party`,
-
 		type: 'exp'
 	},
 	{
-		amount: 80000,
+		amount: 8000,
 		category: 'Salary',
 		date: new Date('2019-11-28'),
 		description: '',
-
 		type: 'inc'
 	},
 	{
-		amount: -150,
+		amount: -250,
 		category: 'Transportation',
 		date: new Date('2019-11-20'),
-		description: 'Transportation to alex',
-
+		description: 'Transportation to dahab',
 		type: 'exp'
 	},
 	{
-		amount: -7000,
+		amount: -700,
 		category: 'Shopping',
 		date: new Date('2019-11-15'),
 		description: 'Bought a new jeans',
-
 		type: 'exp'
 	},
 	{
@@ -137,7 +130,6 @@ const transactions = [
 		category: 'Food',
 		date: new Date('2019-11-07'),
 		description: `Ordered food while at work`,
-
 		type: 'exp'
 	},
 	{
@@ -145,15 +137,6 @@ const transactions = [
 		category: 'Gas',
 		date: new Date('2019-11-06'),
 		description: '',
-
-		type: 'exp'
-	},
-	{
-		amount: -30000,
-		category: 'Pay off debt',
-		date: new Date('2019-11-07'),
-		description: '',
-
 		type: 'exp'
 	}
 ];

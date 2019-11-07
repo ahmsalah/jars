@@ -136,7 +136,7 @@ function NewTransactionForm() {
 													className={classes.menuItem}>
 													<Avatar
 														className={classes.avatar}
-														src={require(`../icons/${ct.icon}.png`)}
+														src={require(`../assets/icons/${ct.icon}.png`)}
 													/>
 													{ct.name}
 												</MenuItem>

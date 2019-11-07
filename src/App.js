@@ -14,12 +14,13 @@ import { SnackbarProvider } from './context/snackbar.context';
 import PrivateRoute from './PrivateRoute';
 import theme from './muiTheme';
 import { AuthContext } from './context/auth.context';
-import Hidden from '@material-ui/core/Hidden';
 import SnackbarFeedback from './components/SnackbarFeedback';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 function App({ hideLoader }) {
 	useEffect(() => hideLoader(), [ hideLoader ]);
 	const currentUser = useContext(AuthContext);
+	const matches = useMediaQuery('(min-width:600px)');
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -29,14 +30,8 @@ function App({ hideLoader }) {
 					<SnackbarProvider>
 						<SnackbarFeedback />
 						{currentUser && <Navbar />}
-						<div
-							style={
-								currentUser && {
-									display: 'flex',
-									backgroundColor: 'rgb(232, 232, 232)'
-								}
-							}>
-							<Hidden xsDown>{currentUser && <Sidebar />}</Hidden>
+						<div style={currentUser && { display: 'flex', justifyContent: 'center' }}>
+							{matches && currentUser && <Sidebar />}
 
 							<Switch>
 								<PrivateRoute exact path="/" component={Transactions} />

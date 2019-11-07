@@ -42,11 +42,11 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 		zIndex: 50,
 		maxWidth: '40ch',
 		fontWeight: 400,
-		marginBottom: 20,
+		marginBottom: spacing(3),
 		fontSize: '1rem',
 		[breakpoints.up('lg')]: {
 			fontSize: '1.15rem',
-			marginBottom: 30
+			marginBottom: spacing(4)
 		}
 	},
 	signIn: {
@@ -59,8 +59,8 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 		alignItems: 'center',
 		justifyContent: 'center',
 		[breakpoints.up('lg')]: {
-			paddingRight: 100,
-			paddingLeft: 100
+			paddingRight: spacing(12),
+			paddingLeft: spacing(12)
 		},
 		'& > *': {
 			position: 'absolute',
@@ -125,7 +125,6 @@ function Login() {
 	const greaterThan1200 = useMediaQuery('(min-width:1200px)');
 	const greaterThan1000 = useMediaQuery('(min-width:1000px)');
 	const greaterThan800 = useMediaQuery('(min-width:800px)');
-	const greaterThan600 = useMediaQuery('(min-width:600px)');
 
 	const handWidth =
 		(greaterThan1200 && '65em') ||

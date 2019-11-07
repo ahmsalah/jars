@@ -15,7 +15,7 @@ export default makeStyles(({ spacing, palette, breakpoints }) => ({
 		height: spacing(8)
 	},
 	addButton: {
-		padding: spacing(0, 14, 0, 4),
+		padding: spacing(0, 12, 0, 4),
 		[breakpoints.up('sm')]: {
 			padding: spacing(0, 20, 0, 4)
 		}
