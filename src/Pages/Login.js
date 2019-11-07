@@ -146,10 +146,10 @@ function Login() {
 
 	const calc = (x, y) => [ x - window.innerWidth / 2, y - window.innerHeight / 2 ];
 	const transHand = (x, y) =>
-		`translate3d(${x / 4 + (greaterThan1200 ? 340 : 220)}px,${y / 4.5 -
+		`translate3d(${x / 3 + (greaterThan1200 ? 340 : 220)}px,${y / 4.5 -
 			(greaterThan1000 ? 150 : 100)}px,0)`;
 	const transCoin = (x, y) =>
-		`translate3d(${x / 4 + (greaterThan1200 ? 340 : 220)}px,${y / 4.5 -
+		`translate3d(${x / 3 + (greaterThan1200 ? 340 : 220)}px,${y / 4.5 -
 			(greaterThan1000 ? 150 : 100)}px,0)`;
 	const transJarRight = (x, y) =>
 		`translate3d(${x / 9 + (greaterThan1200 ? -20 : -50)}px,${y / 11 +

@@ -77,9 +77,9 @@ export const initialCategories = {
 
 const transactions = [
 	{
-		amount: 35000,
+		amount: 3500,
 		category: 'Initial balance',
-		date: new Date('2019-11-01'),
+		date: new Date('2019-11-29'),
 		description: '',
 		type: 'inc'
 	},
@@ -107,7 +107,7 @@ const transactions = [
 	{
 		amount: 8000,
 		category: 'Salary',
-		date: new Date('2019-11-28'),
+		date: new Date('2019-11-22'),
 		description: '',
 		type: 'inc'
 	},
