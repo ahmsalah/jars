@@ -12,7 +12,7 @@ export function AuthProvider({ children }) {
 		firebase.auth().onAuthStateChanged(user => {
 			if (user) {
 				window.localStorage.setItem('user', JSON.stringify(user));
-				setCurrentUser(JSON.parse(window.localStorage.getItem('user')));
+				setCurrentUser(user);
 			} else {
 				window.localStorage.removeItem('user');
 				setCurrentUser(null);

@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 	root: {
-		margin: spacing(3, 5),
+		margin: spacing(3),
 		flex: '1',
 		minWidth: spacing(33),
 		maxWidth: spacing(50),

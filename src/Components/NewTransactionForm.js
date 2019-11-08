@@ -176,7 +176,7 @@ function NewTransactionForm() {
 									format="dd/MM/yyyy"
 									inputVariant="outlined"
 									value={date}
-									onChange={() => setDate(date)}
+									onChange={d => setDate(d)}
 									KeyboardButtonProps={{
 										'aria-label': 'change date'
 									}}

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { TransactionsContext } from '../context/transactions.context';
 import { Toolbar } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
@@ -14,25 +14,17 @@ import DateFnsUtils from '@date-io/date-fns';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import Popover from '@material-ui/core/Popover';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
-		padding: spacing(1),
-		justifyContent: 'center',
+		padding: spacing(1, 3, 1, 2),
+		justifyContent: 'space-evenly',
 		alignItems: 'center',
-		flexWrap: 'wrap-reverse',
-		[breakpoints.up('sm')]: {
-			flexWrap: 'nowrap',
-			padding: spacing(1, 6),
-			justifyContent: 'space-between'
-		}
-	},
-	flexContainer: {
-		display: 'flex',
-		alignItems: 'center',
-		marginBottom: spacing(1.5),
-		[breakpoints.up('sm')]: {
-			marginBottom: 0
+		[breakpoints.up('md')]: {
+			padding: spacing(1, 7, 1, 6)
 		}
 	},
 	sortBy: {
@@ -53,8 +45,14 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 			borderColor: 'rgba(0,0,0,.25)',
 			width: spacing(7),
 			height: spacing(6.375),
-			margin: spacing(0.4, 1, 0)
+			margin: spacing(0.4, 0, 0),
+			[breakpoints.up('sm')]: {
+				margin: spacing(0.4, 1, 0)
+			}
 		}
+	},
+	dateContainer: {
+		display: 'flex'
 	},
 	datePicker: {
 		justifySelf: 'flex-start',
@@ -65,11 +63,25 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 			paddingBottom: spacing(2),
 			cursor: 'pointer'
 		}
+	},
+	moreButton: {
+		marginLeft: spacing(1)
+	},
+	morePopover: {
+		padding: spacing(1.5, 2.5),
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 }));
 
 function Filters() {
 	const classes = useStyles();
+	const [ anchorEl, setAnchorEl ] = useState(null);
+	const open = Boolean(anchorEl);
+	const id = open ? 'simple-popover' : undefined;
+	const matches = useMediaQuery('(min-width:500px)');
+
 	const {
 		isReversed,
 		toggleIsReversed,
@@ -88,7 +100,7 @@ function Filters() {
 		<React.Fragment>
 			<MuiPickersUtilsProvider utils={DateFnsUtils}>
 				<Toolbar className={classes.root}>
-					<div className={classes.flexContainer}>
+					<div className={classes.dateContainer}>
 						<IconButton onClick={() => nextPreviousMonth(-1)}>
 							<ArrowLeftIcon />
 						</IconButton>
@@ -110,28 +122,75 @@ function Filters() {
 							<ArrowRightIcon />
 						</IconButton>
 					</div>
-					<div className={classes.flexContainer}>
-						<TextField
-							select
-							variant="outlined"
-							label="Sorting by"
-							value={sortBy}
-							className={classes.sortBy}
-							onChange={handleSortByChange}>
-							<MenuItem value="dateTimestamp">Date</MenuItem>
-							<MenuItem value="amount">Amount</MenuItem>
-							<MenuItem value="category">Category</MenuItem>
-						</TextField>
-						<ToggleButtonGroup
-							className={classes.reverseButton}
-							value={isReversed && 'reversed'}
-							onChange={() => toggleIsReversed()}
-							arial-label="text formatting">
-							<ToggleButton value="reversed" aria-label="bold">
-								<SwapVertIcon />
-							</ToggleButton>
-						</ToggleButtonGroup>
-					</div>
+					{matches ? (
+						<React.Fragment>
+							<TextField
+								select
+								variant="outlined"
+								label="Sorting by"
+								value={sortBy}
+								className={classes.sortBy}
+								onChange={handleSortByChange}>
+								<MenuItem value="dateTimestamp">Date</MenuItem>
+								<MenuItem value="amount">Amount</MenuItem>
+								<MenuItem value="category">Category</MenuItem>
+							</TextField>
+							<ToggleButtonGroup
+								className={classes.reverseButton}
+								value={isReversed && 'reversed'}
+								onChange={() => toggleIsReversed()}
+								arial-label="text formatting">
+								<ToggleButton value="reversed" aria-label="bold">
+									<SwapVertIcon />
+								</ToggleButton>
+							</ToggleButtonGroup>
+						</React.Fragment>
+					) : (
+						<React.Fragment>
+							<IconButton
+								onClick={e => setAnchorEl(e.currentTarget)}
+								className={classes.moreButton}
+								aria-label="more options">
+								<MoreHorizIcon fontSize="large" />
+							</IconButton>
+							<Popover
+								id={id}
+								open={open}
+								anchorEl={anchorEl}
+								onClose={() => setAnchorEl(null)}
+								anchorOrigin={{
+									vertical: 'bottom',
+									horizontal: 'center'
+								}}
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'center'
+								}}>
+								<div className={classes.morePopover}>
+									<TextField
+										select
+										variant="outlined"
+										label="Sorting by"
+										value={sortBy}
+										className={classes.sortBy}
+										onChange={handleSortByChange}>
+										<MenuItem value="dateTimestamp">Date</MenuItem>
+										<MenuItem value="amount">Amount</MenuItem>
+										<MenuItem value="category">Category</MenuItem>
+									</TextField>
+									<ToggleButtonGroup
+										className={classes.reverseButton}
+										value={isReversed && 'reversed'}
+										onChange={() => toggleIsReversed()}
+										arial-label="text formatting">
+										<ToggleButton value="reversed" aria-label="bold">
+											<SwapVertIcon />
+										</ToggleButton>
+									</ToggleButtonGroup>
+								</div>
+							</Popover>
+						</React.Fragment>
+					)}
 				</Toolbar>
 				<Divider />
 			</MuiPickersUtilsProvider>

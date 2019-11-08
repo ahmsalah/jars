@@ -6,8 +6,32 @@ import useToggleState from '../hooks/useToggleState';
 import useInputState from '../hooks/useInputState';
 import { filterArrayByMonth } from '../helpers';
 
-function useTransactionsReducer(transactionsReducer) {
+function useTransactionsReducer() {
 	const currentUser = useContext(AuthContext);
+
+	const transactionsReducer = (state, action) => {
+		switch (action.type) {
+			case 'SET_TRANSACTIONS':
+				return action.transactions;
+			case 'ADD_TRANSACTION':
+				return firebase
+					.firestore()
+					.collection('users')
+					.doc(currentUser.uid)
+					.collection('transactions')
+					.add(action.transaction);
+			case 'REMOVE_TRANSACTION':
+				return firebase
+					.firestore()
+					.collection('users')
+					.doc(currentUser.uid)
+					.collection('transactions')
+					.doc(action.id)
+					.delete();
+			default:
+				return state;
+		}
+	};
 
 	const [ transactions, dispatch ] = useReducer(transactionsReducer, initialTransactions);
 	const [ filteredTransactions, setFilteredTransactions ] = useState(transactions);

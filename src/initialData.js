@@ -77,7 +77,7 @@ export const initialCategories = {
 
 const transactions = [
 	{
-		amount: 5000,
+		amount: 3500,
 		category: 'Initial balance',
 		date: new Date('2019-11-29'),
 		description: '',
@@ -91,32 +91,11 @@ const transactions = [
 		type: 'exp'
 	},
 	{
-		amount: -350,
-		category: 'Phone',
-		date: new Date('2019-11-07'),
-		description: 'Phone bill',
-		type: 'exp'
-	},
-	{
-		amount: -1300,
-		category: 'Groceries',
-		date: new Date('2019-11-26'),
-		description: `For next week's party`,
-		type: 'exp'
-	},
-	{
 		amount: 8000,
 		category: 'Salary',
 		date: new Date('2019-11-22'),
 		description: '',
 		type: 'inc'
-	},
-	{
-		amount: -250,
-		category: 'Transportation',
-		date: new Date('2019-11-20'),
-		description: 'Transportation to dahab',
-		type: 'exp'
 	},
 	{
 		amount: -700,
@@ -133,19 +112,41 @@ const transactions = [
 		type: 'exp'
 	},
 	{
-		amount: -350,
+		amount: -450,
 		category: 'Gas',
 		date: new Date('2019-11-06'),
 		description: '',
 		type: 'exp'
-	},
-	{
-		amount: -6500,
-		category: 'Rent',
-		date: new Date('2019-11-03'),
-		description: '',
-		type: 'exp'
 	}
+	// {
+	// 	amount: -350,
+	// 	category: 'Phone',
+	// 	date: new Date('2019-11-07'),
+	// 	description: 'Phone bill',
+	// 	type: 'exp'
+	// },
+	// {
+	// 	amount: -1300,
+	// 	category: 'Groceries',
+	// 	date: new Date('2019-11-26'),
+	// 	description: `For next week's party`,
+	// 	type: 'exp'
+	// },
+	// {
+	// 	amount: -250,
+	// 	category: 'Transportation',
+	// 	date: new Date('2019-11-20'),
+	// 	description: 'Transportation to dahab',
+	// 	type: 'exp'
+	// },
+
+	// {
+	// 	amount: -6500,
+	// 	category: 'Rent',
+	// 	date: new Date('2019-11-03'),
+	// 	description: '',
+	// 	type: 'exp'
+	// }
 ];
 
 export const initialTransactions = transactions.map(function(tr) {

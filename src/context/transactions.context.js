@@ -1,5 +1,4 @@
 import React, { createContext } from 'react';
-import transactionsReducer from '../reducers/transactions.reducer';
 import useTransactionsReducer from '../hooks/useTransactionsReducer';
 
 export const TransactionsContext = createContext();
@@ -16,7 +15,7 @@ export function TransactionsProvider(props) {
 		handleSortByChange,
 		selectedDate,
 		handleDateChange
-	} = useTransactionsReducer(transactionsReducer);
+	} = useTransactionsReducer();
 
 	return (
 		<TransactionsContext.Provider
