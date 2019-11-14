@@ -7,18 +7,24 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(({ spacing, palette }) => ({
+const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 	popover: {
 		padding: spacing(2),
 		display: 'flex',
-		backgroundColor: palette.grey[900]
+		backgroundColor: palette.grey[900],
+		[breakpoints.down('xs')]: {
+		padding: spacing(2, 1)
+		}
 	},
 	popoverContent: {
 		padding: spacing(0, 1.5),
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		[breakpoints.down('xs')]: {
+			padding: spacing(0, 1)
+		}
 	},
 	popoverAvatar: {
 		margin: spacing(0, 1),
@@ -31,8 +37,17 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
 	bolder: {
 		fontWeight: 500
 	},
-	typography: {
-		color: '#fff'
+	name: {
+		color: '#fff',
+		[breakpoints.down('xs')]: {
+			fontSize: '0.825rem'
+		}
+	},
+	email: {
+		color: '#fff',
+		[breakpoints.down('xs')]: {
+			fontSize: '0.70rem'
+		}
 	}
 }));
 
@@ -63,11 +78,11 @@ function ProfilePopover({ anchorEl, setAnchorEl }) {
 					className={classes.popoverAvatar}
 				/>
 				<div className={classes.popoverContent}>
-					<Typography variant="body2" className={classes.typography}>
+					<Typography variant="body2" className={classes.name}>
 						Signed in as{' '}
 						<span className={classes.bolder}>{currentUser.displayName}</span>
 					</Typography>
-					<Typography variant="caption" className={classes.typography}>
+					<Typography variant="caption" className={classes.email}>
 						{currentUser.email}
 					</Typography>
 

@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles(({ spacing, palette, breakpoints }) => ({
 	root: {
-		backgroundColor: palette.tertiary[2],
+		backgroundColor: palette.tertiary[3],
 		zIndex: 280,
 		boxShadow:
 			'0px 2px 2px -1px rgba(0,0,0,0.1), 0px 4px 2px 0px rgba(0,0,0,0.04), 0px 1px 4px 0px rgba(0,0,0,0.1)',

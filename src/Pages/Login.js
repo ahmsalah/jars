@@ -13,7 +13,7 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	'@global': {
 		body: {
 			background: 'radial-gradient(circle, rgba(45,45,50,1) 75%, rgba(35,35,39,1) 100%)',
-			overflow: 'hidden'
+			overflow: styleProps => styleProps.heightGreaterThan550 ? 'hidden' : 'initial'
 		}
 	},
 
@@ -50,7 +50,7 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 		}
 	},
 	signIn: {
-		margin: spacing(7, 0, 2)
+		margin: spacing(7, 0)
 	},
 	container: {
 		flex: 1,
@@ -72,33 +72,33 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 		}
 	},
 	hand: {
-		width: prlx => prlx.handWidth,
-		height: prlx => `calc(${prlx.handWidth} * 0.2366)`,
+		width: styleProps => styleProps.handWidth,
+		height: styleProps => `calc(${styleProps.handWidth} * 0.2366)`,
 		backgroundImage: `url(${require('../assets/hand.png')})`
 	},
 	coin: {
-		width: prlx => prlx.handWidth,
-		height: prlx => `calc(${prlx.handWidth} * 0.2366)`,
+		width: styleProps => styleProps.handWidth,
+		height: styleProps => `calc(${styleProps.handWidth} * 0.2366)`,
 		backgroundImage: `url(${require('../assets/coin.png')})`
 	},
 	jarRight: {
-		width: prlx => prlx.jarWidth,
-		height: prlx => `calc(${prlx.jarWidth} * 0.5267)`,
+		width: styleProps => styleProps.jarWidth,
+		height: styleProps => `calc(${styleProps.jarWidth} * 0.5267)`,
 		backgroundImage: `url(${require('../assets/jar-right.png')})`
 	},
 	jarLeft: {
-		width: prlx => prlx.jarWidth,
-		height: prlx => `calc(${prlx.jarWidth} * 0.5267)`,
+		width: styleProps => styleProps.jarWidth,
+		height: styleProps => `calc(${styleProps.jarWidth} * 0.5267)`,
 		backgroundImage: `url(${require('../assets/jar-left.png')})`
 	},
 	jarMiddle: {
-		width: prlx => prlx.jarWidth,
-		height: prlx => `calc(${prlx.jarWidth} * 0.5267)`,
+		width: styleProps => styleProps.jarWidth,
+		height: styleProps => `calc(${styleProps.jarWidth} * 0.5267)`,
 		backgroundImage: `url(${require('../assets/jar-middle.png')})`
 	},
 	savingJars: {
-		width: prlx => prlx.savingJarsWidth,
-		height: prlx => `calc(${prlx.savingJarsWidth} * 0.5325)`,
+		width: styleProps => styleProps.savingJarsWidth,
+		height: styleProps => `calc(${styleProps.savingJarsWidth} * 0.5325)`,
 		backgroundImage: `url(${require('../assets/saving-jars.png')})`,
 		position: 'absolute',
 		borderRadius: 5,
@@ -107,7 +107,7 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 		backgroundRepeat: 'no-repeat',
 		willChange: 'transform',
 		top: 15,
-		left: prlx => `calc(51% - ${prlx.savingJarsWidth} / 2)`
+		left: styleProps => `calc(51% - ${styleProps.savingJarsWidth} / 2)`
 	},
 	bottom: {
 		backgroundColor: '#373741',
@@ -122,10 +122,10 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 }));
 
 function Login() {
+	const heightGreaterThan550 = useMediaQuery('(min-height:550px)');
 	const greaterThan1200 = useMediaQuery('(min-width:1200px)');
 	const greaterThan1000 = useMediaQuery('(min-width:1000px)');
 	const greaterThan800 = useMediaQuery('(min-width:800px)');
-
 	const handWidth =
 		(greaterThan1200 && '65em') ||
 		(greaterThan1000 && '60em') ||
@@ -142,7 +142,8 @@ function Login() {
 		(greaterThan800 && '10em') ||
 		'10em';
 
-	const prlx = { handWidth, jarWidth, savingJarsWidth };
+	const styleProps = { handWidth, jarWidth, savingJarsWidth, heightGreaterThan550 };
+
 
 	const calc = (x, y) => [ x - window.innerWidth / 2, y - window.innerHeight / 2 ];
 	const transHand = (x, y) =>
@@ -163,7 +164,7 @@ function Login() {
 	const transSavingJars = (x, y) => `translate3d(${x / 35}px,${y / 30}px,0)`;
 
 	const currentUser = useContext(AuthContext);
-	const classes = useStyles(prlx);
+	const classes = useStyles(styleProps, heightGreaterThan550);
 
 	const [ props, set ] = useSpring(() => ({
 		xy: [ 0, 0 ],
@@ -213,7 +214,7 @@ function Login() {
 				className={classes.savingJars}
 				style={{ transform: props.xy.interpolate(transSavingJars) }}
 			/>
-			{greaterThan800 && <span className={classes.bottom} />}
+			{(greaterThan800 && heightGreaterThan550) && <span className={classes.bottom} />}
 			<div className={classes.left}>
 				<Typography variant="h6" className={classes.typography}>
 					Save and manage your personal money and keep track of your day to day in-and-out
@@ -230,7 +231,7 @@ function Login() {
 					<StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
 				</div>
 			</div>
-			{greaterThan800 && (
+			{(greaterThan800 && heightGreaterThan550) && (
 				<div className={classes.container}>
 					<animated.div
 						className={classes.coin}
