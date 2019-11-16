@@ -1,10 +1,9 @@
 import firebase from '../firebase/firebase';
 
-const userID =
-	JSON.parse(window.localStorage.getItem('user')) &&
-	JSON.parse(window.localStorage.getItem('user')).uid;
-
 const transactionsReducer = (state, action) => {
+	const userID =
+		JSON.parse(window.localStorage.getItem('user')) !== null &&
+		JSON.parse(window.localStorage.getItem('user')).uid;
 	switch (action.type) {
 		case 'SET_TRANSACTIONS':
 			return action.transactions;

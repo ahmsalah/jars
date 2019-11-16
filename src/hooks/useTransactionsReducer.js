@@ -1,39 +1,13 @@
 import { useState, useEffect, useReducer, useContext } from 'react';
 import { AuthContext } from '../context/auth.context';
 import firebase from '../firebase/firebase';
-import { initialTransactions } from '../initialData';
 import useToggleState from '../hooks/useToggleState';
 import useInputState from '../hooks/useInputState';
 import { filterArrayByMonth } from '../helpers';
 
-function useTransactionsReducer() {
+function useTransactionsReducer(transactionsReducer) {
 	const currentUser = useContext(AuthContext);
-
-	const transactionsReducer = (state, action) => {
-		switch (action.type) {
-			case 'SET_TRANSACTIONS':
-				return action.transactions;
-			case 'ADD_TRANSACTION':
-				return firebase
-					.firestore()
-					.collection('users')
-					.doc(currentUser.uid)
-					.collection('transactions')
-					.add(action.transaction);
-			case 'REMOVE_TRANSACTION':
-				return firebase
-					.firestore()
-					.collection('users')
-					.doc(currentUser.uid)
-					.collection('transactions')
-					.doc(action.id)
-					.delete();
-			default:
-				return state;
-		}
-	};
-
-	const [ transactions, dispatch ] = useReducer(transactionsReducer, initialTransactions);
+	const [ transactions, dispatch ] = useReducer(transactionsReducer, []);
 	const [ filteredTransactions, setFilteredTransactions ] = useState(transactions);
 	const [ sortBy, handleSortByChange ] = useInputState('dateTimestamp');
 	const [ isReversed, toggleIsReversed ] = useToggleState(false);

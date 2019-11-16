@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
 				window.localStorage.setItem('user', JSON.stringify(user));
 				setCurrentUser(user);
 			} else {
-				window.localStorage.removeItem('user');
+				window.localStorage.clear();
 				setCurrentUser(null);
 			}
 		});

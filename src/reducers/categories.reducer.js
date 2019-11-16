@@ -1,11 +1,10 @@
 import firebase from '../firebase/firebase';
 import { filterObjectByKey } from '../helpers';
 
-const userID =
-	JSON.parse(window.localStorage.getItem('user')) !== null &&
-	JSON.parse(window.localStorage.getItem('user')).uid;
-
 const categoriesReducer = (state, action) => {
+	const userID =
+		JSON.parse(window.localStorage.getItem('user')) !== null &&
+		JSON.parse(window.localStorage.getItem('user')).uid;
 	switch (action.type) {
 		case 'SET_CATEGORIES':
 			return action.categories;
