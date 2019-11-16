@@ -16,7 +16,6 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 			overflow: styleProps => styleProps.heightGreaterThan550 ? 'hidden' : 'initial'
 		}
 	},
-
 	root: {
 		display: 'flex',
 		justifyContent: 'center',
@@ -164,7 +163,7 @@ function Login() {
 	const transSavingJars = (x, y) => `translate3d(${x / 35}px,${y / 30}px,0)`;
 
 	const currentUser = useContext(AuthContext);
-	const classes = useStyles(styleProps, heightGreaterThan550);
+	const classes = useStyles(styleProps);
 
 	const [ props, set ] = useSpring(() => ({
 		xy: [ 0, 0 ],

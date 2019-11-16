@@ -35,9 +35,10 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 		justifyContent: 'center'
 	},
 	dialogText: {
-		padding: spacing(1.5, 3, 1.5),
+		padding: spacing(1.5, 2),
 		backgroundColor: 'rgba(0, 0, 0, .03)',
 		'& > p': {
+			fontSize: "0.875rem",
 			color: palette.text.secondary,
 			marginBottom: 0
 		}
@@ -52,22 +53,24 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 	},
 	textField: {
 		margin: spacing(0, 0, 0, 2),
-		flex: 1
+		flex: 1,
+		"& label": {
+			fontSize: styleProps => styleProps.matches ? "1rem" : "0.875rem",
+		}
 	},
 	iconField: {
 		padding: spacing(0.6, 1),
 		[breakpoints.up('sm')]: {
-			padding: '5px 15px'
+			padding: spacing(0.6, 2)
 		}
 	},
 	input: {
 		height: inputsHeight,
-		padding: '0 14px'
+		padding: spacing(0, 1.5)
 	}
 }));
 
 function NewCategoryForm() {
-	const classes = useStyles();
 	const dispatch = useContext(DispatchContext);
 	const { snackbarAddCategory } = useContext(SnackbarActionContext);
 	const [ name, handleChange, reset ] = useInputState('');
@@ -76,7 +79,9 @@ function NewCategoryForm() {
 	const [ iconDialogOpen, setIconDialogOpen ] = useState(false);
 	const [ icon, setIcon ] = useState('icon_not_selected');
 	const matches = useMediaQuery('(min-width:370px)');
-
+	const styleProps = {matches}
+	const classes = useStyles(styleProps);
+	
 	const theme = createMuiTheme({
 		palette: {
 			primary: { main: isExpense ? '#de474e' : '#1aa333' }

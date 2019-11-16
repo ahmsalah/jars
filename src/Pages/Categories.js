@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Loader from '../components/Loader';
 import arrayMove from 'array-move';
+import TipsExpansionPanel from '../components/TipsExpansionPanel';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
@@ -23,6 +24,19 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 		flexWrap: 'wrap',
 		justifyContent: 'center',
 		alignItems: 'flex-start'
+	},
+	expansionPanelContainer: {
+		maxWidth: 400,
+		margin: spacing(0, 3, 3),
+		[breakpoints.up('sm')]: {
+			// margin: spacing(0, 1.5, 3),
+			maxWidth: 608
+		},
+		[breakpoints.up('md')]: {
+			maxWidth: 658,
+			width: 658,
+			margin: spacing(0, 0, 3)
+		}
 	},
 	noCategories: {
 		padding: spacing(6, 3),
@@ -80,6 +94,12 @@ function Categories() {
 					<Loader />
 				) : Object.keys(categories.allCategories).length ? (
 					<React.Fragment>
+						<div className={classes.expansionPanelContainer}>
+							<TipsExpansionPanel
+								title="Tips"
+								message="You can sort categories by holding a category for 0.2 seconds then drag it up or down"
+							/>
+						</div>
 						{categories.listOrder.map(listID => {
 							const list = categories.lists[listID];
 

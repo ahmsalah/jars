@@ -29,17 +29,14 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"heroku-postbuild": "npm run build"
+		"heroku-postbuild": "npm run build",
+		"deploy": "react-scripts build && firebase deploy"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
 	},
 	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
+		"production": [ ">0.2%", "not dead", "not op_mini all" ],
 		"development": [
 			"last 1 chrome version",
 			"last 1 firefox version",

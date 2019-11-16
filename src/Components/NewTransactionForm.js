@@ -24,7 +24,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import HelpMeExpansionPanel from './HelpMeExpansionPanel';
+import TipsExpansionPanel from './TipsExpansionPanel';
 import { SnackbarActionContext } from '../context/snackbar.context';
 import AddIcon from '@material-ui/icons/Add';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -106,8 +106,13 @@ function NewTransactionForm() {
 						aria-labelledby="form-dialog-title">
 						<DialogTitle id="form-dialog-title">Add Transaction</DialogTitle>
 
-						<DialogContent>
-							<HelpMeExpansionPanel />
+						<DialogContent className={classes.dialogContent}>
+							<div className={classes.expansionPanelContainer}>
+								<TipsExpansionPanel
+									title="Help me!"
+									message="To add a new transaction, choose the transaction type and fill in the fields below. If the category you want is not listed, you can list a new category in the cateogries tab."
+								/>
+							</div>
 
 							<div className={classes.inputsContainer}>
 								<div className={classes.switch}>

@@ -9,6 +9,12 @@ export default makeStyles(({ spacing, breakpoints }) => ({
 			}
 		}
 	},
+	dialogContent: {
+		maxWidth: 488
+	},
+	expansionPanelContainer: {
+		margin: spacing(0, 1.5)
+	},
 	switch: {
 		margin: spacing(2.5, 0, 1),
 		display: 'flex',
@@ -21,8 +27,8 @@ export default makeStyles(({ spacing, breakpoints }) => ({
 	inputsContainer: {
 		display: 'flex',
 		justifyContent: 'center',
-		flexWrap: 'wrap',
-		maxWidth: 440
+		flexWrap: 'wrap'
+		// maxWidth: 440
 	},
 	textField: {
 		width: 200,
