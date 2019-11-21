@@ -13,7 +13,7 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	'@global': {
 		body: {
 			background: 'radial-gradient(circle, rgba(45,45,50,1) 75%, rgba(35,35,39,1) 100%)',
-			overflow: styleProps => styleProps.heightGreaterThan550 ? 'hidden' : 'initial'
+			overflow: styleProps => (styleProps.heightGreaterThan550 ? 'hidden' : 'initial')
 		}
 	},
 	root: {
@@ -143,7 +143,6 @@ function Login() {
 
 	const styleProps = { handWidth, jarWidth, savingJarsWidth, heightGreaterThan550 };
 
-
 	const calc = (x, y) => [ x - window.innerWidth / 2, y - window.innerHeight / 2 ];
 	const transHand = (x, y) =>
 		`translate3d(${x / 3 + (greaterThan1200 ? 340 : 220)}px,${y / 4.5 -
@@ -192,8 +191,7 @@ function Login() {
 							amount: tr.amount,
 							dateTimestamp: tr.date,
 							description: tr.description,
-							type: tr.type,
-							icon: tr.icon
+							type: tr.type
 						})
 					);
 				}
@@ -213,7 +211,7 @@ function Login() {
 				className={classes.savingJars}
 				style={{ transform: props.xy.interpolate(transSavingJars) }}
 			/>
-			{(greaterThan800 && heightGreaterThan550) && <span className={classes.bottom} />}
+			{greaterThan800 && heightGreaterThan550 && <span className={classes.bottom} />}
 			<div className={classes.left}>
 				<Typography variant="h6" className={classes.typography}>
 					Save and manage your personal money and keep track of your day to day in-and-out
@@ -230,7 +228,8 @@ function Login() {
 					<StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
 				</div>
 			</div>
-			{(greaterThan800 && heightGreaterThan550) && (
+			{greaterThan800 &&
+			heightGreaterThan550 && (
 				<div className={classes.container}>
 					<animated.div
 						className={classes.coin}

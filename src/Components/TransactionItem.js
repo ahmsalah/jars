@@ -15,6 +15,7 @@ import Hidden from '@material-ui/core/Hidden';
 import { SnackbarActionContext } from '../context/snackbar.context';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import { useSpring, animated } from 'react-spring';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
@@ -73,7 +74,7 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	}
 }));
 
-function TransactionItem({ id, category, icon, description, date, amount, type }) {
+function TransactionItem({ transaction: { id, category, description, date, amount, type } }) {
 	const classes = useStyles();
 	const dispatch = useContext(DispatchContext);
 	const themeBP = useTheme();
@@ -96,20 +97,26 @@ function TransactionItem({ id, category, icon, description, date, amount, type }
 	};
 
 	let color = type === 'exp' ? 'secondary' : 'primary';
+	const springProps = useSpring({
+		from: { opacity: 0, marginLeft: -100, marginRight: 100 },
+		opacity: 1,
+		marginLeft: 0,
+		marginRight: 0
+	});
 	return (
-		<div className={classes.root}>
+		<animated.div className={classes.root} style={springProps}>
 			<ThemeProvider theme={theme}>
 				<ListItem component="div">
 					<ListItemAvatar className={classes.iconContainer}>
 						<Avatar
 							className={classes.icon}
-							src={require(`../assets/icons/${icon}.png`)}
-							alt={category}
+							src={require(`../assets/icons/${category.icon}.png`)}
+							alt={category.name}
 						/>
 					</ListItemAvatar>
 					<ListItemText
 						className={classes.title}
-						primary={category}
+						primary={category.name}
 						secondary={description}
 					/>
 					<Hidden xsDown>
@@ -136,7 +143,7 @@ function TransactionItem({ id, category, icon, description, date, amount, type }
 					</ListItemSecondaryAction>
 				</ListItem>
 			</ThemeProvider>
-		</div>
+		</animated.div>
 	);
 }
 

@@ -72,10 +72,18 @@ function NewTransactionForm() {
 			? []
 			: Object.values(categories.allCategories).filter(ct => ct.name === category)[0].icon;
 
+		const categoryID = !categories.allCategories
+			? []
+			: Object.values(categories.allCategories).filter(ct => ct.name === category)[0].id;
+
 		const transaction = {
-			category,
+			category: {
+				id: categoryID,
+				icon: displayIcon,
+				name: category,
+				type: categoryType
+			},
 			description,
-			icon: displayIcon,
 			amount: newAmount,
 			dateTimestamp: getExactTime(date),
 			type: categoryType

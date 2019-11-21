@@ -5,6 +5,7 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+// import { useTransition, animated } from 'react-spring';
 
 const useStyles = makeStyles(({ palette, spacing, breakpoints }) => ({
 	root: {},
@@ -37,19 +38,24 @@ function TransactionsList() {
 	const classes = useStyles();
 	const { transactions } = useContext(TransactionsContext);
 
+	// const transition = useTransition(transactions, tr => tr.id, {
+	// 	from: { opacity: 0, marginLeft: -100, marginRight: 100 },
+	// 	enter: { opacity: 1, marginLeft: 0, marginRight: 0 },
+	// 	leave: { opacity: 0, marginLeft: -100, marginRight: 100 }
+	// });
+
 	return transactions.length !== 0 ? (
 		<List component="div" className={classes.root}>
+			{/* {transition.map(({ item, key, props }, i) => (
+				<animated.div key={key} style={props}>
+					<TransactionItem transaction={item} />
+					{i < transactions.length - 1 && <Divider />}
+				</animated.div>
+			))} */}
+
 			{transactions.map((tr, i) => (
 				<React.Fragment key={tr.id}>
-					<TransactionItem
-						id={tr.id}
-						type={tr.type}
-						category={tr.category}
-						icon={tr.icon}
-						description={tr.description}
-						amount={tr.amount}
-						date={tr.date}
-					/>
+					<TransactionItem transaction={tr} />
 					{i < transactions.length - 1 && <Divider />}
 				</React.Fragment>
 			))}
