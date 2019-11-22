@@ -15,7 +15,7 @@ import theme from './muiTheme';
 import { AuthContext } from './context/auth.context';
 import SnackbarFeedback from './components/SnackbarFeedback';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Budget from './pages/Budget';
+import Budgets from './pages/Budgets';
 import Jars from './pages/Jars';
 import Reports from './pages/Reports';
 
@@ -39,7 +39,7 @@ function App({ hideLoader }) {
 								<PrivateRoute exact path="/" component={Transactions} />
 								<Route exact path="/login" component={Login} />
 								<PrivateRoute exact path="/categories" component={Categories} />
-								<PrivateRoute exact path="/budget" component={Budget} />
+								<PrivateRoute exact path="/budgets" component={Budgets} />
 								<PrivateRoute exact path="/jars" component={Jars} />
 								<PrivateRoute exact path="/reports" component={Reports} />
 							</Switch>

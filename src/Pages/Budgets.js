@@ -17,7 +17,7 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	}
 }));
 
-function Budget() {
+function Budgets() {
 	const classes = useStyles();
 	const [ budgets, setBudgets ] = useState(initialBudgets);
 	const { transactions } = useContext(TransactionsContext);
@@ -149,4 +149,4 @@ function Budget() {
 	);
 }
 
-export default Budget;
+export default Budgets;

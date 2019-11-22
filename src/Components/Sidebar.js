@@ -65,7 +65,7 @@ function Sidebar() {
 				className={classes.tabs}>
 				<Tab label={isOpen && 'Transactions'} icon={<HomeIcon />} value="/" />
 				<Tab label={isOpen && 'Categories'} icon={<CategoryIcon />} value="/categories" />
-				<Tab label={isOpen && 'Budget'} icon={<AssignmentIcon />} value="/budget" />
+				<Tab label={isOpen && 'Budgets'} icon={<AssignmentIcon />} value="/budgets" />
 				<Tab label={isOpen && 'Jars'} icon={<JarIcon />} value="/jars" />
 				<Tab
 					label={isOpen && 'Reports'}

@@ -38,11 +38,11 @@ function HamburgerMenuPopover({ anchorEl, setAnchorEl }) {
 	const id = open ? 'simple-popover' : undefined;
 	const classes = useStyles();
 
-	const tabs = [ 'Transactions', 'Categories', 'Budget', 'Jars', 'Reports' ];
+	const tabs = [ 'Transactions', 'Categories', 'Budgets', 'Jars', 'Reports' ];
 	const generateIcons = val => {
 		if (val === 'Transactions') return <HomeIcon />;
 		else if (val === 'Categories') return <CategoryIcon />;
-		else if (val === 'Budget') return <AssignmentIcon />;
+		else if (val === 'Budgets') return <AssignmentIcon />;
 		else if (val === 'Jars') return <JarIcon />;
 		else if (val === 'Reports') return <CollectionsBookmarkIcon />;
 	};
