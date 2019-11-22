@@ -15,13 +15,17 @@
 		"date-fns": "^2.0.0-beta.5",
 		"express": "^4.17.1",
 		"firebase": "^7.2.0",
+		"prop-types": "^15.7.2",
 		"react": "^16.11.0",
+		"react-beautiful-dnd": "^12.1.1",
 		"react-dom": "^16.9.0",
 		"react-firebaseui": "^4.0.0",
 		"react-router-dom": "^5.1.2",
 		"react-scripts": "3.1.2",
 		"react-sortable-hoc": "^1.10.1",
 		"react-spring": "^8.0.27",
+		"react-swipeable-views": "^0.13.3",
+		"react-transition-group": "^4.3.0",
 		"uuid": "^3.3.3"
 	},
 	"scripts": {
@@ -36,7 +40,11 @@
 		"extends": "react-app"
 	},
 	"browserslist": {
-		"production": [ ">0.2%", "not dead", "not op_mini all" ],
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
 		"development": [
 			"last 1 chrome version",
 			"last 1 firefox version",
