@@ -15,6 +15,7 @@
 		"date-fns": "^2.0.0-beta.5",
 		"express": "^4.17.1",
 		"firebase": "^7.2.0",
+		"notistack": "^0.9.6",
 		"prop-types": "^15.7.2",
 		"react": "^16.11.0",
 		"react-beautiful-dnd": "^12.1.1",

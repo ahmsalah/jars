@@ -10,15 +10,14 @@ import { ThemeProvider } from '@material-ui/styles';
 import { CategoriesProvider } from './context/categories.context';
 import { TransactionsProvider } from './context/transactions.context';
 import { BudgetsProvider } from './context/budgets.context';
-import { SnackbarProvider } from './context/snackbar.context';
 import PrivateRoute from './PrivateRoute';
 import theme from './muiTheme';
 import { AuthContext } from './context/auth.context';
-import SnackbarFeedback from './components/SnackbarFeedback';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Budgets from './pages/Budgets';
 import Jars from './pages/Jars';
 import Reports from './pages/Reports';
+import { SnackbarProvider } from 'notistack';
 
 function App({ hideLoader }) {
 	useEffect(() => hideLoader(), [ hideLoader ]);
@@ -30,23 +29,25 @@ function App({ hideLoader }) {
 			<CssBaseline />
 			<CategoriesProvider>
 				<TransactionsProvider>
-				<BudgetsProvider>
-					<SnackbarProvider>
-						<SnackbarFeedback />
-						{currentUser && <Navbar />}
-						<div style={currentUser && { display: 'flex', justifyContent: 'center' }}>
-							{matches && currentUser && <Sidebar />}
+					<BudgetsProvider>
+						<SnackbarProvider maxSnack={3}>
+							{currentUser && <Navbar />}
+							<div
+								style={
+									currentUser && { display: 'flex', justifyContent: 'center' }
+								}>
+								{matches && currentUser && <Sidebar />}
 
-							<Switch>
-								<PrivateRoute exact path="/" component={Transactions} />
-								<Route exact path="/login" component={Login} />
-								<PrivateRoute exact path="/categories" component={Categories} />
-								<PrivateRoute exact path="/budgets" component={Budgets} />
-								<PrivateRoute exact path="/jars" component={Jars} />
-								<PrivateRoute exact path="/reports" component={Reports} />
-							</Switch>
-						</div>
-					</SnackbarProvider>
+								<Switch>
+									<PrivateRoute exact path="/" component={Transactions} />
+									<Route exact path="/login" component={Login} />
+									<PrivateRoute exact path="/categories" component={Categories} />
+									<PrivateRoute exact path="/budgets" component={Budgets} />
+									<PrivateRoute exact path="/jars" component={Jars} />
+									<PrivateRoute exact path="/reports" component={Reports} />
+								</Switch>
+							</div>
+						</SnackbarProvider>
 					</BudgetsProvider>
 				</TransactionsProvider>
 			</CategoriesProvider>

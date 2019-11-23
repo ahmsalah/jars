@@ -25,9 +25,9 @@ import { ThemeProvider } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TipsExpansionPanel from './TipsExpansionPanel';
-import { SnackbarActionContext } from '../context/snackbar.context';
 import AddIcon from '@material-ui/icons/Add';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useSnackbar } from 'notistack';
 
 const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 	return <Grow {...props} />;
@@ -45,7 +45,7 @@ function NewTransactionForm() {
 	const [ isExpense, toggleIsExpense ] = useToggleState(true);
 	const [ dialogOpen, setDialogOpen ] = useState(false);
 	const [ date, setDate ] = useState(selectedDate);
-	const { snackbarAddTransaction } = useContext(SnackbarActionContext);
+	const { enqueueSnackbar } = useSnackbar();
 
 	const theme = createMuiTheme({
 		palette: {
@@ -94,7 +94,7 @@ function NewTransactionForm() {
 		resetAmount();
 		setDialogOpen(false);
 		setDate(selectedDate);
-		snackbarAddTransaction();
+		enqueueSnackbar('New Transaction Added');
 	};
 
 	const categoryType = isExpense ? 'exp' : 'inc';

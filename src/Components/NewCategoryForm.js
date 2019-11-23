@@ -18,10 +18,10 @@ import Avatar from '@material-ui/core/Avatar';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Paper from '@material-ui/core/Paper';
 import SelectIconDialog from './SelectIconDialog';
-import { SnackbarActionContext } from '../context/snackbar.context';
 import uuid from 'uuid/v4';
 import AddIcon from '@material-ui/icons/Add';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useSnackbar } from 'notistack';
 
 const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 	return <Grow {...props} />;
@@ -38,7 +38,7 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 		padding: spacing(1.5, 2),
 		backgroundColor: 'rgba(0, 0, 0, .03)',
 		'& > p': {
-			fontSize: "0.875rem",
+			fontSize: '0.875rem',
 			color: palette.text.secondary,
 			marginBottom: 0
 		}
@@ -54,8 +54,8 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 	textField: {
 		margin: spacing(0, 0, 0, 2),
 		flex: 1,
-		"& label": {
-			fontSize: styleProps => styleProps.matches ? "1rem" : "0.875rem",
+		'& label': {
+			fontSize: styleProps => (styleProps.matches ? '1rem' : '0.875rem')
 		}
 	},
 	iconField: {
@@ -72,16 +72,16 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 
 function NewCategoryForm() {
 	const dispatch = useContext(DispatchContext);
-	const { snackbarAddCategory } = useContext(SnackbarActionContext);
+	const { enqueueSnackbar } = useSnackbar();
 	const [ name, handleChange, reset ] = useInputState('');
 	const [ isExpense, toggleIsExpense ] = useToggleState(true);
 	const [ dialogOpen, setDialogOpen ] = useState(false);
 	const [ iconDialogOpen, setIconDialogOpen ] = useState(false);
 	const [ icon, setIcon ] = useState('icon_not_selected');
 	const matches = useMediaQuery('(min-width:370px)');
-	const styleProps = {matches}
+	const styleProps = { matches };
 	const classes = useStyles(styleProps);
-	
+
 	const theme = createMuiTheme({
 		palette: {
 			primary: { main: isExpense ? '#de474e' : '#1aa333' }
@@ -108,8 +108,8 @@ function NewCategoryForm() {
 		});
 		reset();
 		setDialogOpen(false);
-		snackbarAddCategory();
 		setIcon('icon_not_selected');
+		enqueueSnackbar('New Category Added');
 	};
 
 	return (

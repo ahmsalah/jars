@@ -18,6 +18,8 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import useStyles from './styles/budgetItem.styles';
 import Collapse from '@material-ui/core/Collapse';
 import BudgetItemDetails from './BudgetItemDetails';
+import DeleteDialog from './DeleteDialog';
+import { useSnackbar } from 'notistack';
 
 const ExpansionPanelSummary = withStyles({
 	root: {
@@ -27,133 +29,149 @@ const ExpansionPanelSummary = withStyles({
 
 function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
 	const [ expanded, setExpanded ] = useState(true);
+	const [ dialogOpen, setDialogOpen ] = useState(false);
+	const { enqueueSnackbar } = useSnackbar();
 	const actualAmount = actual < 0 ? actual * -1 : actual;
 	const props = { expanded };
 	const classes = useStyles(props);
 
+	const handleDelete = () => {
+		console.log('deleting budget');
+		setDialogOpen(false);
+		enqueueSnackbar('Budget Deleted');
+	};
+
 	return (
-		<Draggable draggableId={budgetId} index={index}>
-			{providedList => (
-				<Paper
-					{...providedList.draggableProps}
-					ref={providedList.innerRef}
-					className={classes.root}>
-					<Droppable droppableId={budgetId}>
-						{(provided, snapshot) => (
-							<div ref={provided.innerRef} {...provided.droppableProps}>
-								<ExpansionPanel expanded={expanded}>
-									<ExpansionPanelSummary className={classes.summary}>
-										<LinearProgress
-											variant="determinate"
-											className={classes.progressBar}
-											value={
-												actualAmount > budgetItem.planned ? (
-													100
-												) : (
-													actualAmount / budgetItem.planned * 100
-												)
-											}
-										/>
-										<div className={classes.titleContainer}>
-											<Typography className={classes.title}>
-												{budgetItem.title}
-											</Typography>
-											<div>
-												{budgetId !== 'budget-0' && (
+		<React.Fragment>
+			<DeleteDialog
+				onSubmit={handleDelete}
+				dialogOpen={dialogOpen}
+				setDialogOpen={setDialogOpen}
+				name={budgetItem.title}
+			/>
+			<Draggable draggableId={budgetId} index={index}>
+				{providedList => (
+					<Paper
+						{...providedList.draggableProps}
+						ref={providedList.innerRef}
+						className={classes.root}>
+						<Droppable droppableId={budgetId}>
+							{(provided, snapshot) => (
+								<div ref={provided.innerRef} {...provided.droppableProps}>
+									<ExpansionPanel expanded={expanded}>
+										<ExpansionPanelSummary className={classes.summary}>
+											<LinearProgress
+												variant="determinate"
+												className={classes.progressBar}
+												value={
+													actualAmount > budgetItem.planned ? (
+														100
+													) : (
+														actualAmount / budgetItem.planned * 100
+													)
+												}
+											/>
+											<div className={classes.titleContainer}>
+												<Typography className={classes.title}>
+													{budgetItem.title}
+												</Typography>
+												<div>
+													{budgetId !== 'budget-0' && (
+														<IconButton
+															className={classes.iconButton}
+															aria-label="Delete"
+															onClick={() => setDialogOpen(true)}
+															disableRipple>
+															<DeleteIcon />
+														</IconButton>
+													)}
 													<IconButton
 														className={classes.iconButton}
-														aria-label="Delete"
+														aria-label="Edit"
 														onClick={e => e.stopPropagation()}
 														disableRipple>
-														<DeleteIcon />
+														<EditIcon />
 													</IconButton>
-												)}
-												<IconButton
-													className={classes.iconButton}
-													aria-label="Edit"
-													onClick={e => e.stopPropagation()}
-													disableRipple>
-													<EditIcon />
-												</IconButton>
-												<IconButton
-													className={classes.dragButton}
-													aria-label="Drag"
-													{...providedList.dragHandleProps}
-													disableRipple>
-													<DragHandleIcon />
-												</IconButton>
-												<IconButton
-													className={classes.expandButton}
-													aria-label="Expand More"
-													onClick={() => setExpanded(!expanded)}
-													disableRipple>
-													<ExpandMoreIcon />
-												</IconButton>
+													<IconButton
+														className={classes.dragButton}
+														aria-label="Drag"
+														{...providedList.dragHandleProps}
+														disableRipple>
+														<DragHandleIcon />
+													</IconButton>
+													<IconButton
+														className={classes.expandButton}
+														aria-label="Expand More"
+														onClick={() => setExpanded(!expanded)}
+														disableRipple>
+														<ExpandMoreIcon />
+													</IconButton>
+												</div>
 											</div>
-										</div>
-										<Collapse in={!expanded}>
-											<div className={classes.summaryAmountsContainer}>
+											<Collapse in={!expanded}>
+												<div className={classes.summaryAmountsContainer}>
+													<BudgetItemDetails
+														planned={budgetItem.planned}
+														spent={actualAmount}
+														view="summary"
+													/>
+												</div>
+											</Collapse>
+										</ExpansionPanelSummary>
+										<ExpansionPanelDetails
+											className={classes.expansionPanelDetails}>
+											<div className={classes.left}>
+												<div
+													style={{
+														transition: 'background-color 0.2s ease',
+														backgroundColor: snapshot.isDraggingOver
+															? 'rgba(0,0,0,0.08)'
+															: '#fff'
+													}}
+													className={classes.categoriesContainer}>
+													{categories.map((ct, i) => (
+														<Draggable
+															key={ct.id}
+															draggableId={ct.id}
+															index={i}>
+															{provided => (
+																<Chip
+																	{...provided.draggableProps}
+																	{...provided.dragHandleProps}
+																	ref={provided.innerRef}
+																	avatar={
+																		<Avatar
+																			alt={ct.name}
+																			src={require(`../assets/icons/${ct.icon}.png`)}
+																		/>
+																	}
+																	className={classes.chip}
+																	label={ct.name}
+																	onDelete={() =>
+																		console.log('deleted')}
+																	variant="outlined"
+																/>
+															)}
+														</Draggable>
+													))}
+													{provided.placeholder}
+												</div>
+											</div>
+											<List className={classes.right}>
 												<BudgetItemDetails
 													planned={budgetItem.planned}
 													spent={actualAmount}
-													view="summary"
 												/>
-											</div>
-										</Collapse>
-									</ExpansionPanelSummary>
-									<ExpansionPanelDetails
-										className={classes.expansionPanelDetails}>
-										<div className={classes.left}>
-											<div
-												style={{
-													transition: 'background-color 0.2s ease',
-													backgroundColor: snapshot.isDraggingOver
-														? 'rgba(0,0,0,0.08)'
-														: '#fff'
-												}}
-												className={classes.categoriesContainer}>
-												{categories.map((ct, i) => (
-													<Draggable
-														key={ct.id}
-														draggableId={ct.id}
-														index={i}>
-														{provided => (
-															<Chip
-																{...provided.draggableProps}
-																{...provided.dragHandleProps}
-																ref={provided.innerRef}
-																avatar={
-																	<Avatar
-																		alt={ct.name}
-																		src={require(`../assets/icons/${ct.icon}.png`)}
-																	/>
-																}
-																className={classes.chip}
-																label={ct.name}
-																onDelete={() =>
-																	console.log('deleted')}
-																variant="outlined"
-															/>
-														)}
-													</Draggable>
-												))}
-												{provided.placeholder}
-											</div>
-										</div>
-										<List className={classes.right}>
-											<BudgetItemDetails
-												planned={budgetItem.planned}
-												spent={actualAmount}
-											/>
-										</List>
-									</ExpansionPanelDetails>
-								</ExpansionPanel>
-							</div>
-						)}
-					</Droppable>
-				</Paper>
-			)}
-		</Draggable>
+											</List>
+										</ExpansionPanelDetails>
+									</ExpansionPanel>
+								</div>
+							)}
+						</Droppable>
+					</Paper>
+				)}
+			</Draggable>
+		</React.Fragment>
 	);
 }
 

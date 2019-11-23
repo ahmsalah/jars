@@ -9,13 +9,8 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import { makeStyles } from '@material-ui/core/styles';
-import { SnackbarActionContext } from '../context/snackbar.context';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import Button from '@material-ui/core/Button';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Typography from '@material-ui/core/Typography';
+import { useSnackbar } from 'notistack';
+import DeleteDialog from './DeleteDialog';
 
 const useStyles = makeStyles(({ breakpoints, spacing }) => ({
 	root: {
@@ -41,26 +36,30 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
 			opacity: '0',
 			transition: 'opacity .3s'
 		}
-	},
-	dialogText: {
-		margin: spacing(2, 0)
 	}
 }));
 
 const CategoryItem = SortableElement(({ id, type, name, icon }) => {
 	const classes = useStyles();
 	const dispatch = useContext(DispatchContext);
-	const { snackbarDeleteCategory } = useContext(SnackbarActionContext);
+	const { enqueueSnackbar } = useSnackbar();
 	const [ dialogOpen, setDialogOpen ] = useState(false);
 
 	const handleDeleteItem = () => {
 		dispatch({ type: 'REMOVE_CATEGORY', id, categoryType: type });
 		setDialogOpen(false);
-		snackbarDeleteCategory();
+		enqueueSnackbar('Category Deleted');
 	};
 
 	return (
 		<React.Fragment>
+			<DeleteDialog
+				onSubmit={handleDeleteItem}
+				dialogOpen={dialogOpen}
+				setDialogOpen={setDialogOpen}
+				name={name}
+				icon={icon}
+			/>
 			<div className={classes.root}>
 				<ListItem component="div" ContainerComponent="div">
 					<ListItemAvatar className={classes.iconContainer}>
@@ -83,38 +82,6 @@ const CategoryItem = SortableElement(({ id, type, name, icon }) => {
 					</ListItemSecondaryAction>
 				</ListItem>
 			</div>
-
-			<Dialog
-				open={dialogOpen}
-				onClose={() => setDialogOpen(false)}
-				aria-labelledby="alert-dialog-title"
-				aria-describedby="alert-dialog-description">
-				<DialogTitle id="alert-dialog-title" className={classes.dialogTitle}>
-					You are about to delete
-				</DialogTitle>
-				<DialogContent>
-					<ListItem component="div" ContainerComponent="div">
-						<ListItemAvatar className={classes.iconContainer}>
-							<Avatar
-								className={classes.icon}
-								src={require(`../assets/icons/${icon}.png`)}
-								alt={name}
-							/>
-						</ListItemAvatar>
-
-						<ListItemText>{name}</ListItemText>
-					</ListItem>
-					<Typography className={classes.dialogText}>Do you wish to continue?</Typography>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={() => setDialogOpen(false)} color="primary" autoFocus>
-						Cancel
-					</Button>
-					<Button onClick={handleDeleteItem} variant="contained" color="primary">
-						Delete
-					</Button>
-				</DialogActions>
-			</Dialog>
 		</React.Fragment>
 	);
 });

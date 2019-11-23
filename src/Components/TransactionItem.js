@@ -12,10 +12,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
-import { SnackbarActionContext } from '../context/snackbar.context';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { useSpring, animated } from 'react-spring';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
@@ -79,7 +79,7 @@ function TransactionItem({ transaction: { id, category, description, date, amoun
 	const dispatch = useContext(DispatchContext);
 	const themeBP = useTheme();
 	const matches = useMediaQuery(themeBP.breakpoints.up('sm'));
-	const { snackbarDeleteTransaction } = useContext(SnackbarActionContext);
+	const { enqueueSnackbar } = useSnackbar();
 
 	const theme = createMuiTheme({
 		typography: {
@@ -93,7 +93,7 @@ function TransactionItem({ transaction: { id, category, description, date, amoun
 
 	const handleDeleteItem = () => {
 		dispatch({ type: 'REMOVE_TRANSACTION', id });
-		snackbarDeleteTransaction();
+		enqueueSnackbar('Transaction Deleted');
 	};
 
 	let color = type === 'exp' ? 'secondary' : 'primary';
