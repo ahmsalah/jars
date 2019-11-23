@@ -1,42 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles(({ spacing, palette, breakpoints }) => ({
+export default makeStyles(({ spacing, breakpoints }) => ({
 	root: {
 		margin: spacing(0, 0, 3),
 		overflow: 'hidden'
-	},
-	expansionPanelDetails: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		padding: 0
-	},
-	categoriesContainer: {
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'flex-start',
-		borderRadius: 20,
-		height: '100%',
-		'& > *': {
-			margin: spacing(0.5)
-		}
-	},
-	left: {
-		padding: spacing(2, 4, 2, 3),
-		flex: 0.7
-	},
-	right: {
-		flex: 0.3,
-		padding: spacing(2, 4, 2, 4)
-	},
-	title: {
-		fontWeight: 500
-	},
-	titleContainer: {
-		padding: spacing(1, 2, 0, 3),
-		flex: 1,
-		display: 'flex',
-		justifyContent: 'space-between',
-		alignItems: 'center'
 	},
 	summary: {
 		justifyItems: 'flex-start',
@@ -46,6 +13,22 @@ export default makeStyles(({ spacing, palette, breakpoints }) => ({
 			display: 'block',
 			margin: '0 0 8px !important'
 		}
+	},
+	progressBar: {
+		height: 6,
+		'& > div': {
+			transition: 'transform .8s linear'
+		}
+	},
+	titleContainer: {
+		padding: spacing(1, 2, 0, 3),
+		flex: 1,
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center'
+	},
+	title: {
+		fontWeight: 500
 	},
 	iconButton: {
 		padding: 5
@@ -69,29 +52,32 @@ export default makeStyles(({ spacing, palette, breakpoints }) => ({
 		transform: props => (props.expanded ? 'rotate(180deg)' : 'rotate(0deg)'),
 		transition: 'transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'
 	},
-	listItem: {
+	summaryAmountsContainer: {
+		display: 'flex',
+		padding: spacing(1, 2, 0),
+		textAlign: 'center'
+	},
+	expansionPanelDetails: {
+		display: 'flex',
+		justifyContent: 'space-between',
 		padding: 0
 	},
-	listItemText: {
-		marginTop: 2,
-		'& > span': {
-			fontSize: '0.875rem',
-			fontWeight: 400,
-			lineHeight: 1.43,
-			letterSpacing: '0.01071em'
-		},
-		'& > p': {
-			fontSize: '1rem',
-			fontWeight: 500,
-			lineHeight: 1.5,
-			letterSpacing: '0.00938em',
-			color: 'rgba(0, 0, 0, 0.87)'
-		}
+	left: {
+		padding: spacing(2, 4, 2, 3),
+		flex: 0.7
 	},
-	progressBar: {
-		height: 6,
-		'& > div': {
-			transition: 'transform .8s linear'
+	right: {
+		flex: 0.3,
+		padding: spacing(2, 4, 2, 4)
+	},
+	categoriesContainer: {
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'flex-start',
+		borderRadius: 20,
+		height: '100%',
+		'& > *': {
+			margin: spacing(0.5)
 		}
 	},
 	chip: {
@@ -99,10 +85,5 @@ export default makeStyles(({ spacing, palette, breakpoints }) => ({
 		'&:active': {
 			cursor: 'grabbing !important'
 		}
-	},
-	summaryAmountsContainer: {
-		display: 'flex',
-		padding: spacing(1, 2, 0),
-		textAlign: 'center'
 	}
 }));

@@ -110,7 +110,8 @@ export const initialCategories = {
 };
 
 export const initialBudgets = {
-	lists: {
+	budgetsOrder: [ 'budget-0', 'budget-1', 'budget-2', 'budget-3', 'budget-4', 'budget-5' ],
+	allBudgets: {
 		'budget-1': {
 			id: 'budget-1',
 			title: 'Shopping',
@@ -197,9 +198,7 @@ export const initialBudgets = {
 			],
 			planned: 500
 		}
-	},
-
-	listOrder: [ 'budget-0', 'budget-1', 'budget-2', 'budget-3', 'budget-4', 'budget-5' ]
+	}
 };
 
 const transactions = [

@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { initialBudgets } from '../initialData';
 import { TransactionsContext } from '../context/transactions.context';
 import BudgetItem from '../components/BudgetItem';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { BudgetsContext } from '../context/budgets.context';
+import useSorting from '../hooks/useSorting';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
@@ -19,93 +20,9 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 
 function Budgets() {
 	const classes = useStyles();
-	const [ budgets, setBudgets ] = useState(initialBudgets);
 	const { transactions } = useContext(TransactionsContext);
-
-	const onBudgetsDragEnd = result => {
-		const { destination, source, draggableId, type } = result;
-
-		if (!destination) return;
-		if (destination.droppableId === source.droppableId && destination.index === source.index)
-			return;
-
-		if (type === 'list') {
-			const newListOrder = Array.from(budgets.listOrder);
-			newListOrder.splice(source.index, 1);
-			newListOrder.splice(destination.index, 0, draggableId);
-
-			const newBudgets = {
-				...budgets,
-				listOrder: newListOrder
-			};
-			setBudgets(newBudgets);
-			return;
-		}
-
-		const start = budgets.lists[source.droppableId];
-		const finish = budgets.lists[destination.droppableId];
-		const draggedItem = start.categories.filter(ct => ct.id === draggableId)[0];
-
-		//moving within the same list
-		if (start === finish) {
-			const newCategoriesIds = Array.from(start.categoriesIds);
-			newCategoriesIds.splice(source.index, 1);
-			newCategoriesIds.splice(destination.index, 0, draggableId);
-			const newCategories = Array.from(start.categories);
-			newCategories.splice(source.index, 1);
-			newCategories.splice(destination.index, 0, draggedItem);
-
-			const newList = {
-				...start,
-				categoriesIds: newCategoriesIds,
-				categories: newCategories
-			};
-
-			const newBudgets = {
-				...budgets,
-				lists: {
-					...budgets.lists,
-					[newList.id]: newList
-				}
-			};
-			setBudgets(newBudgets);
-			return;
-		}
-
-		// Moving from one line to another
-		const startCategoriesIds = Array.from(start.categoriesIds);
-		const startCategories = Array.from(start.categories);
-		startCategoriesIds.splice(source.index, 1);
-		startCategories.splice(source.index, 1);
-
-		const newStart = {
-			...start,
-			categoriesIds: startCategoriesIds,
-			categories: startCategories
-		};
-
-		const finishCategoriesIds = Array.from(finish.categoriesIds);
-		const finishCategories = Array.from(finish.categories);
-		finishCategoriesIds.splice(destination.index, 0, draggableId);
-		finishCategories.splice(destination.index, 0, draggedItem);
-
-		const newFinish = {
-			...finish,
-			categoriesIds: finishCategoriesIds,
-			categories: finishCategories
-		};
-
-		const newBudgets = {
-			...budgets,
-			lists: {
-				...budgets.lists,
-				[newStart.id]: newStart,
-				[newFinish.id]: newFinish
-			}
-		};
-
-		setBudgets(newBudgets);
-	};
+	const budgets = useContext(BudgetsContext);
+	const { onBudgetsDragEnd } = useSorting();
 
 	return (
 		<DragDropContext onDragEnd={onBudgetsDragEnd}>
@@ -116,15 +33,15 @@ function Budgets() {
 						{...provided.droppableProps}
 						className={classes.root}>
 						{!!transactions.length &&
-							budgets.listOrder.map((listID, i) => {
-								const list = budgets.lists[listID];
+							budgets.budgetsOrder.map((budgetId, i) => {
+								const budgetItem = budgets.allBudgets[budgetId];
 
-								const categoriesList = list.categoriesIds.map(
-									ctID => list.categories.filter(ct => ct.id === ctID)[0]
+								const categoriesList = budgetItem.categoriesIds.map(
+									ctID => budgetItem.categories.filter(ct => ct.id === ctID)[0]
 								);
 
 								const actual = transactions.filter(tr =>
-									list.categories.some(ct => ct.id === tr.category.id)
+									budgetItem.categories.some(ct => ct.id === tr.category.id)
 								);
 								const totalActual = actual.reduce(
 									(acc, curr) => acc + curr.amount,
@@ -133,9 +50,9 @@ function Budgets() {
 								return (
 									<BudgetItem
 										index={i}
-										key={listID}
-										id={listID}
-										list={list}
+										key={budgetId}
+										budgetId={budgetId}
+										budgetItem={budgetItem}
 										categories={categoriesList}
 										actual={totalActual}
 									/>

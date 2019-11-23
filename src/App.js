@@ -9,6 +9,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/styles';
 import { CategoriesProvider } from './context/categories.context';
 import { TransactionsProvider } from './context/transactions.context';
+import { BudgetsProvider } from './context/budgets.context';
 import { SnackbarProvider } from './context/snackbar.context';
 import PrivateRoute from './PrivateRoute';
 import theme from './muiTheme';
@@ -29,6 +30,7 @@ function App({ hideLoader }) {
 			<CssBaseline />
 			<CategoriesProvider>
 				<TransactionsProvider>
+				<BudgetsProvider>
 					<SnackbarProvider>
 						<SnackbarFeedback />
 						{currentUser && <Navbar />}
@@ -45,6 +47,7 @@ function App({ hideLoader }) {
 							</Switch>
 						</div>
 					</SnackbarProvider>
+					</BudgetsProvider>
 				</TransactionsProvider>
 			</CategoriesProvider>
 		</ThemeProvider>

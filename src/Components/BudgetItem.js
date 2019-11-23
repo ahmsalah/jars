@@ -5,8 +5,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
@@ -19,6 +17,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import useStyles from './styles/budgetItem.styles';
 import Collapse from '@material-ui/core/Collapse';
+import BudgetItemDetails from './BudgetItemDetails';
 
 const ExpansionPanelSummary = withStyles({
 	root: {
@@ -26,27 +25,20 @@ const ExpansionPanelSummary = withStyles({
 	}
 })(MuiExpansionPanelSummary);
 
-function BudgetItem({ categories, list, actual, id, index }) {
+function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
 	const [ expanded, setExpanded ] = useState(true);
-	const [ showExpSumAounts, setshowExpSumAounts ] = useState(false);
-
-	const handleExpansion = () => {
-		setExpanded(!expanded);
-		setshowExpSumAounts(!showExpSumAounts);
-	};
-
 	const actualAmount = actual < 0 ? actual * -1 : actual;
 	const props = { expanded };
 	const classes = useStyles(props);
 
 	return (
-		<Draggable draggableId={id} index={index}>
+		<Draggable draggableId={budgetId} index={index}>
 			{providedList => (
 				<Paper
 					{...providedList.draggableProps}
 					ref={providedList.innerRef}
 					className={classes.root}>
-					<Droppable droppableId={id}>
+					<Droppable droppableId={budgetId}>
 						{(provided, snapshot) => (
 							<div ref={provided.innerRef} {...provided.droppableProps}>
 								<ExpansionPanel expanded={expanded}>
@@ -55,19 +47,19 @@ function BudgetItem({ categories, list, actual, id, index }) {
 											variant="determinate"
 											className={classes.progressBar}
 											value={
-												actualAmount > list.planned ? (
+												actualAmount > budgetItem.planned ? (
 													100
 												) : (
-													actualAmount / list.planned * 100
+													actualAmount / budgetItem.planned * 100
 												)
 											}
 										/>
 										<div className={classes.titleContainer}>
 											<Typography className={classes.title}>
-												{list.title}
+												{budgetItem.title}
 											</Typography>
 											<div>
-												{id !== 'budget-0' && (
+												{budgetId !== 'budget-0' && (
 													<IconButton
 														className={classes.iconButton}
 														aria-label="Delete"
@@ -93,28 +85,18 @@ function BudgetItem({ categories, list, actual, id, index }) {
 												<IconButton
 													className={classes.expandButton}
 													aria-label="Expand More"
-													onClick={handleExpansion}
+													onClick={() => setExpanded(!expanded)}
 													disableRipple>
 													<ExpandMoreIcon />
 												</IconButton>
 											</div>
 										</div>
-										<Collapse in={showExpSumAounts}>
+										<Collapse in={!expanded}>
 											<div className={classes.summaryAmountsContainer}>
-												<ListItemText
-													className={classes.listItemText}
-													primary="Planned"
-													secondary={list.planned}
-												/>
-												<ListItemText
-													className={classes.listItemText}
-													primary="Spent"
-													secondary={actualAmount}
-												/>
-												<ListItemText
-													className={classes.listItemText}
-													primary="Remaining"
-													secondary={list.planned - actualAmount}
+												<BudgetItemDetails
+													planned={budgetItem.planned}
+													spent={actualAmount}
+													view="summary"
 												/>
 											</div>
 										</Collapse>
@@ -158,29 +140,11 @@ function BudgetItem({ categories, list, actual, id, index }) {
 												{provided.placeholder}
 											</div>
 										</div>
-
 										<List className={classes.right}>
-											<ListItem className={classes.listItem}>
-												<ListItemText
-													className={classes.listItemText}
-													primary="Planned"
-													secondary={list.planned}
-												/>
-											</ListItem>
-											<ListItem className={classes.listItem}>
-												<ListItemText
-													className={classes.listItemText}
-													primary="Spent"
-													secondary={actualAmount}
-												/>
-											</ListItem>
-											<ListItem className={classes.listItem}>
-												<ListItemText
-													className={classes.listItemText}
-													primary="Remaining"
-													secondary={list.planned - actualAmount}
-												/>
-											</ListItem>
+											<BudgetItemDetails
+												planned={budgetItem.planned}
+												spent={actualAmount}
+											/>
 										</List>
 									</ExpansionPanelDetails>
 								</ExpansionPanel>
