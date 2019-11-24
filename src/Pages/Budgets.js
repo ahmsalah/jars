@@ -8,8 +8,10 @@ import useSorting from '../hooks/useSorting';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
-		margin: `${spacing(5)}px auto ${spacing(2)}px`,
+		margin: spacing(5, 3, 3),
+		flex: 1,
 		[breakpoints.up('sm')]: {
+			flex: 'none',
 			minWidth: spacing(50)
 		},
 		[breakpoints.up('lg')]: {

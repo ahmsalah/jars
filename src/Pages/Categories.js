@@ -85,7 +85,7 @@ function Categories() {
 						<div className={classes.expansionPanelContainer}>
 							<TipsExpansionPanel
 								title="Tips"
-								message="You can sort categories by holding a category for 0.2 seconds then drag it up or down"
+								message="You can reorder categories by holding a category and then drag it up or down."
 							/>
 						</div>
 						{categories.listOrder.map(listID => {

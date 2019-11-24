@@ -59,7 +59,9 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 		}
 	},
 	iconField: {
-		padding: spacing(0.6, 1),
+		[breakpoints.down('xs')]: {
+			padding: styleProps => (styleProps.matches ? spacing(0.6, 1) : spacing(0.6, 0.4))
+		},
 		[breakpoints.up('sm')]: {
 			padding: spacing(0.6, 2)
 		}
@@ -153,7 +155,7 @@ function NewCategoryForm() {
 								className={classes.textField}
 								margin="dense"
 								id="name"
-								label="New Category"
+								label="New category"
 								type="text"
 								value={name}
 								onChange={handleChange}

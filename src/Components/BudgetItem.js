@@ -75,9 +75,14 @@ function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
 											/>
 											<div className={classes.titleContainer}>
 												<Typography className={classes.title}>
-													{budgetItem.title}
+													{budgetItem.title}{' '}
+													{budgetId === 'budget-0' && (
+														<span className={classes.titleDefault}>
+															(default)
+														</span>
+													)}
 												</Typography>
-												<div>
+												<div className={classes.iconsContainer}>
 													{budgetId !== 'budget-0' && (
 														<IconButton
 															className={classes.iconButton}
@@ -127,10 +132,23 @@ function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
 													style={{
 														transition: 'background-color 0.2s ease',
 														backgroundColor: snapshot.isDraggingOver
-															? 'rgba(0,0,0,0.08)'
-															: '#fff'
+															? 'rgba(0,0,0,0.1)'
+															: !categories.length
+																? 'rgba(0,0,0,0.05)'
+																: '#fff'
 													}}
 													className={classes.categoriesContainer}>
+													{!categories.length && (
+														<div
+															className={
+																classes.noCategoriesContainer
+															}>
+															<Typography align="center">
+																Drag categories from other budgets
+																and drop them here
+															</Typography>
+														</div>
+													)}
 													{categories.map((ct, i) => (
 														<Draggable
 															key={ct.id}
@@ -149,8 +167,8 @@ function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
 																	}
 																	className={classes.chip}
 																	label={ct.name}
-																	onDelete={() =>
-																		console.log('deleted')}
+																	// onDelete={() =>
+																	// 	console.log('deleted')}
 																	variant="outlined"
 																/>
 															)}

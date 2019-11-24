@@ -5,18 +5,31 @@ const budgetsReducer = (state, action) => {
 	const userID =
 		JSON.parse(window.localStorage.getItem('user')) !== null &&
 		JSON.parse(window.localStorage.getItem('user')).uid;
+
 	switch (action.type) {
 		case 'SET_BUDGETS':
 			return action.budgets;
+
 		case 'ADD_BUDGET':
-			return ({
+			const budgetIdNums = state.budgetsOrder.map(bdID =>
+				parseInt(bdID.match(/\d/g).join(''))
+			);
+			const newBudgetId = `budget-${Math.max(...budgetIdNums) + 1}`;
+			return {
 				...state,
 				allBudgets: {
 					...state.allBudgets,
-					[action.budgetId]: action.budget
+					[newBudgetId]: {
+						id: newBudgetId,
+						title: action.title,
+						planned: action.planned,
+						categories: [],
+						categoriesIds: []
+					}
 				},
-				budgetsOrder: [ ...state.budgetsOrder, action.budget ]
-			});
+				budgetsOrder: [ newBudgetId, ...state.budgetsOrder ]
+			};
+
 		case 'REMOVE_BUDGET':
 			// move categories from deleted budget to others
 			const newState = {
@@ -36,11 +49,11 @@ const budgetsReducer = (state, action) => {
 					}
 				}
 			};
-			return ({
+			return {
 				...state,
 				allBudgets: filterObjectByKey(newState.allBudgets, action.budgetId),
 				budgetsOrder: state.budgetsOrder.filter(budgetId => budgetId !== action.budgetId)
-			});
+			};
 
 		default:
 			return state;

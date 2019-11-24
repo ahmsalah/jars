@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import NewTransactionForm from './NewTransactionForm';
 import NewCategoryForm from './NewCategoryForm';
 import AppBar from '@material-ui/core/AppBar';
@@ -12,11 +12,12 @@ import HamburgerMenuPopover from './HamburgerMenuPopover';
 import ProfilePopover from './ProfilePopover';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
+import NewBudgetForm from './NewBudgetForm';
 
 function Navbar() {
 	const classes = useStyles();
 	const currentUser = useContext(AuthContext);
-	const location = useHistory().location.pathname;
+	const location = useLocation().pathname;
 	const [ anchorProfile, setAnchorProfile ] = useState(null);
 	const [ anchorMenu, setAnchorMenu ] = useState(null);
 
@@ -34,6 +35,7 @@ function Navbar() {
 				<div className={classes.addButton}>
 					{location === '/' && <NewTransactionForm />}
 					{location === '/categories' && <NewCategoryForm />}
+					{location === '/budgets' && <NewBudgetForm />}
 				</div>
 
 				<IconButton
