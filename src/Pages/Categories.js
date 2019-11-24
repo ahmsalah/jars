@@ -1,10 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { CategoriesContext, DispatchContext } from '../context/categories.context';
+import { CategoriesContext } from '../context/categories.context';
 import CategoryList from '../components/CategoryList';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Loader from '../components/Loader';
-import arrayMove from 'array-move';
 import TipsExpansionPanel from '../components/TipsExpansionPanel';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
@@ -66,7 +65,6 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 function Categories() {
 	const classes = useStyles();
 	const categories = useContext(CategoriesContext);
-	const dispatch = useContext(DispatchContext);
 
 	const [ isLoading, setIsLoading ] = useState(true);
 
@@ -76,16 +74,6 @@ function Categories() {
 		},
 		[ categories ]
 	);
-
-	//------ Dragging Categories -----//
-	const onSortEnd = ({ oldIndex, newIndex, collection }) => {
-		const categoryList = arrayMove(
-			categories.lists[collection].categoriesIds,
-			oldIndex,
-			newIndex
-		);
-		dispatch({ type: 'MOVE_CATEGORIES', categoryList, categoryType: collection });
-	};
 
 	return (
 		<div className={classes.root}>
@@ -112,11 +100,7 @@ function Categories() {
 									key={listID}
 									list={list}
 									type={listID}
-									collection={listID}
 									categories={categoriesList}
-									onSortEnd={onSortEnd}
-									// distance={10}
-									pressDelay={200}
 								/>
 							);
 						})}

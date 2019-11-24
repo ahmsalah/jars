@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
@@ -20,6 +20,7 @@ import Collapse from '@material-ui/core/Collapse';
 import BudgetItemDetails from './BudgetItemDetails';
 import DeleteDialog from './DeleteDialog';
 import { useSnackbar } from 'notistack';
+import { DispatchContext } from '../context/budgets.context';
 
 const ExpansionPanelSummary = withStyles({
 	root: {
@@ -28,6 +29,7 @@ const ExpansionPanelSummary = withStyles({
 })(MuiExpansionPanelSummary);
 
 function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
+	const dispatch = useContext(DispatchContext);
 	const [ expanded, setExpanded ] = useState(true);
 	const [ dialogOpen, setDialogOpen ] = useState(false);
 	const { enqueueSnackbar } = useSnackbar();
@@ -36,7 +38,7 @@ function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
 	const classes = useStyles(props);
 
 	const handleDelete = () => {
-		console.log('deleting budget');
+		dispatch({ type: 'REMOVE_BUDGET', budgetId });
 		setDialogOpen(false);
 		enqueueSnackbar('Budget Deleted');
 	};

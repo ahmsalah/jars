@@ -1,9 +1,18 @@
 import { useContext } from 'react';
-import { BudgetsContext, DispatchContext } from '../context/budgets.context';
+import {
+	BudgetsContext,
+	DispatchContext as DispatchBudgetsContext
+} from '../context/budgets.context';
+import {
+	CategoriesContext,
+	DispatchContext as DispatchCategoriesContext
+} from '../context/categories.context';
 
 function useSorting() {
 	const budgets = useContext(BudgetsContext);
-	const dispatch = useContext(DispatchContext);
+	const dispatchBudgets = useContext(DispatchBudgetsContext);
+	const categories = useContext(CategoriesContext);
+	const dispatchCategories = useContext(DispatchCategoriesContext);
 
 	const onBudgetsDragEnd = result => {
 		const { destination, source, draggableId, type } = result;
@@ -21,7 +30,7 @@ function useSorting() {
 				...budgets,
 				budgetsOrder: newBudgetsOrder
 			};
-			dispatch({ type: 'SET_BUDGETS', budgets: newBudgets });
+			dispatchBudgets({ type: 'SET_BUDGETS', budgets: newBudgets });
 			return;
 		}
 
@@ -51,7 +60,7 @@ function useSorting() {
 					[newList.id]: newList
 				}
 			};
-			dispatch({ type: 'SET_BUDGETS', budgets: newBudgets });
+			dispatchBudgets({ type: 'SET_BUDGETS', budgets: newBudgets });
 			return;
 		}
 
@@ -87,10 +96,43 @@ function useSorting() {
 			}
 		};
 
-		dispatch({ type: 'SET_BUDGETS', budgets: newBudgets });
+		dispatchBudgets({ type: 'SET_BUDGETS', budgets: newBudgets });
 	};
 
-	return { onBudgetsDragEnd };
+	const onCategoriesDragEnd = result => {
+		const { destination, source, draggableId } = result;
+
+		if (!destination) return;
+		if (destination.droppableId === source.droppableId && destination.index === source.index)
+			return;
+
+		const list = categories.lists[source.droppableId];
+		const newCategoriesIds = Array.from(list.categoriesIds);
+		newCategoriesIds.splice(source.index, 1);
+		newCategoriesIds.splice(destination.index, 0, draggableId);
+
+		const newList = {
+			...list,
+			categoriesIds: newCategoriesIds
+		};
+
+		const newCategories = {
+			...categories,
+			lists: {
+				...categories.lists,
+				[newList.id]: newList
+			}
+		};
+
+		dispatchCategories({
+			type: 'MOVE_CATEGORIES',
+			newCategories,
+			newCategoriesIds,
+			listId: list.id
+		});
+	};
+
+	return { onBudgetsDragEnd, onCategoriesDragEnd };
 }
 
 export default useSorting;

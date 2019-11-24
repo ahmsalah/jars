@@ -9,7 +9,7 @@ const budgetsReducer = (state, action) => {
 		case 'SET_BUDGETS':
 			return action.budgets;
 		case 'ADD_BUDGET':
-			return (state = {
+			return ({
 				...state,
 				allBudgets: {
 					...state.allBudgets,
@@ -18,9 +18,27 @@ const budgetsReducer = (state, action) => {
 				budgetsOrder: [ ...state.budgetsOrder, action.budget ]
 			});
 		case 'REMOVE_BUDGET':
-			return (state = {
+			// move categories from deleted budget to others
+			const newState = {
 				...state,
-				allBudgets: filterObjectByKey(state.allBudgets, action.id),
+				allBudgets: {
+					...state.allBudgets,
+					'budget-0': {
+						...state.allBudgets['budget-0'],
+						categoriesIds: [
+							...state.allBudgets['budget-0'].categoriesIds,
+							...state.allBudgets[action.budgetId].categoriesIds
+						],
+						categories: [
+							...state.allBudgets['budget-0'].categories,
+							...state.allBudgets[action.budgetId].categories
+						]
+					}
+				}
+			};
+			return ({
+				...state,
+				allBudgets: filterObjectByKey(newState.allBudgets, action.budgetId),
 				budgetsOrder: state.budgetsOrder.filter(budgetId => budgetId !== action.budgetId)
 			});
 

@@ -62,22 +62,14 @@ const categoriesReducer = (state, action) => {
 					}
 				})
 			);
+
 		case 'MOVE_CATEGORIES':
 			return (
 				userID &&
 					firebase.firestore().collection('users').doc(userID).update({
-						[`categories.lists.${action.categoryType}.categoriesIds`]: action.categoryList
+						[`categories.lists.${action.listId}.categoriesIds`]: action.newCategoriesIds
 					}),
-				(state = {
-					...state,
-					lists: {
-						...state.lists,
-						[action.categoryType]: {
-							...state.lists[action.categoryType],
-							categoriesIds: action.categoryList
-						}
-					}
-				})
+				action.newCategories
 			);
 		default:
 			return state;

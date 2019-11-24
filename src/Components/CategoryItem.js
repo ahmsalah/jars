@@ -1,6 +1,5 @@
 import React, { memo, useContext, useState } from 'react';
 import { DispatchContext } from '../context/categories.context';
-import { SortableElement } from 'react-sortable-hoc';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -11,6 +10,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack';
 import DeleteDialog from './DeleteDialog';
+import { Draggable } from 'react-beautiful-dnd';
 
 const useStyles = makeStyles(({ breakpoints, spacing }) => ({
 	root: {
@@ -39,7 +39,7 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
 	}
 }));
 
-const CategoryItem = SortableElement(({ id, type, name, icon }) => {
+const CategoryItem = ({ id, type, name, icon, index, categoriesLength }) => {
 	const classes = useStyles();
 	const dispatch = useContext(DispatchContext);
 	const { enqueueSnackbar } = useSnackbar();
@@ -60,30 +60,41 @@ const CategoryItem = SortableElement(({ id, type, name, icon }) => {
 				name={name}
 				icon={icon}
 			/>
-			<div className={classes.root}>
-				<ListItem component="div" ContainerComponent="div">
-					<ListItemAvatar className={classes.iconContainer}>
-						<Avatar
-							className={classes.icon}
-							src={require(`../assets/icons/${icon}.png`)}
-							alt={name}
-						/>
-					</ListItemAvatar>
+			<Draggable draggableId={id} index={index}>
+				{provided => (
+					<div
+						className={classes.root}
+						{...provided.draggableProps}
+						{...provided.dragHandleProps}
+						ref={provided.innerRef}>
+						<ListItem
+							component="div"
+							ContainerComponent="div"
+							divider={index < categoriesLength - 1}>
+							<ListItemAvatar className={classes.iconContainer}>
+								<Avatar
+									className={classes.icon}
+									src={require(`../assets/icons/${icon}.png`)}
+									alt={name}
+								/>
+							</ListItemAvatar>
 
-					<ListItemText>{name}</ListItemText>
-					<ListItemSecondaryAction>
-						<IconButton
-							aria-label="Delete"
-							onClick={() => setDialogOpen(true)}
-							className={classes.deleteButton}
-							disableRipple>
-							<DeleteIcon />
-						</IconButton>
-					</ListItemSecondaryAction>
-				</ListItem>
-			</div>
+							<ListItemText>{name}</ListItemText>
+							<ListItemSecondaryAction>
+								<IconButton
+									aria-label="Delete"
+									onClick={() => setDialogOpen(true)}
+									className={classes.deleteButton}
+									disableRipple>
+									<DeleteIcon />
+								</IconButton>
+							</ListItemSecondaryAction>
+						</ListItem>
+					</div>
+				)}
+			</Draggable>
 		</React.Fragment>
 	);
-});
+};
 
 export default memo(CategoryItem);
