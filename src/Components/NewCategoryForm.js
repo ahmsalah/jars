@@ -18,7 +18,6 @@ import Avatar from '@material-ui/core/Avatar';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Paper from '@material-ui/core/Paper';
 import SelectIconDialog from './SelectIconDialog';
-import uuid from 'uuid/v4';
 import AddIcon from '@material-ui/icons/Add';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useSnackbar } from 'notistack';
@@ -100,14 +99,8 @@ function NewCategoryForm() {
 	const handleSubmit = evt => {
 		evt.preventDefault();
 		const type = isExpense ? 'exp' : 'inc';
-		const id = `ctg-${uuid()}`;
-		const newCategory = { name, type, icon, id };
-		dispatch({
-			type: 'ADD_CATEGORY',
-			category: newCategory,
-			categoryType: type,
-			id
-		});
+
+		dispatch({ type: 'ADD_CATEGORY', name, icon, categoryType: type });
 		reset();
 		setDialogOpen(false);
 		setIcon('icon_not_selected');

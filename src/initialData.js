@@ -30,23 +30,23 @@ export const initialCategories = {
 		'ctg-28': { id: 'ctg-28', name: 'Decorations', type: 'exp', icon: 'icon_21' },
 		'ctg-29': { id: 'ctg-29', name: 'Pets', type: 'exp', icon: 'icon_123' },
 		'ctg-30': { id: 'ctg-30', name: 'Education', type: 'exp', icon: 'icon_113' },
-		'ctg-31': { id: 'ctg-32', name: 'Others', type: 'exp', icon: 'icon_23' },
+		'ctg-31': { id: 'ctg-31', name: 'Others', type: 'exp', icon: 'icon_23' },
 
-		'ctg-0001': { id: 'ctg-0001', name: 'Initial balance', type: 'inc', icon: 'icon_109' },
-		'ctg-0002': { id: 'ctg-0002', name: 'Salary', type: 'inc', icon: 'ic_category_salary' },
-		'ctg-0003': { id: 'ctg-0003', name: 'Savings', type: 'inc', icon: 'icon_141' },
-		'ctg-0004': { id: 'ctg-0004', name: 'Bonus', type: 'inc', icon: 'icon_57' },
-		'ctg-0005': { id: 'ctg-0005', name: 'Awards', type: 'inc', icon: 'ic_category_award' },
-		'ctg-0006': { id: 'ctg-0006', name: 'Sale', type: 'inc', icon: 'icon_121' },
-		'ctg-0007': { id: 'ctg-0007', name: 'Gifts', type: 'inc', icon: 'ic_category_give' },
-		'ctg-0008': {
-			id: 'ctg-0008',
+		'ctg-8001': { id: 'ctg-8001', name: 'Initial balance', type: 'inc', icon: 'icon_109' },
+		'ctg-8002': { id: 'ctg-8002', name: 'Salary', type: 'inc', icon: 'ic_category_salary' },
+		'ctg-8003': { id: 'ctg-8003', name: 'Savings', type: 'inc', icon: 'icon_141' },
+		'ctg-8004': { id: 'ctg-8004', name: 'Bonus', type: 'inc', icon: 'icon_57' },
+		'ctg-8005': { id: 'ctg-8005', name: 'Awards', type: 'inc', icon: 'ic_category_award' },
+		'ctg-8006': { id: 'ctg-8006', name: 'Sale', type: 'inc', icon: 'icon_121' },
+		'ctg-8007': { id: 'ctg-8007', name: 'Gifts', type: 'inc', icon: 'ic_category_give' },
+		'ctg-8008': {
+			id: 'ctg-8008',
 			name: 'Interest money',
 			type: 'inc',
 			icon: 'ic_category_interestmoney'
 		},
-		'ctg-0009': {
-			id: 'ctg-0009',
+		'ctg-8009': {
+			id: 'ctg-8009',
 			name: 'Others',
 			type: 'inc',
 			icon: 'icon_22'
@@ -93,15 +93,15 @@ export const initialCategories = {
 			id: 'inc',
 			title: 'Income',
 			categoriesIds: [
-				'ctg-0001',
-				'ctg-0002',
-				'ctg-0003',
-				'ctg-0004',
-				'ctg-0005',
-				'ctg-0006',
-				'ctg-0007',
-				'ctg-0008',
-				'ctg-0009'
+				'ctg-8001',
+				'ctg-8002',
+				'ctg-8003',
+				'ctg-8004',
+				'ctg-8005',
+				'ctg-8006',
+				'ctg-8007',
+				'ctg-8008',
+				'ctg-8009'
 			]
 		}
 	},
