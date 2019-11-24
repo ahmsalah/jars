@@ -10,7 +10,7 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
 		flex: '1',
 		[breakpoints.up('lg')]: {
-			transform: 'translateX(-60px)'
+			marginRight: spacing(7.5)
 		}
 	},
 	content: {

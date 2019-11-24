@@ -14,8 +14,8 @@ import { useTheme } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import { useSpring, animated } from 'react-spring';
 import { useSnackbar } from 'notistack';
+import Grow from '@material-ui/core/Grow';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
@@ -97,53 +97,50 @@ function TransactionItem({ transaction: { id, category, description, date, amoun
 	};
 
 	let color = type === 'exp' ? 'secondary' : 'primary';
-	const springProps = useSpring({
-		from: { opacity: 0, marginLeft: -100, marginRight: 100 },
-		opacity: 1,
-		marginLeft: 0,
-		marginRight: 0
-	});
+
 	return (
-		<animated.div className={classes.root} style={springProps}>
-			<ThemeProvider theme={theme}>
-				<ListItem component="div">
-					<ListItemAvatar className={classes.iconContainer}>
-						<Avatar
-							className={classes.icon}
-							src={require(`../assets/icons/${category.icon}.png`)}
-							alt={category.name}
-						/>
-					</ListItemAvatar>
-					<ListItemText
-						className={classes.title}
-						primary={category.name}
-						secondary={description}
-					/>
-					<Hidden xsDown>
+		<Grow in={!!id} timeout={800}>
+			<div className={classes.root}>
+				<ThemeProvider theme={theme}>
+					<ListItem component="div">
+						<ListItemAvatar className={classes.iconContainer}>
+							<Avatar
+								className={classes.icon}
+								src={require(`../assets/icons/${category.icon}.png`)}
+								alt={category.name}
+							/>
+						</ListItemAvatar>
 						<ListItemText
-							className={classes.date}
-							primary={formatDate(date, 'includeYear')}
-							primaryTypographyProps={{ variant: 'body2' }}
+							className={classes.title}
+							primary={category.name}
+							secondary={description}
 						/>
-					</Hidden>
-					<ListItemText
-						className={classes.amount}
-						primary={formatAmount(amount)}
-						secondary={!matches && formatDate(date)}
-						primaryTypographyProps={{ color: color }}
-					/>
-					<ListItemSecondaryAction>
-						<IconButton
-							edge="end"
-							aria-label="Delete"
-							onClick={handleDeleteItem}
-							className={classes.deleteButton}>
-							<DeleteIcon />
-						</IconButton>
-					</ListItemSecondaryAction>
-				</ListItem>
-			</ThemeProvider>
-		</animated.div>
+						<Hidden xsDown>
+							<ListItemText
+								className={classes.date}
+								primary={formatDate(date, 'includeYear')}
+								primaryTypographyProps={{ variant: 'body2' }}
+							/>
+						</Hidden>
+						<ListItemText
+							className={classes.amount}
+							primary={formatAmount(amount)}
+							secondary={!matches && formatDate(date)}
+							primaryTypographyProps={{ color: color }}
+						/>
+						<ListItemSecondaryAction>
+							<IconButton
+								edge="end"
+								aria-label="Delete"
+								onClick={handleDeleteItem}
+								className={classes.deleteButton}>
+								<DeleteIcon />
+							</IconButton>
+						</ListItemSecondaryAction>
+					</ListItem>
+				</ThemeProvider>
+			</div>
+		</Grow>
 	);
 }
 

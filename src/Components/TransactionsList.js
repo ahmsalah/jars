@@ -6,6 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 // import { useTransition, animated } from 'react-spring';
+import Collapse from '@material-ui/core/Collapse';
 
 const useStyles = makeStyles(({ palette, spacing, breakpoints }) => ({
 	root: {},
@@ -44,28 +45,33 @@ function TransactionsList() {
 	// 	leave: { opacity: 0, marginLeft: -100, marginRight: 100 }
 	// });
 
-	return transactions.length !== 0 ? (
-		<List component="div" className={classes.root}>
-			{/* {transition.map(({ item, key, props }, i) => (
+	return (
+		<React.Fragment>
+			<Collapse in={!!transactions.length}>
+				<List component="div" className={classes.root}>
+					{/* {transition.map(({ item, key, props }, i) => (
 				<animated.div key={key} style={props}>
 					<TransactionItem transaction={item} />
 					{i < transactions.length - 1 && <Divider />}
 				</animated.div>
 			))} */}
 
-			{transactions.map((tr, i) => (
-				<React.Fragment key={tr.id}>
-					<TransactionItem transaction={tr} />
-					{i < transactions.length - 1 && <Divider />}
-				</React.Fragment>
-			))}
-		</List>
-	) : (
-		<div className={classes.noTransactions}>
-			<Typography variant="h4">No transactions here</Typography>
-			<Typography variant="h4">start adding now</Typography>
-			<img src={require(`../assets/sad-jar.png`)} alt="No Transactions" />
-		</div>
+					{transactions.map((tr, i) => (
+						<React.Fragment key={tr.id}>
+							<TransactionItem transaction={tr} />
+							{i < transactions.length - 1 && <Divider />}
+						</React.Fragment>
+					))}
+				</List>
+			</Collapse>
+			<Collapse timeout={500} in={!transactions.length}>
+				<div className={classes.noTransactions}>
+					<Typography variant="h4">No transactions here</Typography>
+					<Typography variant="h4">start adding now</Typography>
+					<img src={require(`../assets/sad-jar.png`)} alt="No Transactions" />
+				</div>
+			</Collapse>
+		</React.Fragment>
 	);
 }
 
