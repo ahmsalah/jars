@@ -30,6 +30,20 @@ const budgetsReducer = (state, action) => {
 				budgetsOrder: [ newBudgetId, ...state.budgetsOrder ]
 			};
 
+		case 'EDIT_BUDGET':
+			return {
+				...state,
+				allBudgets: {
+					...state.allBudgets,
+					[action.id]: {
+						...state.allBudgets[action.id],
+						id: action.id,
+						title: action.title,
+						planned: action.planned
+					}
+				}
+			};
+
 		case 'REMOVE_BUDGET':
 			// move categories from deleted budget to others
 			const newState = {

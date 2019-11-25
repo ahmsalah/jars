@@ -18,7 +18,6 @@ import Avatar from '@material-ui/core/Avatar';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Paper from '@material-ui/core/Paper';
 import SelectIconDialog from './SelectIconDialog';
-import AddIcon from '@material-ui/icons/Add';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useSnackbar } from 'notistack';
 
@@ -71,12 +70,11 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 	}
 }));
 
-function NewCategoryForm() {
+function NewCategoryForm({ dialogOpen, setDialogOpen }) {
 	const dispatch = useContext(DispatchContext);
 	const { enqueueSnackbar } = useSnackbar();
 	const [ name, handleChange, reset ] = useInputState('');
 	const [ isExpense, toggleIsExpense ] = useToggleState(true);
-	const [ dialogOpen, setDialogOpen ] = useState(false);
 	const [ iconDialogOpen, setIconDialogOpen ] = useState(false);
 	const [ icon, setIcon ] = useState('icon_not_selected');
 	const matches = useMediaQuery('(min-width:370px)');
@@ -109,9 +107,6 @@ function NewCategoryForm() {
 
 	return (
 		<React.Fragment>
-			<Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>
-				{matches ? 'Create Category' : <AddIcon />}
-			</Button>
 			<ThemeProvider theme={theme}>
 				<Dialog
 					maxWidth="xs"

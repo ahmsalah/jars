@@ -25,17 +25,14 @@ import { ThemeProvider } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TipsExpansionPanel from './TipsExpansionPanel';
-import AddIcon from '@material-ui/icons/Add';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useSnackbar } from 'notistack';
 
 const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 	return <Grow {...props} />;
 });
 
-function NewTransactionForm() {
+function NewTransactionForm({ dialogOpen, setDialogOpen }) {
 	const classes = useStyles();
-	const matches = useMediaQuery('(min-width:370px)');
 	const categories = useContext(CategoriesContext);
 	const { selectedDate } = useContext(TransactionsContext);
 	const dispatch = useContext(DispatchContext);
@@ -43,7 +40,6 @@ function NewTransactionForm() {
 	const [ description, handleDescriptionChange, resetDescription ] = useInputState('');
 	const [ amount, handleAmountChange, resetAmount ] = useInputState('');
 	const [ isExpense, toggleIsExpense ] = useToggleState(true);
-	const [ dialogOpen, setDialogOpen ] = useState(false);
 	const [ date, setDate ] = useState(selectedDate);
 	const { enqueueSnackbar } = useSnackbar();
 
@@ -102,9 +98,6 @@ function NewTransactionForm() {
 	return (
 		<MuiPickersUtilsProvider utils={DateFnsUtils}>
 			<React.Fragment>
-				<Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>
-					{matches ? 'Add Transaction' : <AddIcon />}
-				</Button>
 				<ThemeProvider theme={theme}>
 					<Dialog
 						className={classes.dialog}

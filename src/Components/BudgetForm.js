@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { DispatchContext } from '../context/budgets.context';
 import useInputState from '../hooks/useInputState';
 import Button from '@material-ui/core/Button';
@@ -9,8 +9,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import Grow from '@material-ui/core/Grow';
-import AddIcon from '@material-ui/icons/Add';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useSnackbar } from 'notistack';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TipsExpansionPanel from './TipsExpansionPanel';
@@ -33,40 +31,49 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 	}
 }));
 
-function NewBudgetForm() {
-	const [ dialogOpen, setDialogOpen ] = useState(false);
-	const [ budgetName, handleBudgetNameChange, resetBudgetName ] = useInputState('');
-	const [ planned, handlePlannedChange, resetPlanned ] = useInputState('');
-	const matches = useMediaQuery('(min-width:370px)');
+function BudgetForm({ dialogOpen, setDialogOpen, edit_id, edit_title, edit_planned }) {
+	const [ budgetName, handleBudgetNameChange, resetBudgetName ] = useInputState(edit_title || '');
+	const [ planned, handlePlannedChange, resetPlanned ] = useInputState(edit_planned || '');
 	const { enqueueSnackbar } = useSnackbar();
 	const dispatch = useContext(DispatchContext);
 	const classes = useStyles();
 
-	const handleSubmit = () => {
-		dispatch({
-			type: 'ADD_BUDGET',
-			title: budgetName,
-			planned: parseInt(planned)
-		});
+	const handleSubmit = evt => {
+		evt.preventDefault();
+
+		if (!!edit_id) {
+			dispatch({
+				type: 'EDIT_BUDGET',
+				title: budgetName,
+				planned: parseInt(planned),
+				id: edit_id
+			});
+			enqueueSnackbar('Budget Edited');
+		} else {
+			dispatch({
+				type: 'ADD_BUDGET',
+				title: budgetName,
+				planned: parseInt(planned)
+			});
+			enqueueSnackbar('New Budget Added');
+			resetBudgetName();
+			resetPlanned();
+		}
+
 		setDialogOpen(false);
-		resetBudgetName();
-		resetPlanned();
-		enqueueSnackbar('New Budget Added');
 	};
 
 	return (
 		<React.Fragment>
-			<Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>
-				{matches ? 'Create Budget' : <AddIcon />}
-			</Button>
-
 			<Dialog
 				maxWidth="xs"
 				open={dialogOpen}
 				onClose={() => setDialogOpen(false)}
 				TransitionComponent={TransitionGrow}
 				aria-labelledby="form-dialog-title">
-				<DialogTitle id="form-dialog-title">New Budget</DialogTitle>
+				<DialogTitle id="form-dialog-title">
+					{!!edit_id ? 'Edit' : 'New'} Budget
+				</DialogTitle>
 
 				<DialogContent className={classes.dialogContent}>
 					<div className={classes.expansionPanelContainer}>
@@ -108,7 +115,7 @@ function NewBudgetForm() {
 						disabled={!budgetName.length || planned < 1}
 						onClick={handleSubmit}
 						color="primary">
-						Add
+						{!!edit_id ? 'Edit' : 'Add'}
 					</Button>
 				</DialogActions>
 			</Dialog>
@@ -116,4 +123,4 @@ function NewBudgetForm() {
 	);
 }
 
-export default NewBudgetForm;
+export default BudgetForm;

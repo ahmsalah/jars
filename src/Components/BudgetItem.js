@@ -21,6 +21,7 @@ import BudgetItemDetails from './BudgetItemDetails';
 import DeleteDialog from './DeleteDialog';
 import { useSnackbar } from 'notistack';
 import { DispatchContext } from '../context/budgets.context';
+import BudgetForm from './BudgetForm';
 
 const ExpansionPanelSummary = withStyles({
 	root: {
@@ -31,7 +32,8 @@ const ExpansionPanelSummary = withStyles({
 function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
 	const dispatch = useContext(DispatchContext);
 	const [ expanded, setExpanded ] = useState(true);
-	const [ dialogOpen, setDialogOpen ] = useState(false);
+	const [ deleteDialogOpen, setDeleteDialogOpen ] = useState(false);
+	const [ editDialogOpen, setEditDialogOpen ] = useState(false);
 	const { enqueueSnackbar } = useSnackbar();
 	const actualAmount = actual < 0 ? actual * -1 : actual;
 	const props = { expanded };
@@ -39,16 +41,23 @@ function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
 
 	const handleDelete = () => {
 		dispatch({ type: 'REMOVE_BUDGET', budgetId });
-		setDialogOpen(false);
+		setDeleteDialogOpen(false);
 		enqueueSnackbar('Budget Deleted');
 	};
 
 	return (
 		<React.Fragment>
+			<BudgetForm
+				edit_id={budgetId}
+				edit_title={budgetItem.title}
+				edit_planned={budgetItem.planned}
+				dialogOpen={editDialogOpen}
+				setDialogOpen={setEditDialogOpen}
+			/>
 			<DeleteDialog
 				onSubmit={handleDelete}
-				dialogOpen={dialogOpen}
-				setDialogOpen={setDialogOpen}
+				dialogOpen={deleteDialogOpen}
+				setDialogOpen={setDeleteDialogOpen}
 				name={budgetItem.title}
 			/>
 			<Draggable draggableId={budgetId} index={index}>
@@ -87,7 +96,8 @@ function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
 														<IconButton
 															className={classes.iconButton}
 															aria-label="Delete"
-															onClick={() => setDialogOpen(true)}
+															onClick={() =>
+																setDeleteDialogOpen(true)}
 															disableRipple>
 															<DeleteIcon />
 														</IconButton>
@@ -95,7 +105,7 @@ function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
 													<IconButton
 														className={classes.iconButton}
 														aria-label="Edit"
-														onClick={e => e.stopPropagation()}
+														onClick={() => setEditDialogOpen(true)}
 														disableRipple>
 														<EditIcon />
 													</IconButton>
