@@ -1,4 +1,4 @@
-import React, { memo, useContext } from 'react';
+import React, { memo, useContext, useState } from 'react';
 import { DispatchContext } from '../context/transactions.context';
 import { formatDate, formatAmount } from '../helpers';
 import ListItem from '@material-ui/core/ListItem';
@@ -16,6 +16,10 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { useSnackbar } from 'notistack';
 import Grow from '@material-ui/core/Grow';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Popover from '@material-ui/core/Popover';
+import EditIcon from '@material-ui/icons/Edit';
+import TransactionForm from './TransactionForm';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
@@ -65,11 +69,25 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 			}
 		}
 	},
-	deleteButton: {
+	moreButton: {
+		padding: spacing(1),
+		marginRight: -8,
+		[breakpoints.up('sm')]: {
+			padding: spacing(1.5),
+			marginRight: -5
+		},
 		[breakpoints.up('md')]: {
-			marginRight: '-5px',
 			opacity: '0',
 			transition: 'opacity .3s'
+		}
+	},
+	popoverButtonsContainer: {
+		padding: spacing(0.5, 0)
+	},
+	popoverButton: {
+		padding: spacing(0, 0.5),
+		'& > *': {
+			padding: spacing(1)
 		}
 	}
 }));
@@ -80,6 +98,7 @@ function TransactionItem({ transaction: { id, category, description, date, amoun
 	const themeBP = useTheme();
 	const matches = useMediaQuery(themeBP.breakpoints.up('sm'));
 	const { enqueueSnackbar } = useSnackbar();
+	const [ editDialogOpen, setEditDialogOpen ] = useState(false);
 
 	const theme = createMuiTheme({
 		typography: {
@@ -91,7 +110,12 @@ function TransactionItem({ transaction: { id, category, description, date, amoun
 		}
 	});
 
+	const [ anchorEl, setAnchorEl ] = useState(null);
+	const popoverOpen = Boolean(anchorEl);
+	const popoverId = popoverOpen ? 'simple-popover' : undefined;
+
 	const handleDeleteItem = () => {
+		setAnchorEl(null);
 		dispatch({ type: 'REMOVE_TRANSACTION', id });
 		enqueueSnackbar('Transaction Deleted');
 	};
@@ -99,48 +123,93 @@ function TransactionItem({ transaction: { id, category, description, date, amoun
 	let color = type === 'exp' ? 'secondary' : 'primary';
 
 	return (
-		<Grow in={!!id} timeout={800}>
-			<div className={classes.root}>
-				<ThemeProvider theme={theme}>
-					<ListItem component="div">
-						<ListItemAvatar className={classes.iconContainer}>
-							<Avatar
-								className={classes.icon}
-								src={require(`../assets/icons/${category.icon}.png`)}
-								alt={category.name}
-							/>
-						</ListItemAvatar>
-						<ListItemText
-							className={classes.title}
-							primary={category.name}
-							secondary={description}
-						/>
-						<Hidden xsDown>
+		<React.Fragment>
+			<TransactionForm
+				dialogOpen={editDialogOpen}
+				setDialogOpen={setEditDialogOpen}
+				edit_id={id}
+				edit_category={category}
+				edit_description={description}
+				edit_amount={type === 'exp' ? amount * -1 : amount}
+				edit_date={date}
+				edit_type={type}
+			/>
+			<Grow in={!!id} timeout={800}>
+				<div className={classes.root}>
+					<ThemeProvider theme={theme}>
+						<ListItem component="div">
+							<ListItemAvatar className={classes.iconContainer}>
+								<Avatar
+									className={classes.icon}
+									src={require(`../assets/icons/${category.icon}.png`)}
+									alt={category.name}
+								/>
+							</ListItemAvatar>
 							<ListItemText
-								className={classes.date}
-								primary={formatDate(date, 'includeYear')}
-								primaryTypographyProps={{ variant: 'body2' }}
+								className={classes.title}
+								primary={category.name}
+								secondary={description}
 							/>
-						</Hidden>
-						<ListItemText
-							className={classes.amount}
-							primary={formatAmount(amount)}
-							secondary={!matches && formatDate(date)}
-							primaryTypographyProps={{ color: color }}
-						/>
-						<ListItemSecondaryAction>
-							<IconButton
-								edge="end"
-								aria-label="Delete"
-								onClick={handleDeleteItem}
-								className={classes.deleteButton}>
-								<DeleteIcon />
-							</IconButton>
-						</ListItemSecondaryAction>
-					</ListItem>
-				</ThemeProvider>
-			</div>
-		</Grow>
+							<Hidden xsDown>
+								<ListItemText
+									className={classes.date}
+									primary={formatDate(date, 'includeYear')}
+									primaryTypographyProps={{ variant: 'body2' }}
+								/>
+							</Hidden>
+							<ListItemText
+								className={classes.amount}
+								primary={formatAmount(amount)}
+								secondary={!matches && formatDate(date)}
+								primaryTypographyProps={{ color: color }}
+							/>
+							<ListItemSecondaryAction>
+								<IconButton
+									edge="end"
+									aria-label="more"
+									onClick={e => setAnchorEl(e.currentTarget)}
+									className={classes.moreButton}>
+									<MoreVertIcon />
+								</IconButton>
+								<Popover
+									id={popoverId}
+									open={popoverOpen}
+									anchorEl={anchorEl}
+									onClose={() => setAnchorEl(null)}
+									anchorOrigin={{
+										vertical: 'center',
+										horizontal: 'center'
+									}}
+									transformOrigin={{
+										vertical: 'center',
+										horizontal: 'center'
+									}}>
+									<div className={classes.popoverButtonsContainer}>
+										<div className={classes.popoverButton}>
+											<IconButton
+												aria-label="Edit"
+												onClick={() => {
+													setEditDialogOpen(true);
+													setAnchorEl(null);
+												}}>
+												<EditIcon />
+											</IconButton>
+										</div>
+										<div className={classes.popoverButton}>
+											<IconButton
+												aria-label="Delete"
+												onClick={handleDeleteItem}>
+												<DeleteIcon />
+											</IconButton>
+										</div>
+									</div>
+								</Popover>
+							</ListItemSecondaryAction>
+						</ListItem>
+					</ThemeProvider>
+				</div>
+			</Grow>
+		</React.Fragment>
 	);
 }
 

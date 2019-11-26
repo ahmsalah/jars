@@ -17,6 +17,17 @@ const transactionsReducer = (state, action) => {
 					.collection('transactions')
 					.add(action.transaction)
 			);
+		case 'EDIT_TRANSACTION':
+			return (
+				userID &&
+				firebase
+					.firestore()
+					.collection('users')
+					.doc(userID)
+					.collection('transactions')
+					.doc(action.id)
+					.update(action.transaction)
+			);
 		case 'REMOVE_TRANSACTION':
 			return (
 				userID &&

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import NewTransactionForm from './NewTransactionForm';
+import TransactionForm from './TransactionForm';
 import NewCategoryForm from './NewCategoryForm';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -29,7 +29,7 @@ function Navbar() {
 	return (
 		<React.Fragment>
 			{location === '/' && (
-				<NewTransactionForm dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
+				<TransactionForm dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
 			)}
 			{location === '/categories' && (
 				<NewCategoryForm dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />

@@ -3,17 +3,18 @@ import { makeStyles } from '@material-ui/core/styles';
 export default makeStyles(({ spacing, breakpoints }) => ({
 	dialog: {
 		'& > div > div': {
-			maxWidth: 320,
+			maxWidth: spacing(40),
+			margin: spacing(3),
 			[breakpoints.up('sm')]: {
-				maxWidth: 600
+				maxWidth: spacing(75)
 			}
 		}
 	},
 	dialogContent: {
-		maxWidth: 488
+		maxWidth: spacing(67.5)
 	},
 	expansionPanelContainer: {
-		margin: spacing(0, 1.5)
+		margin: spacing(0, 1.25)
 	},
 	switch: {
 		margin: spacing(2.5, 0, 1),
@@ -22,20 +23,19 @@ export default makeStyles(({ spacing, breakpoints }) => ({
 		width: '100%'
 	},
 	margin: {
-		margin: spacing(1)
+		margin: `8px !important`
 	},
 	inputsContainer: {
 		display: 'flex',
 		justifyContent: 'center',
 		flexWrap: 'wrap'
-		// maxWidth: 440
 	},
 	textField: {
-		width: 200,
-		minWidth: 180,
-		maxHeight: 56,
+		width: spacing(27.5),
+		minWidth: spacing(22),
+		maxHeight: spacing(7),
 		'& div': {
-			maxHeight: 56,
+			maxHeight: spacing(7),
 			'& img': {
 				height: '90%',
 				width: '90%'
@@ -52,6 +52,6 @@ export default makeStyles(({ spacing, breakpoints }) => ({
 		padding: spacing(0.5, 2)
 	},
 	avatar: {
-		margin: spacing(0, 2, 0, 0)
+		marginRight: spacing(1)
 	}
 }));

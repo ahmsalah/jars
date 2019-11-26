@@ -3,7 +3,7 @@ import { CategoriesContext } from '../context/categories.context';
 import { TransactionsContext } from '../context/transactions.context';
 import { DispatchContext } from '../context/transactions.context';
 import { getExactTime } from '../helpers';
-import useStyles from './styles/newTransactionForm.styles';
+import useStyles from './styles/transactionForm.styles';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import isValid from 'date-fns/isValid';
@@ -31,16 +31,29 @@ const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 	return <Grow {...props} />;
 });
 
-function NewTransactionForm({ dialogOpen, setDialogOpen }) {
+function TransactionForm({
+	dialogOpen,
+	setDialogOpen,
+	edit_id,
+	edit_category,
+	edit_description,
+	edit_amount,
+	edit_date,
+	edit_type
+}) {
 	const classes = useStyles();
 	const categories = useContext(CategoriesContext);
 	const { selectedDate } = useContext(TransactionsContext);
 	const dispatch = useContext(DispatchContext);
-	const [ category, handleCategoryChange, resetCategory ] = useInputState('');
-	const [ description, handleDescriptionChange, resetDescription ] = useInputState('');
-	const [ amount, handleAmountChange, resetAmount ] = useInputState('');
-	const [ isExpense, toggleIsExpense ] = useToggleState(true);
-	const [ date, setDate ] = useState(selectedDate);
+	const [ category, handleCategoryChange, resetCategory ] = useInputState(
+		!!edit_category ? edit_category.name : ''
+	);
+	const [ description, handleDescriptionChange, resetDescription ] = useInputState(
+		edit_description || ''
+	);
+	const [ amount, handleAmountChange, resetAmount ] = useInputState(edit_amount || '');
+	const [ isExpense, toggleIsExpense ] = useToggleState(edit_type === 'inc' ? false : true);
+	const [ date, setDate ] = useState(!!edit_date ? edit_date : selectedDate);
 	const { enqueueSnackbar } = useSnackbar();
 
 	const theme = createMuiTheme({
@@ -63,6 +76,7 @@ function NewTransactionForm({ dialogOpen, setDialogOpen }) {
 
 	const handleSubmit = evt => {
 		evt.preventDefault();
+
 		const newAmount = isExpense ? amount * -1 : parseFloat(amount);
 		const displayIcon = !categories.allCategories
 			? []
@@ -84,13 +98,24 @@ function NewTransactionForm({ dialogOpen, setDialogOpen }) {
 			dateTimestamp: getExactTime(date),
 			type: categoryType
 		};
-		dispatch({ type: 'ADD_TRANSACTION', transaction });
-		resetCategory();
-		resetDescription();
-		resetAmount();
+
+		if (!!edit_id) {
+			const editedTransaction = {
+				...transaction,
+				id: edit_id
+			};
+			dispatch({ type: 'EDIT_TRANSACTION', transaction: editedTransaction, id: edit_id });
+			enqueueSnackbar('Transaction Edited');
+		} else {
+			dispatch({ type: 'ADD_TRANSACTION', transaction });
+			enqueueSnackbar('New Transaction Added');
+			resetCategory();
+			resetDescription();
+			resetAmount();
+			setDate(selectedDate);
+		}
+
 		setDialogOpen(false);
-		setDate(selectedDate);
-		enqueueSnackbar('New Transaction Added');
 	};
 
 	const categoryType = isExpense ? 'exp' : 'inc';
@@ -105,7 +130,9 @@ function NewTransactionForm({ dialogOpen, setDialogOpen }) {
 						onClose={() => setDialogOpen(false)}
 						TransitionComponent={TransitionGrow}
 						aria-labelledby="form-dialog-title">
-						<DialogTitle id="form-dialog-title">Add Transaction</DialogTitle>
+						<DialogTitle id="form-dialog-title">
+							{!!edit_id ? 'Edit' : 'New'} Transaction
+						</DialogTitle>
 
 						<DialogContent className={classes.dialogContent}>
 							<div className={classes.expansionPanelContainer}>
@@ -202,7 +229,7 @@ function NewTransactionForm({ dialogOpen, setDialogOpen }) {
 								}
 								onClick={handleSubmit}
 								color="primary">
-								Add
+								{!!edit_id ? 'Edit' : 'Add'}
 							</Button>
 						</DialogActions>
 					</Dialog>
@@ -212,4 +239,4 @@ function NewTransactionForm({ dialogOpen, setDialogOpen }) {
 	);
 }
 
-export default NewTransactionForm;
+export default TransactionForm;
