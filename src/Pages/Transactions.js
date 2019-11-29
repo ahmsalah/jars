@@ -5,12 +5,12 @@ import Filters from '../components/Filters';
 import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Loader from '../components/Loader';
-import { TransactionsContext } from '../context/transactions.context';
+import { IsTrLoadingContext } from '../context/transactions.context';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
 		maxWidth: '93vw',
-		margin: `${spacing(8, 2, 6)}`,
+		margin: spacing(8, 2, 6),
 		flex: 1,
 		[breakpoints.up('sm')]: {
 			maxWidth: spacing(70)
@@ -19,7 +19,7 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 			maxWidth: spacing(82)
 		},
 		[breakpoints.up('lg')]: {
-			transform: 'translateX(-60px)'
+			marginRight: spacing(16)
 		}
 	},
 	content: {
@@ -29,11 +29,11 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 
 function Transactions() {
 	const classes = useStyles();
-	const { isLoading } = useContext(TransactionsContext);
+	const isTrLoading = useContext(IsTrLoadingContext);
 
 	return (
 		<div className={classes.root}>
-			{isLoading ? (
+			{isTrLoading ? (
 				<Loader />
 			) : (
 				<React.Fragment>

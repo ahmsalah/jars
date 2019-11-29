@@ -6,111 +6,21 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Hidden from '@material-ui/core/Hidden';
-
-const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
-	root: {
-		marginBottom: spacing(5),
-		overflow: 'hidden',
-		[breakpoints.up('sm')]: {
-			display: 'flex'
-		}
-	},
-	report: {
-		flexBasis: '25%',
-		padding: spacing(4, 2, 2),
-		backgroundColor: palette.grey.light[1],
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-		justifyContent: 'center',
-		'& h3': {
-			fontSize: '2.9rem',
-			marginBottom: spacing(0.5)
-		}
-	},
-	list: {
-		padding: spacing(2, 0),
-		justifySelf: 'flex-end',
-		flexBasis: '75%',
-		'& > li:first-child': {
-			paddingBottom: 0
-		},
-		'& > li:nth-child(2)': {
-			paddingTop: 0
-		},
-		'& > li': {
-			[breakpoints.down('xs')]: {
-				paddingLeft: 0,
-				paddingRight: 0
-			}
-		}
-	},
-	title: {
-		width: '23%',
-		flex: 'none',
-		marginLeft: spacing(2),
-		'& span': {
-			fontWeight: 500,
-			[breakpoints.down('sm')]: {
-				fontSize: '.95rem'
-			}
-		}
-	},
-	amountTitle: {
-		width: 'initial'
-	},
-	barContainer: {
-		flex: '1 1 auto',
-		marginRight: 'auto'
-	},
-	bar: {
-		height: '15px',
-		borderRadius: '2px',
-		[breakpoints.down('sm')]: {
-			height: '12px'
-		}
-	},
-	incBar: {
-		backgroundColor: palette.tertiary.main
-	},
-	expBar: {
-		backgroundColor: palette.tertiary.sub
-	},
-	amount: {
-		flex: 'none',
-		display: 'flex',
-		marginRight: spacing(2),
-		marginLeft: spacing(2),
-		'& span': {
-			[breakpoints.down('sm')]: {
-				fontSize: '.95rem'
-			}
-		}
-	},
-	amountTotal: {
-		marginTop: 0,
-		marginLeft: 'auto',
-		'& span': {
-			[breakpoints.down('sm')]: {
-				fontSize: '1rem'
-			}
-		}
-	}
-}));
+import useStyles from './styles/summary.styles';
 
 function Summary() {
 	const classes = useStyles();
-	const { transactions } = useContext(TransactionsContext);
+	const transactions = useContext(TransactionsContext);
 	const matches = useMediaQuery('(max-width:600px)');
 
 	const renderTotal = () => {
 		const percentage = totalInc && totalExp ? ` (${parseInt(total / totalInc * 100)}%)` : '';
-		return matches ? formatAmount(total, false) + percentage : formatAmount(total, false);
+		return matches
+			? formatAmount(total, '£', 2, false) + percentage
+			: formatAmount(total, '£', 2, false);
 	};
 
 	const [ totalExp, totalInc ] = calcExpInc(transactions);
@@ -120,7 +30,7 @@ function Summary() {
 
 	return totalInc !== 0 || totalExp !== 0 ? (
 		<Paper className={classes.root}>
-			<Hidden xsDown>
+			{!matches && (
 				<div className={classes.report}>
 					<Typography variant="h3">
 						{totalInc !== 0 ? `${parseInt(total / totalInc * 100)}%` : '0%'}
@@ -134,7 +44,7 @@ function Summary() {
 						your income
 					</Typography>
 				</div>
-			</Hidden>
+			)}
 
 			<List className={classes.list}>
 				<ListItem>

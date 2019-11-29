@@ -24,7 +24,8 @@ function Navbar() {
 	const [ anchorProfile, setAnchorProfile ] = useState(null);
 	const [ anchorMenu, setAnchorMenu ] = useState(null);
 	const [ dialogOpen, setDialogOpen ] = useState(false);
-	const matches = useMediaQuery('(min-width:370px)');
+	const matches = useMediaQuery('(min-width:360px)');
+	const matchesXS = useMediaQuery('(min-width:310px)');
 
 	return (
 		<React.Fragment>
@@ -50,10 +51,11 @@ function Navbar() {
 					</Hidden>
 					<div className={classes.addButton}>
 						<Button
+							size={matches ? 'medium' : 'small'}
 							variant="contained"
 							color="primary"
 							onClick={() => setDialogOpen(true)}>
-							{!matches ? (
+							{!matchesXS ? (
 								<AddIcon />
 							) : (
 								(location === '/' && 'Add Transaction') ||

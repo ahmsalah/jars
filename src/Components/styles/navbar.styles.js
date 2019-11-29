@@ -15,9 +15,10 @@ export default makeStyles(({ spacing, palette, breakpoints }) => ({
 		height: spacing(8)
 	},
 	addButton: {
-		padding: spacing(0, 12, 0, 4),
+		padding: spacing(0, 1),
+		margin: '0 auto',
 		[breakpoints.up('sm')]: {
-			padding: spacing(0, 20, 0, 4)
+			margin: spacing(0, 20, 0, 0)
 		}
 	},
 	avatarButton: {

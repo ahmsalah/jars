@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { CategoriesContext } from '../context/categories.context';
-import { TransactionsContext } from '../context/transactions.context';
+import { MonthContext } from '../context/month.context';
 import { DispatchContext } from '../context/transactions.context';
 import { getExactTime } from '../helpers';
 import useStyles from './styles/transactionForm.styles';
@@ -43,7 +43,7 @@ function TransactionForm({
 }) {
 	const classes = useStyles();
 	const categories = useContext(CategoriesContext);
-	const { selectedDate } = useContext(TransactionsContext);
+	const month = useContext(MonthContext);
 	const dispatch = useContext(DispatchContext);
 	const [ category, handleCategoryChange, resetCategory ] = useInputState(
 		!!edit_category ? edit_category.name : ''
@@ -53,7 +53,7 @@ function TransactionForm({
 	);
 	const [ amount, handleAmountChange, resetAmount ] = useInputState(edit_amount || '');
 	const [ isExpense, toggleIsExpense ] = useToggleState(edit_type === 'inc' ? false : true);
-	const [ date, setDate ] = useState(!!edit_date ? edit_date : selectedDate);
+	const [ date, setDate ] = useState(edit_date || month);
 	const { enqueueSnackbar } = useSnackbar();
 
 	const theme = createMuiTheme({
@@ -64,9 +64,9 @@ function TransactionForm({
 
 	useEffect(
 		() => {
-			setDate(selectedDate);
+			!edit_date && setDate(month);
 		},
-		[ selectedDate ]
+		[ month, edit_date ]
 	);
 
 	const handleToggleIsExpense = () => {
@@ -112,7 +112,7 @@ function TransactionForm({
 			resetCategory();
 			resetDescription();
 			resetAmount();
-			setDate(selectedDate);
+			setDate(month);
 		}
 
 		setDialogOpen(false);
@@ -181,7 +181,12 @@ function TransactionForm({
 								<TextField
 									className={clsx(classes.margin, classes.textField)}
 									variant="outlined"
-									label="Description"
+									label={
+										<span>
+											Description{' '}
+											<span style={{ fontSize: '0.9rem' }}>(optional)</span>
+										</span>
+									}
 									name="description"
 									value={description}
 									onChange={handleDescriptionChange}
@@ -224,6 +229,7 @@ function TransactionForm({
 								disabled={
 									category.length === 0 ||
 									amount.length === 0 ||
+									parseInt(amount) < 1 ||
 									amount === '0' ||
 									!isValid(date)
 								}

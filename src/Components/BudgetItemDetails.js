@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
+import { formatAmount } from '../helpers';
 
 const useStyles = makeStyles(() => ({
 	listItem: {
@@ -30,12 +31,26 @@ function BudgetItemDetails({ planned, spent, view }) {
 
 	return view === 'summary' ? (
 		<React.Fragment>
-			<ListItemText className={classes.listItemText} primary="Planned" secondary={planned} />
-			<ListItemText className={classes.listItemText} primary="Spent" secondary={spent} />
+			<ListItemText
+				className={classes.listItemText}
+				primary="Planned"
+				secondary={formatAmount(planned, false, 0, false)}
+			/>
+			<ListItemText
+				className={classes.listItemText}
+				primary="Spent"
+				secondary={formatAmount(spent, false, 0, false)}
+			/>
 			<ListItemText
 				className={classes.listItemText}
 				primary="Remaining"
-				secondary={planned - spent}
+				secondary={
+					spent > planned ? (
+						`0 (${formatAmount(planned - spent, false, 0)})`
+					) : (
+						formatAmount(planned - spent, false, 0)
+					)
+				}
 			/>
 		</React.Fragment>
 	) : (
@@ -44,21 +59,31 @@ function BudgetItemDetails({ planned, spent, view }) {
 				<ListItemText
 					className={classes.listItemText}
 					primary="Planned"
-					secondary={planned}
+					secondary={formatAmount(planned, false, 0, false)}
 				/>
 			</ListItem>
 			<ListItem className={classes.listItem}>
-				<ListItemText className={classes.listItemText} primary="Spent" secondary={spent} />
+				<ListItemText
+					className={classes.listItemText}
+					primary="Spent"
+					secondary={formatAmount(spent, false, 0, false)}
+				/>
 			</ListItem>
 			<ListItem className={classes.listItem}>
 				<ListItemText
 					className={classes.listItemText}
 					primary="Remaining"
-					secondary={planned - spent}
+					secondary={
+						spent > planned ? (
+							`0 (${formatAmount(planned - spent, false, 0)})`
+						) : (
+							formatAmount(planned - spent, false, 0)
+						)
+					}
 				/>
 			</ListItem>
 		</React.Fragment>
 	);
 }
 
-export default BudgetItemDetails;
+export default memo(BudgetItemDetails);

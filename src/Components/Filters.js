@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { TransactionsContext } from '../context/transactions.context';
+import React, { memo, useContext, useState } from 'react';
+import { TransactionFiltersContext } from '../context/transactions.context';
 import { Toolbar } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import SwapVertIcon from '@material-ui/icons/SwapVert';
@@ -8,15 +8,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import TextField from '@material-ui/core/TextField';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
 import IconButton from '@material-ui/core/IconButton';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Popover from '@material-ui/core/Popover';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import SelectedMonth from './SelectedMonth';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
@@ -82,120 +78,87 @@ function Filters() {
 	const id = open ? 'simple-popover' : undefined;
 	const matches = useMediaQuery('(min-width:500px)');
 
-	const {
-		isReversed,
-		toggleIsReversed,
-		sortBy,
-		handleSortByChange,
-		selectedDate,
-		handleDateChange
-	} = useContext(TransactionsContext);
-
-	const nextPreviousMonth = acc => {
-		const newDate = selectedDate.setMonth(selectedDate.getMonth() + acc);
-		handleDateChange(new Date(newDate));
-	};
+	const { isReversed, toggleIsReversed, sortBy, setSortBy } = useContext(
+		TransactionFiltersContext
+	);
 
 	return (
 		<React.Fragment>
-			<MuiPickersUtilsProvider utils={DateFnsUtils}>
-				<Toolbar className={classes.root}>
-					<div className={classes.dateContainer}>
-						<IconButton onClick={() => nextPreviousMonth(-1)}>
-							<ArrowLeftIcon />
+			<Toolbar className={classes.root}>
+				<SelectedMonth />
+				{matches ? (
+					<React.Fragment>
+						<TextField
+							select
+							variant="outlined"
+							label="Sorting by"
+							value={sortBy}
+							className={classes.sortBy}
+							onChange={setSortBy}>
+							<MenuItem value="dateTimestamp">Date</MenuItem>
+							<MenuItem value="amount">Amount</MenuItem>
+							<MenuItem value="category">Category</MenuItem>
+						</TextField>
+						<ToggleButtonGroup
+							className={classes.reverseButton}
+							value={isReversed && 'reversed'}
+							onChange={() => toggleIsReversed()}
+							arial-label="text formatting">
+							<ToggleButton value="reversed" aria-label="bold">
+								<SwapVertIcon />
+							</ToggleButton>
+						</ToggleButtonGroup>
+					</React.Fragment>
+				) : (
+					<React.Fragment>
+						<IconButton
+							onClick={e => setAnchorEl(e.currentTarget)}
+							className={classes.moreButton}
+							aria-label="more options">
+							<MoreHorizIcon fontSize="large" />
 						</IconButton>
-
-						<DatePicker
-							className={classes.datePicker}
-							showTodayButton
-							variant="dialog"
-							inputVariant="outlined"
-							openTo="month"
-							views={[ 'year', 'month' ]}
-							// label="Showing transactions for"
-							// helperText="Start from year selection"
-							value={selectedDate}
-							onChange={handleDateChange}
-							autoOk
-						/>
-						<IconButton onClick={() => nextPreviousMonth(+1)}>
-							<ArrowRightIcon />
-						</IconButton>
-					</div>
-					{matches ? (
-						<React.Fragment>
-							<TextField
-								select
-								variant="outlined"
-								label="Sorting by"
-								value={sortBy}
-								className={classes.sortBy}
-								onChange={handleSortByChange}>
-								<MenuItem value="dateTimestamp">Date</MenuItem>
-								<MenuItem value="amount">Amount</MenuItem>
-								<MenuItem value="category">Category</MenuItem>
-							</TextField>
-							<ToggleButtonGroup
-								className={classes.reverseButton}
-								value={isReversed && 'reversed'}
-								onChange={() => toggleIsReversed()}
-								arial-label="text formatting">
-								<ToggleButton value="reversed" aria-label="bold">
-									<SwapVertIcon />
-								</ToggleButton>
-							</ToggleButtonGroup>
-						</React.Fragment>
-					) : (
-						<React.Fragment>
-							<IconButton
-								onClick={e => setAnchorEl(e.currentTarget)}
-								className={classes.moreButton}
-								aria-label="more options">
-								<MoreHorizIcon fontSize="large" />
-							</IconButton>
-							<Popover
-								id={id}
-								open={open}
-								anchorEl={anchorEl}
-								onClose={() => setAnchorEl(null)}
-								anchorOrigin={{
-									vertical: 'bottom',
-									horizontal: 'center'
-								}}
-								transformOrigin={{
-									vertical: 'top',
-									horizontal: 'center'
-								}}>
-								<div className={classes.morePopover}>
-									<TextField
-										select
-										variant="outlined"
-										label="Sorting by"
-										value={sortBy}
-										className={classes.sortBy}
-										onChange={handleSortByChange}>
-										<MenuItem value="dateTimestamp">Date</MenuItem>
-										<MenuItem value="amount">Amount</MenuItem>
-										<MenuItem value="category">Category</MenuItem>
-									</TextField>
-									<ToggleButtonGroup
-										className={classes.reverseButton}
-										value={isReversed && 'reversed'}
-										onChange={() => toggleIsReversed()}
-										arial-label="text formatting">
-										<ToggleButton value="reversed" aria-label="bold">
-											<SwapVertIcon />
-										</ToggleButton>
-									</ToggleButtonGroup>
-								</div>
-							</Popover>
-						</React.Fragment>
-					)}
-				</Toolbar>
-				<Divider />
-			</MuiPickersUtilsProvider>
+						<Popover
+							id={id}
+							open={open}
+							anchorEl={anchorEl}
+							onClose={() => setAnchorEl(null)}
+							anchorOrigin={{
+								vertical: 'bottom',
+								horizontal: 'center'
+							}}
+							transformOrigin={{
+								vertical: 'top',
+								horizontal: 'center'
+							}}>
+							<div className={classes.morePopover}>
+								<TextField
+									select
+									variant="outlined"
+									label="Sorting by"
+									value={sortBy}
+									className={classes.sortBy}
+									onChange={setSortBy}>
+									<MenuItem value="dateTimestamp">Date</MenuItem>
+									<MenuItem value="amount">Amount</MenuItem>
+									<MenuItem value="category">Category</MenuItem>
+								</TextField>
+								<ToggleButtonGroup
+									className={classes.reverseButton}
+									value={isReversed && 'reversed'}
+									onChange={() => toggleIsReversed()}
+									arial-label="text formatting">
+									<ToggleButton value="reversed" aria-label="bold">
+										<SwapVertIcon />
+									</ToggleButton>
+								</ToggleButtonGroup>
+							</div>
+						</Popover>
+					</React.Fragment>
+				)}
+			</Toolbar>
+			<Divider />
 		</React.Fragment>
 	);
 }
 
-export default Filters;
+export default memo(Filters);

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { memo, useState, useContext } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
@@ -75,11 +75,9 @@ function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
 												variant="determinate"
 												className={classes.progressBar}
 												value={
-													actualAmount > budgetItem.planned ? (
-														100
-													) : (
-														actualAmount / budgetItem.planned * 100
-													)
+													(budgetItem.planned - actualAmount) /
+													budgetItem.planned *
+													100
 												}
 											/>
 											<div className={classes.titleContainer}>
@@ -205,4 +203,4 @@ function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
 	);
 }
 
-export default BudgetItem;
+export default memo(BudgetItem);

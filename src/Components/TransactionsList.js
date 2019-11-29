@@ -37,7 +37,7 @@ const useStyles = makeStyles(({ palette, spacing, breakpoints }) => ({
 
 function TransactionsList() {
 	const classes = useStyles();
-	const { transactions } = useContext(TransactionsContext);
+	const transactions = useContext(TransactionsContext);
 
 	// const transition = useTransition(transactions, tr => tr.id, {
 	// 	from: { opacity: 0, marginLeft: -100, marginRight: 100 },
