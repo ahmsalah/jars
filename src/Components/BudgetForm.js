@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { memo, useContext } from 'react';
 import { DispatchContext } from '../context/budgets.context';
 import useInputState from '../hooks/useInputState';
 import Button from '@material-ui/core/Button';
@@ -31,7 +31,14 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 	}
 }));
 
-function BudgetForm({ dialogOpen, setDialogOpen, edit_id, edit_title, edit_planned }) {
+function BudgetForm({
+	dialogOpen,
+	setDialogOpen,
+	edit_id,
+	edit_title,
+	edit_planned,
+	editPlannedForm
+}) {
 	const [ budgetName, handleBudgetNameChange, resetBudgetName ] = useInputState(edit_title || '');
 	const [ planned, handlePlannedChange, resetPlanned ] = useInputState(edit_planned || '');
 	const { enqueueSnackbar } = useSnackbar();
@@ -76,22 +83,26 @@ function BudgetForm({ dialogOpen, setDialogOpen, edit_id, edit_title, edit_plann
 				</DialogTitle>
 
 				<DialogContent className={classes.dialogContent}>
-					<div className={classes.expansionPanelContainer}>
-						<TipsExpansionPanel
-							title="Help me!"
-							message="To add a new budget, enter budget name and planned amount and hit add, then start dragging categories from other budgets and drop them into your new budget."
-						/>
-					</div>
-					<div className={classes.budgetNameContainer}>
-						<TextField
-							variant="outlined"
-							label="Budget name"
-							name="budgetName"
-							value={budgetName}
-							onChange={handleBudgetNameChange}
-							fullWidth
-						/>
-					</div>
+					{!edit_id && (
+						<div className={classes.expansionPanelContainer}>
+							<TipsExpansionPanel
+								title="Help me!"
+								message="To add a new budget, enter budget name and planned amount and hit add, then start dragging categories from other budgets and drop them into your new budget."
+							/>
+						</div>
+					)}
+					{!editPlannedForm && (
+						<div className={classes.budgetNameContainer}>
+							<TextField
+								variant="outlined"
+								label="Budget name"
+								name="budgetName"
+								value={budgetName}
+								onChange={handleBudgetNameChange}
+								fullWidth
+							/>
+						</div>
+					)}
 					<div>
 						<TextField
 							fullWidth
@@ -112,7 +123,11 @@ function BudgetForm({ dialogOpen, setDialogOpen, edit_id, edit_title, edit_plann
 						Cancel
 					</Button>
 					<Button
-						disabled={!budgetName.length || planned < 1}
+						disabled={
+							!budgetName.length ||
+							!planned.toString().length ||
+							parseInt(planned) < 0
+						}
 						onClick={handleSubmit}
 						color="primary">
 						{!!edit_id ? 'Edit' : 'Add'}
@@ -123,4 +138,4 @@ function BudgetForm({ dialogOpen, setDialogOpen, edit_id, edit_title, edit_plann
 	);
 }
 
-export default BudgetForm;
+export default memo(BudgetForm);

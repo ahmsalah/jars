@@ -126,8 +126,9 @@ function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
 											<Collapse in={!expanded}>
 												<div className={classes.summaryAmountsContainer}>
 													<BudgetItemDetails
-														planned={budgetItem.planned}
+														budgetItem={budgetItem}
 														spent={actualAmount}
+														setEditDialogOpen={setEditDialogOpen}
 														view="summary"
 													/>
 												</div>
@@ -187,7 +188,8 @@ function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
 											</div>
 											<List className={classes.right}>
 												<BudgetItemDetails
-													planned={budgetItem.planned}
+													setEditDialogOpen={setEditDialogOpen}
+													budgetItem={budgetItem}
 													spent={actualAmount}
 												/>
 											</List>

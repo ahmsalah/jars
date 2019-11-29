@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -25,7 +25,6 @@ function PlannedIncForm({ dialogOpen, setDialogOpen, plannedInc, setPlannedInc }
 			<DialogTitle id="form-dialog-title">Planned Income</DialogTitle>
 			<DialogContent>
 				<TextField
-					// className={clsx(classes.margin, classes.textField)}
 					type="number"
 					variant="outlined"
 					label="Income"
@@ -39,7 +38,7 @@ function PlannedIncForm({ dialogOpen, setDialogOpen, plannedInc, setPlannedInc }
 					Cancel
 				</Button>
 				<Button
-					disabled={income.length === 0 || parseInt(income) < 0}
+					disabled={!income.toString().length || parseInt(income) < 0}
 					onClick={handleSubmit}
 					variant="contained"
 					color="primary">
@@ -50,4 +49,4 @@ function PlannedIncForm({ dialogOpen, setDialogOpen, plannedInc, setPlannedInc }
 	);
 }
 
-export default PlannedIncForm;
+export default memo(PlannedIncForm);

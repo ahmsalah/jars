@@ -14,6 +14,7 @@ import SelectedMonth from './SelectedMonth';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
 import PlannedIncForm from './PlannedIncForm';
 import useStyles from './styles/budgetSummary.styles';
@@ -79,12 +80,22 @@ function BudgetSummary() {
 								)}
 								primary={'Income'}
 								secondary={
-									<span className={classes.plannedIncomeWrapper}>
-										<span>{formatAmount(plannedInc, '£', 0)}</span>
-										<IconButton onClick={() => setDialogOpen(true)}>
-											<EditIcon />
-										</IconButton>
-									</span>
+									plannedInc > 0 ? (
+										<span className={classes.plannedIncomeWrapper}>
+											<span>{formatAmount(plannedInc, '£', 0)}</span>
+											<IconButton onClick={() => setDialogOpen(true)}>
+												<EditIcon />
+											</IconButton>
+										</span>
+									) : (
+										<Button
+											variant="contained"
+											color="primary"
+											size="small"
+											onClick={() => setDialogOpen(true)}>
+											Plan
+										</Button>
+									)
 								}
 							/>
 
