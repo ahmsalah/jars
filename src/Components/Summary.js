@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { memo, useContext } from 'react';
 import { TransactionsContext } from '../context/transactions.context';
 import { getPercentageOfTwoNumbers, calcExpInc, formatAmount } from '../helpers';
 import Paper from '@material-ui/core/Paper';
@@ -92,4 +92,4 @@ function Summary() {
 	) : null;
 }
 
-export default Summary;
+export default memo(Summary);

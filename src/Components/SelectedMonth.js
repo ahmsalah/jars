@@ -1,4 +1,4 @@
-import React, { useContext, memo } from 'react';
+import React, { memo, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import 'date-fns';
@@ -6,6 +6,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
+import Tooltip from '@material-ui/core/Tooltip';
 import { MonthContext, SetMonthContext } from '../context/month.context';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
@@ -49,9 +50,11 @@ function SelectedMonth() {
 	return (
 		<MuiPickersUtilsProvider utils={DateFnsUtils}>
 			<div className={classes.root}>
-				<IconButton onClick={() => nextPreviousMonth(-1)}>
-					<ArrowLeftIcon />
-				</IconButton>
+				<Tooltip title="Previous Month" placement="top" arrow>
+					<IconButton onClick={() => nextPreviousMonth(-1)}>
+						<ArrowLeftIcon />
+					</IconButton>
+				</Tooltip>
 
 				<DatePicker
 					className={classes.datePicker}
@@ -66,9 +69,11 @@ function SelectedMonth() {
 					onChange={setMonth}
 					autoOk
 				/>
-				<IconButton onClick={() => nextPreviousMonth(+1)}>
-					<ArrowRightIcon />
-				</IconButton>
+				<Tooltip title="Next Month" placement="top" arrow>
+					<IconButton onClick={() => nextPreviousMonth(+1)}>
+						<ArrowRightIcon />
+					</IconButton>
+				</Tooltip>
 			</div>
 		</MuiPickersUtilsProvider>
 	);

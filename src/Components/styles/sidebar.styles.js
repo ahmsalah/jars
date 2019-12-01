@@ -47,7 +47,10 @@ export default makeStyles(theme => ({
 	},
 	tabs: {
 		'& button': {
-			minWidth: 'initial'
+			minWidth: 'initial',
+			'&:hover': {
+				opacity: 1
+			}
 		}
 	}
 }));

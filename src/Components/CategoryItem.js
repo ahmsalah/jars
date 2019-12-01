@@ -8,6 +8,7 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack';
 import DeleteDialog from './DeleteDialog';
@@ -86,13 +87,15 @@ const CategoryItem = ({ id, type, name, icon, index, categoriesLength }) => {
 
 							<ListItemText>{name}</ListItemText>
 							<ListItemSecondaryAction>
-								<IconButton
-									aria-label="Delete"
-									onClick={() => setDialogOpen(true)}
-									className={classes.deleteButton}
-									disableRipple>
-									<DeleteIcon />
-								</IconButton>
+								<Tooltip title="Delete Budget" placement="top" arrow>
+									<IconButton
+										aria-label="Delete"
+										onClick={() => setDialogOpen(true)}
+										className={classes.deleteButton}
+										disableRipple>
+										<DeleteIcon />
+									</IconButton>
+								</Tooltip>
 							</ListItemSecondaryAction>
 						</ListItem>
 					</div>

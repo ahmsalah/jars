@@ -219,10 +219,11 @@ function Login() {
 			<div className={classes.left}>
 				<Typography variant="h6" className={classes.typography}>
 					Save and manage your personal money and keep track of your day to day in-and-out
-					transactions, create budgets that you can actually stick to.
+					transactions.
 				</Typography>
 				<Typography variant="h6" className={classes.typography}>
-					Use traditional budgets or, better, the JARS money management system.
+					Create budgets that you can actually stick to, and utilize the JARS money
+					management system.
 				</Typography>
 				<Typography variant="h6" className={classes.typography}>
 					Inspired by T. Harv Eker's, New York Times best-selling book, "Secrets of the

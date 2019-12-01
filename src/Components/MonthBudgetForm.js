@@ -173,7 +173,7 @@ function MonthBudgetForm({ dialogOpen, setDialogOpen }) {
 							{format(new Date(pMonth * 1000), 'MMMM yyyy')}
 						</Typography>
 						<Typography style={{ fontWeight: 500 }}>
-							I'm aware of that
+							I'm aware of this
 							<Checkbox
 								checked={checked}
 								onChange={() => setChecked(!checked)}

@@ -17,6 +17,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import useStyles from './styles/budgetItem.styles';
 import Collapse from '@material-ui/core/Collapse';
+import Tooltip from '@material-ui/core/Tooltip';
 import BudgetItemDetails from './BudgetItemDetails';
 import DeleteDialog from './DeleteDialog';
 import { useSnackbar } from 'notistack';
@@ -91,36 +92,56 @@ function BudgetItem({ categories, budgetItem, actual, budgetId, index, pMonth })
 												</Typography>
 												<div className={classes.iconsContainer}>
 													{budgetId !== 'budget-0' && (
+														<Tooltip
+															title="Delete Budget"
+															placement="top"
+															arrow>
+															<IconButton
+																className={classes.iconButton}
+																aria-label="Delete"
+																onClick={() =>
+																	setDeleteDialogOpen(true)}
+																disableRipple>
+																<DeleteIcon />
+															</IconButton>
+														</Tooltip>
+													)}
+													<Tooltip
+														title="Edit Budget"
+														placement="top"
+														arrow>
 														<IconButton
 															className={classes.iconButton}
-															aria-label="Delete"
-															onClick={() =>
-																setDeleteDialogOpen(true)}
+															aria-label="Edit"
+															onClick={() => setEditDialogOpen(true)}
 															disableRipple>
-															<DeleteIcon />
+															<EditIcon />
 														</IconButton>
-													)}
-													<IconButton
-														className={classes.iconButton}
-														aria-label="Edit"
-														onClick={() => setEditDialogOpen(true)}
-														disableRipple>
-														<EditIcon />
-													</IconButton>
-													<IconButton
-														className={classes.dragButton}
-														aria-label="Drag"
-														{...providedList.dragHandleProps}
-														disableRipple>
-														<DragHandleIcon fontSize="large" />
-													</IconButton>
-													<IconButton
-														className={classes.expandButton}
-														aria-label="Expand More"
-														onClick={() => setExpanded(!expanded)}
-														disableRipple>
-														<ExpandMoreIcon />
-													</IconButton>
+													</Tooltip>
+													<Tooltip
+														title="Drag Budget"
+														placement="top"
+														arrow>
+														<IconButton
+															className={classes.dragButton}
+															aria-label="Drag"
+															{...providedList.dragHandleProps}
+															disableRipple>
+															<DragHandleIcon fontSize="large" />
+														</IconButton>
+													</Tooltip>
+													<Tooltip
+														title="Expand Budget"
+														placement="top"
+														arrow>
+														<IconButton
+															className={classes.expandButton}
+															aria-label="Expand More"
+															onClick={() => setExpanded(!expanded)}
+															disableRipple>
+															<ExpandMoreIcon />
+														</IconButton>
+													</Tooltip>
 												</div>
 											</div>
 											<Collapse in={!expanded}>

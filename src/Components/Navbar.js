@@ -16,6 +16,7 @@ import BudgetForm from './BudgetForm';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 
 function Navbar() {
 	const classes = useStyles();
@@ -67,18 +68,18 @@ function Navbar() {
 							</Button>
 						</div>
 					)}
-
-					<IconButton
-						onClick={e => setAnchorProfile(e.currentTarget)}
-						className={classes.avatarButton}
-						aria-label="sign out">
-						<Avatar
-							alt={currentUser.displayName}
-							src={currentUser.photoURL}
-							className={classes.avatar}
-						/>
-					</IconButton>
-
+					<Tooltip title="Sign out" arrow>
+						<IconButton
+							onClick={e => setAnchorProfile(e.currentTarget)}
+							className={classes.avatarButton}
+							aria-label="sign out">
+							<Avatar
+								alt={currentUser.displayName}
+								src={currentUser.photoURL}
+								className={classes.avatar}
+							/>
+						</IconButton>
+					</Tooltip>
 					<HamburgerMenuPopover anchorEl={anchorMenu} setAnchorEl={setAnchorMenu} />
 					<ProfilePopover anchorEl={anchorProfile} setAnchorEl={setAnchorProfile} />
 				</Toolbar>

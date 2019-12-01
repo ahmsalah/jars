@@ -20,6 +20,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Popover from '@material-ui/core/Popover';
 import EditIcon from '@material-ui/icons/Edit';
 import TransactionForm from './TransactionForm';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
@@ -164,13 +165,15 @@ function TransactionItem({ transaction: { id, category, description, date, amoun
 								primaryTypographyProps={{ color: color }}
 							/>
 							<ListItemSecondaryAction>
-								<IconButton
-									edge="end"
-									aria-label="more"
-									onClick={e => setAnchorEl(e.currentTarget)}
-									className={classes.moreButton}>
-									<MoreVertIcon />
-								</IconButton>
+								<Tooltip title="Edit or delete transaction" placement="top" arrow>
+									<IconButton
+										edge="end"
+										aria-label="more"
+										onClick={e => setAnchorEl(e.currentTarget)}
+										className={classes.moreButton}>
+										<MoreVertIcon />
+									</IconButton>
+								</Tooltip>
 								<Popover
 									id={popoverId}
 									open={popoverOpen}
@@ -186,21 +189,28 @@ function TransactionItem({ transaction: { id, category, description, date, amoun
 									}}>
 									<div className={classes.popoverButtonsContainer}>
 										<div className={classes.popoverButton}>
-											<IconButton
-												aria-label="Edit"
-												onClick={() => {
-													setEditDialogOpen(true);
-													setAnchorEl(null);
-												}}>
-												<EditIcon />
-											</IconButton>
+											<Tooltip title="Edit Transaction" placement="top" arrow>
+												<IconButton
+													aria-label="Edit"
+													onClick={() => {
+														setEditDialogOpen(true);
+														setAnchorEl(null);
+													}}>
+													<EditIcon />
+												</IconButton>
+											</Tooltip>
 										</div>
 										<div className={classes.popoverButton}>
-											<IconButton
-												aria-label="Delete"
-												onClick={handleDeleteItem}>
-												<DeleteIcon />
-											</IconButton>
+											<Tooltip
+												title="Delete Transaction"
+												placement="top"
+												arrow>
+												<IconButton
+													aria-label="Delete"
+													onClick={handleDeleteItem}>
+													<DeleteIcon />
+												</IconButton>
+											</Tooltip>
 										</div>
 									</div>
 								</Popover>

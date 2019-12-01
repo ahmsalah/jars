@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useStyles from './styles/sidebar.styles';
 import clsx from 'clsx';
@@ -76,4 +76,4 @@ function Sidebar() {
 		</Drawer>
 	);
 }
-export default Sidebar;
+export default memo(Sidebar);

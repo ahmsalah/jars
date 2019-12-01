@@ -21,6 +21,7 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import PlannedIncForm from './PlannedIncForm';
 import useStyles from './styles/budgetSummary.styles';
 import MonthBudgetForm from './MonthBudgetForm';
+import Tooltip from '@material-ui/core/Tooltip';
 
 function BudgetSummary() {
 	const classes = useStyles();
@@ -87,12 +88,14 @@ function BudgetSummary() {
 							<SelectedMonth />
 						</div>
 						{!!thisMonthBudget && (
-							<IconButton
-								onClick={e => setAnchorEl(e.currentTarget)}
-								className={classes.moreButton}
-								aria-label="more options">
-								<MoreHorizIcon fontSize="large" />
-							</IconButton>
+							<Tooltip title="Reset Budgets" placement="top" arrow>
+								<IconButton
+									onClick={e => setAnchorEl(e.currentTarget)}
+									className={classes.moreButton}
+									aria-label="more options">
+									<MoreHorizIcon fontSize="large" />
+								</IconButton>
+							</Tooltip>
 						)}
 					</div>
 					<Divider />
@@ -120,10 +123,15 @@ function BudgetSummary() {
 									plannedInc > 0 ? (
 										<span className={classes.plannedIncomeWrapper}>
 											<span>{formatAmount(plannedInc, '£', 0)}</span>
-											<IconButton
-												onClick={() => setPlannedIncDialogOpen(true)}>
-												<EditIcon />
-											</IconButton>
+											<Tooltip
+												title="Edit Planned Income"
+												placement="top"
+												arrow>
+												<IconButton
+													onClick={() => setPlannedIncDialogOpen(true)}>
+													<EditIcon />
+												</IconButton>
+											</Tooltip>
 										</span>
 									) : (
 										<Button

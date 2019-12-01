@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Popover from '@material-ui/core/Popover';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Tooltip from '@material-ui/core/Tooltip';
 import SelectedMonth from './SelectedMonth';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
@@ -99,15 +100,17 @@ function Filters() {
 							<MenuItem value="amount">Amount</MenuItem>
 							<MenuItem value="category">Category</MenuItem>
 						</TextField>
-						<ToggleButtonGroup
-							className={classes.reverseButton}
-							value={isReversed && 'reversed'}
-							onChange={() => toggleIsReversed()}
-							arial-label="text formatting">
-							<ToggleButton value="reversed" aria-label="bold">
-								<SwapVertIcon />
-							</ToggleButton>
-						</ToggleButtonGroup>
+						<Tooltip title="Reverse Order" placement="top" arrow>
+							<ToggleButtonGroup
+								className={classes.reverseButton}
+								value={isReversed && 'reversed'}
+								onChange={() => toggleIsReversed()}
+								arial-label="text formatting">
+								<ToggleButton value="reversed" aria-label="bold">
+									<SwapVertIcon />
+								</ToggleButton>
+							</ToggleButtonGroup>
+						</Tooltip>
 					</React.Fragment>
 				) : (
 					<React.Fragment>
