@@ -128,30 +128,51 @@ const budgetsReducer = (state, action) => {
 				}
 			};
 
-		// case 'ADD_CATEGORY_TO_BUDGETS':
-		// 	return {
-		// 		...state,
-		// 		allBudgets: {
-		// 			...state.allBudgets,
-		// 			'budget-0': {
-		// 				...state.allBudgets['budget-0'],
-		// 				categories: [ ...state.allBudgets['budget-0'].categories, action.category ],
-		// 				categoriesIds: [ ...state.allBudgets['budget-0'].categoriesIds, action.id ]
-		// 			}
-		// 		}
-		// 	};
-		// case 'REMOVE_CATEGORY_FROM_BUDGETS':
-		// 	return {
-		// 		...state,
-		// 		allBudgets: {
-		// 			...state.allBudgets,
-		// 			'budget-0': {
-		// 				...state.allBudgets['budget-0'],
-		// 				categories: [ ...state.allBudgets['budget-0'].categories, action.category ],
-		// 				categoriesIds: [ ...state.allBudgets['budget-0'].categoriesIds, action.id ]
-		// 			}
-		// 		}
-		// 	};
+		case 'ADD_CATEGORY_TO_BUDGETS':
+			return Object.fromEntries(
+				Object.entries(state).map(([ key, val ], i) => [
+					key,
+					(val = {
+						...val,
+						allBudgets: {
+							...val.allBudgets,
+							'budget-0': {
+								...val.allBudgets['budget-0'],
+								categories: [
+									...val.allBudgets['budget-0'].categories,
+									action.newCategory
+								],
+								categoriesIds: [
+									...val.allBudgets['budget-0'].categoriesIds,
+									action.id
+								]
+							}
+						}
+					})
+				])
+			);
+
+		case 'REMOVE_CATEGORY_FROM_BUDGETS':
+			return Object.fromEntries(
+				Object.entries(state).map(([ key, val ], i) => [
+					key,
+					(val = {
+						...val,
+						allBudgets: Object.fromEntries(
+							Object.entries(val.allBudgets).map(([ k, v ], i) => [
+								k,
+								(v = {
+									...v,
+									categories: v.categories.filter(ct => ct.id !== action.id),
+									categoriesIds: v.categoriesIds.filter(
+										ctId => ctId !== action.id
+									)
+								})
+							])
+						)
+					})
+				])
+			);
 
 		default:
 			return state;

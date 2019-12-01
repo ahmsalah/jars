@@ -10,30 +10,20 @@ const categoriesReducer = (state, action) => {
 			return action.categories;
 
 		case 'ADD_CATEGORY':
-			const categoryIdNums = state.lists[action.categoryType].categoriesIds.map(bdID =>
-				parseInt(bdID.match(/\d/g).join(''))
-			);
-			const newCategoryId = `ctg-${Math.max(...categoryIdNums) + 1}`;
-			const newCategory = {
-				id: newCategoryId,
-				name: action.name,
-				icon: action.icon,
-				type: action.categoryType
-			};
 			return (
 				userID &&
 					firebase.firestore().collection('users').doc(userID).update({
-						[`categories.allCategories.${newCategoryId}`]: newCategory,
+						[`categories.allCategories.${action.id}`]: action.newCategory,
 
 						[`categories.lists.${action.categoryType}.categoriesIds`]: firebase.firestore.FieldValue.arrayUnion(
-							newCategoryId
+							action.id
 						)
 					}),
 				(state = {
 					...state,
 					allCategories: {
 						...state.allCategories,
-						[newCategoryId]: newCategory
+						[action.id]: action.newCategory
 					},
 					lists: {
 						...state.lists,
@@ -41,7 +31,7 @@ const categoriesReducer = (state, action) => {
 							...state.lists[action.categoryType],
 							categoriesIds: [
 								...state.lists[action.categoryType].categoriesIds,
-								newCategoryId
+								action.id
 							]
 						}
 					}

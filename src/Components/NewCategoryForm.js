@@ -1,5 +1,6 @@
-import React, { useState, useContext } from 'react';
-import { DispatchContext } from '../context/categories.context';
+import React, { memo, useState, useContext } from 'react';
+import { DispatchContext, CategoriesContext } from '../context/categories.context';
+import { DispatchContext as DispatchBudgetsContext } from '../context/budgets.context';
 import BtnSwitch from './BtnSwitch';
 import useInputState from '../hooks/useInputState';
 import useToggleState from '../hooks/useToggleState';
@@ -72,6 +73,9 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 
 function NewCategoryForm({ dialogOpen, setDialogOpen }) {
 	const dispatch = useContext(DispatchContext);
+	const categories = useContext(CategoriesContext);
+	const dispatchBudgets = useContext(DispatchBudgetsContext);
+
 	const { enqueueSnackbar } = useSnackbar();
 	const [ name, handleChange, reset ] = useInputState('');
 	const [ isExpense, toggleIsExpense ] = useToggleState(true);
@@ -96,9 +100,25 @@ function NewCategoryForm({ dialogOpen, setDialogOpen }) {
 
 	const handleSubmit = evt => {
 		evt.preventDefault();
+
 		const type = isExpense ? 'exp' : 'inc';
 
-		dispatch({ type: 'ADD_CATEGORY', name, icon, categoryType: type });
+		const categoryIdNums = categories.lists[type].categoriesIds.map(bdID =>
+			parseInt(bdID.match(/\d/g).join(''))
+		);
+		const newCategoryId = `ctg-${Math.max(...categoryIdNums) + 1}`;
+
+		const newCategory = {
+			id: newCategoryId,
+			name,
+			icon,
+			type
+		};
+
+		dispatch({ type: 'ADD_CATEGORY', categoryType: type, id: newCategoryId, newCategory });
+
+		dispatchBudgets({ type: 'ADD_CATEGORY_TO_BUDGETS', id: newCategoryId, newCategory });
+
 		reset();
 		setDialogOpen(false);
 		setIcon('icon_not_selected');
@@ -180,4 +200,4 @@ function NewCategoryForm({ dialogOpen, setDialogOpen }) {
 	);
 }
 
-export default NewCategoryForm;
+export default memo(NewCategoryForm);

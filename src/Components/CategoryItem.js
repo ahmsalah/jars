@@ -1,5 +1,6 @@
 import React, { memo, useContext, useState } from 'react';
 import { DispatchContext } from '../context/categories.context';
+import { DispatchContext as DispatchBudgetsContext } from '../context/budgets.context';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -42,11 +43,15 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
 const CategoryItem = ({ id, type, name, icon, index, categoriesLength }) => {
 	const classes = useStyles();
 	const dispatch = useContext(DispatchContext);
+	const dispatchBudgets = useContext(DispatchBudgetsContext);
+
 	const { enqueueSnackbar } = useSnackbar();
 	const [ dialogOpen, setDialogOpen ] = useState(false);
 
 	const handleDeleteItem = () => {
 		dispatch({ type: 'REMOVE_CATEGORY', id, categoryType: type });
+		dispatchBudgets({ type: 'REMOVE_CATEGORY_FROM_BUDGETS', id });
+
 		setDialogOpen(false);
 		enqueueSnackbar('Category Deleted');
 	};
