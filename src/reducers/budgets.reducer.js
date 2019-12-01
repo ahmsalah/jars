@@ -7,39 +7,87 @@ const budgetsReducer = (state, action) => {
 		JSON.parse(window.localStorage.getItem('user')).uid;
 
 	switch (action.type) {
+		case 'SET_MONTH_BUDGETS':
+			return action.monthBudgets;
+
+		case 'COPY_DEFAULT':
+			return {
+				...state,
+				[action.pMonth]: {
+					...state[0],
+					pMonth: action.pMonth
+				}
+			};
+
+		case 'COPY_FROM_LAST_MONTH':
+			return {
+				...state,
+				[action.pMonth]: {
+					...state[action.lastMonth],
+					pMonth: action.pMonth
+				}
+			};
+
+		case 'COPY_FROM_SPECIFIC_MONTH':
+			return {
+				...state,
+				[action.pMonth]: {
+					...state[action.month],
+					pMonth: action.pMonth
+				}
+			};
+
+		case 'EDIT_MONTH_INCOME':
+			return {
+				...state,
+				[action.pMonth]: {
+					...state[action.pMonth],
+					plannedInc: action.income
+				}
+			};
+
 		case 'SET_BUDGETS':
-			return action.budgets;
+			return {
+				...state,
+				[action.pMonth]: action.budgets
+			};
 
 		case 'ADD_BUDGET':
-			const budgetIdNums = state.budgetsOrder.map(bdID =>
+			const budgetIdNums = state[action.pMonth].budgetsOrder.map(bdID =>
 				parseInt(bdID.match(/\d/g).join(''))
 			);
 			const newBudgetId = `budget-${Math.max(...budgetIdNums) + 1}`;
 			return {
 				...state,
-				allBudgets: {
-					...state.allBudgets,
-					[newBudgetId]: {
-						id: newBudgetId,
-						title: action.title,
-						planned: action.planned,
-						categories: [],
-						categoriesIds: []
-					}
-				},
-				budgetsOrder: [ newBudgetId, ...state.budgetsOrder ]
+				[action.pMonth]: {
+					...state[action.pMonth],
+					allBudgets: {
+						...state[action.pMonth].allBudgets,
+						[newBudgetId]: {
+							id: newBudgetId,
+							title: action.title,
+							planned: action.planned,
+							categories: [],
+							categoriesIds: []
+						}
+					},
+					budgetsOrder: [ newBudgetId, ...state[action.pMonth].budgetsOrder ]
+				}
 			};
 
 		case 'EDIT_BUDGET':
 			return {
 				...state,
-				allBudgets: {
-					...state.allBudgets,
-					[action.id]: {
-						...state.allBudgets[action.id],
-						id: action.id,
-						title: action.title,
-						planned: action.planned
+				[action.pMonth]: {
+					...state[action.pMonth],
+					allBudgets: {
+						...state[action.pMonth].allBudgets,
+						[action.id]: {
+							...state[action.pMonth].allBudgets[action.id],
+							id: action.id,
+							title: action.title,
+							planned: action.planned
+						}
 					}
 				}
 			};
@@ -48,26 +96,62 @@ const budgetsReducer = (state, action) => {
 			// move categories from deleted budget to others
 			const newState = {
 				...state,
-				allBudgets: {
-					...state.allBudgets,
-					'budget-0': {
-						...state.allBudgets['budget-0'],
-						categoriesIds: [
-							...state.allBudgets['budget-0'].categoriesIds,
-							...state.allBudgets[action.budgetId].categoriesIds
-						],
-						categories: [
-							...state.allBudgets['budget-0'].categories,
-							...state.allBudgets[action.budgetId].categories
-						]
+				[action.pMonth]: {
+					...state[action.pMonth],
+					allBudgets: {
+						...state[action.pMonth].allBudgets,
+						'budget-0': {
+							...state[action.pMonth].allBudgets['budget-0'],
+							categoriesIds: [
+								...state[action.pMonth].allBudgets['budget-0'].categoriesIds,
+								...state[action.pMonth].allBudgets[action.budgetId].categoriesIds
+							],
+							categories: [
+								...state[action.pMonth].allBudgets['budget-0'].categories,
+								...state[action.pMonth].allBudgets[action.budgetId].categories
+							]
+						}
 					}
 				}
 			};
 			return {
 				...state,
-				allBudgets: filterObjectByKey(newState.allBudgets, action.budgetId),
-				budgetsOrder: state.budgetsOrder.filter(budgetId => budgetId !== action.budgetId)
+				[action.pMonth]: {
+					...state[action.pMonth],
+					allBudgets: filterObjectByKey(
+						newState[action.pMonth].allBudgets,
+						action.budgetId
+					),
+					budgetsOrder: state[action.pMonth].budgetsOrder.filter(
+						budgetId => budgetId !== action.budgetId
+					)
+				}
 			};
+
+		// case 'ADD_CATEGORY_TO_BUDGETS':
+		// 	return {
+		// 		...state,
+		// 		allBudgets: {
+		// 			...state.allBudgets,
+		// 			'budget-0': {
+		// 				...state.allBudgets['budget-0'],
+		// 				categories: [ ...state.allBudgets['budget-0'].categories, action.category ],
+		// 				categoriesIds: [ ...state.allBudgets['budget-0'].categoriesIds, action.id ]
+		// 			}
+		// 		}
+		// 	};
+		// case 'REMOVE_CATEGORY_FROM_BUDGETS':
+		// 	return {
+		// 		...state,
+		// 		allBudgets: {
+		// 			...state.allBudgets,
+		// 			'budget-0': {
+		// 				...state.allBudgets['budget-0'],
+		// 				categories: [ ...state.allBudgets['budget-0'].categories, action.category ],
+		// 				categoriesIds: [ ...state.allBudgets['budget-0'].categoriesIds, action.id ]
+		// 			}
+		// 		}
+		// 	};
 
 		default:
 			return state;

@@ -133,5 +133,10 @@ export default makeStyles(({ spacing, palette, breakpoints }) => ({
 		'& > div': {
 			backgroundColor: palette.tertiary.sub
 		}
+	},
+	setupBudgetsButton: {
+		margin: spacing(3),
+		display: 'flex',
+		justifyContent: 'center'
 	}
 }));

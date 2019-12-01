@@ -32,7 +32,7 @@ function App({ hideLoader }) {
 				<MonthProvider>
 					<TransactionsProvider>
 						<BudgetsProvider>
-							<SnackbarProvider maxSnack={3}>
+							<SnackbarProvider maxSnack={matches ? 3 : 1}>
 								{currentUser && <Navbar />}
 								<div
 									style={

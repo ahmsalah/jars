@@ -29,7 +29,7 @@ const ExpansionPanelSummary = withStyles({
 	}
 })(MuiExpansionPanelSummary);
 
-function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
+function BudgetItem({ categories, budgetItem, actual, budgetId, index, pMonth }) {
 	const dispatch = useContext(DispatchContext);
 	const [ expanded, setExpanded ] = useState(true);
 	const [ deleteDialogOpen, setDeleteDialogOpen ] = useState(false);
@@ -40,7 +40,7 @@ function BudgetItem({ categories, budgetItem, actual, budgetId, index }) {
 	const classes = useStyles(props);
 
 	const handleDelete = () => {
-		dispatch({ type: 'REMOVE_BUDGET', budgetId });
+		dispatch({ type: 'REMOVE_BUDGET', budgetId, pMonth });
 		setDeleteDialogOpen(false);
 		enqueueSnackbar('Budget Deleted');
 	};

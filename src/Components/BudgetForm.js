@@ -1,5 +1,5 @@
 import React, { memo, useContext } from 'react';
-import { DispatchContext } from '../context/budgets.context';
+import { DispatchContext, ThisMonthBudgetContext } from '../context/budgets.context';
 import useInputState from '../hooks/useInputState';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -12,6 +12,8 @@ import Grow from '@material-ui/core/Grow';
 import { useSnackbar } from 'notistack';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TipsExpansionPanel from './TipsExpansionPanel';
+import { ParsedMonthContext } from '../context/month.context';
+import Typography from '@material-ui/core/Typography';
 
 const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 	return <Grow {...props} />;
@@ -28,6 +30,9 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 	},
 	expansionPanelContainer: {
 		marginBottom: spacing(5)
+	},
+	noMonthBudgetDialogActions: {
+		justifyContent: 'center'
 	}
 }));
 
@@ -44,6 +49,8 @@ function BudgetForm({
 	const { enqueueSnackbar } = useSnackbar();
 	const dispatch = useContext(DispatchContext);
 	const classes = useStyles();
+	const pMonth = useContext(ParsedMonthContext);
+	const thisMonthBudget = useContext(ThisMonthBudgetContext);
 
 	const handleSubmit = evt => {
 		evt.preventDefault();
@@ -53,14 +60,16 @@ function BudgetForm({
 				type: 'EDIT_BUDGET',
 				title: budgetName,
 				planned: parseInt(planned),
-				id: edit_id
+				id: edit_id,
+				pMonth
 			});
 			enqueueSnackbar('Budget Edited');
 		} else {
 			dispatch({
 				type: 'ADD_BUDGET',
 				title: budgetName,
-				planned: parseInt(planned)
+				planned: parseInt(planned),
+				pMonth
 			});
 			enqueueSnackbar('New Budget Added');
 			resetBudgetName();
@@ -70,71 +79,81 @@ function BudgetForm({
 		setDialogOpen(false);
 	};
 
-	return (
-		<React.Fragment>
-			<Dialog
-				maxWidth="xs"
-				open={dialogOpen}
-				onClose={() => setDialogOpen(false)}
-				TransitionComponent={TransitionGrow}
-				aria-labelledby="form-dialog-title">
-				<DialogTitle id="form-dialog-title">
-					{!!edit_id ? 'Edit' : 'New'} Budget
-				</DialogTitle>
+	return thisMonthBudget ? (
+		<Dialog
+			maxWidth="xs"
+			open={dialogOpen}
+			onClose={() => setDialogOpen(false)}
+			TransitionComponent={TransitionGrow}
+			aria-labelledby="form-dialog-title">
+			<DialogTitle id="form-dialog-title">{!!edit_id ? 'Edit' : 'New'} Budget</DialogTitle>
 
-				<DialogContent className={classes.dialogContent}>
-					{!edit_id && (
-						<div className={classes.expansionPanelContainer}>
-							<TipsExpansionPanel
-								title="Help me!"
-								message="To add a new budget, enter budget name and planned amount and hit add, then start dragging categories from other budgets and drop them into your new budget."
-							/>
-						</div>
-					)}
-					{!editPlannedForm && (
-						<div className={classes.budgetNameContainer}>
-							<TextField
-								variant="outlined"
-								label="Budget name"
-								name="budgetName"
-								value={budgetName}
-								onChange={handleBudgetNameChange}
-								fullWidth
-							/>
-						</div>
-					)}
-					<div>
-						<TextField
-							fullWidth
-							variant="outlined"
-							label="Planned amount"
-							type="number"
-							name="planned"
-							value={planned}
-							onChange={handlePlannedChange}
-							InputProps={{
-								startAdornment: <InputAdornment position="start">£</InputAdornment>
-							}}
+			<DialogContent className={classes.dialogContent}>
+				{!edit_id && (
+					<div className={classes.expansionPanelContainer}>
+						<TipsExpansionPanel
+							title="Help me!"
+							message="To add a new budget, enter budget name and planned amount and hit add, then start dragging categories from other budgets and drop them into your new budget."
 						/>
 					</div>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={() => setDialogOpen(false)} color="primary">
-						Cancel
-					</Button>
-					<Button
-						disabled={
-							!budgetName.length ||
-							!planned.toString().length ||
-							parseInt(planned) < 0
-						}
-						onClick={handleSubmit}
-						color="primary">
-						{!!edit_id ? 'Edit' : 'Add'}
-					</Button>
-				</DialogActions>
-			</Dialog>
-		</React.Fragment>
+				)}
+				{!editPlannedForm && (
+					<div className={classes.budgetNameContainer}>
+						<TextField
+							variant="outlined"
+							label="Budget name"
+							name="budgetName"
+							value={budgetName}
+							onChange={handleBudgetNameChange}
+							fullWidth
+						/>
+					</div>
+				)}
+				<div>
+					<TextField
+						fullWidth
+						variant="outlined"
+						label="Planned amount"
+						type="number"
+						name="planned"
+						value={planned}
+						onChange={handlePlannedChange}
+						InputProps={{
+							startAdornment: <InputAdornment position="start">£</InputAdornment>
+						}}
+					/>
+				</div>
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={() => setDialogOpen(false)} color="primary">
+					Cancel
+				</Button>
+				<Button
+					disabled={
+						!budgetName.length || !planned.toString().length || parseInt(planned) < 0
+					}
+					onClick={handleSubmit}
+					color="primary">
+					{!!edit_id ? 'Edit' : 'Add'}
+				</Button>
+			</DialogActions>
+		</Dialog>
+	) : (
+		<Dialog
+			maxWidth="xs"
+			open={dialogOpen}
+			onClose={() => setDialogOpen(false)}
+			TransitionComponent={TransitionGrow}
+			aria-labelledby="form-dialog-title">
+			<DialogContent className={classes.dialogContent}>
+				<Typography>You need to setup budgets for this month first</Typography>
+			</DialogContent>
+			<DialogActions className={classes.noMonthBudgetDialogActions}>
+				<Button onClick={() => setDialogOpen(false)} color="primary">
+					Ok
+				</Button>
+			</DialogActions>
+		</Dialog>
 	);
 }
 

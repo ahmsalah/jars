@@ -1,6 +1,6 @@
-import React, { memo, useContext, useState } from 'react';
+import React, { memo, useContext, useState, Fragment } from 'react';
 import { TransactionsContext } from '../context/transactions.context';
-import { BudgetsContext } from '../context/budgets.context';
+import { ThisMonthBudgetContext } from '../context/budgets.context';
 import { getPercentageOfTwoNumbers, calcExpInc, formatAmount } from '../helpers';
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
@@ -18,20 +18,24 @@ import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
 import PlannedIncForm from './PlannedIncForm';
 import useStyles from './styles/budgetSummary.styles';
+import MonthBudgetForm from './MonthBudgetForm';
 
 function BudgetSummary() {
 	const classes = useStyles();
-	const [ plannedInc, setPlannedInc ] = useState(21000);
-	const [ dialogOpen, setDialogOpen ] = useState(false);
+	const [ plannedIncDialogOpen, setPlannedIncDialogOpen ] = useState(false);
+	const [ monthBudgetDialog, setMonthBudgetDialog ] = useState(false);
 	const transactions = useContext(TransactionsContext);
-	const budgets = useContext(BudgetsContext);
+	const thisMonthBudget = useContext(ThisMonthBudgetContext);
 
 	const matches = useMediaQuery('(max-width:600px)');
 
 	const [ actualExp, actualInc ] = calcExpInc(transactions);
 	const totalActual = actualExp + actualInc;
-	const plannedExp =
-		Object.values(budgets.allBudgets).reduce((acc, curr) => acc + curr.planned, 0) * -1;
+	const plannedInc = !thisMonthBudget ? 0 : thisMonthBudget.plannedInc;
+	const plannedExp = !thisMonthBudget
+		? 0
+		: Object.values(thisMonthBudget.allBudgets).reduce((acc, curr) => acc + curr.planned, 0) *
+			-1;
 	const totalPlanned = plannedInc + plannedExp;
 
 	const percentage = totalPlanned > 0 ? `(${parseInt(totalActual / totalPlanned * 100)}%)` : '';
@@ -41,25 +45,25 @@ function BudgetSummary() {
 		true
 	);
 	return (
-		<React.Fragment>
+		<Fragment>
 			<PlannedIncForm
 				plannedInc={plannedInc}
-				setPlannedInc={setPlannedInc}
-				dialogOpen={dialogOpen}
-				setDialogOpen={setDialogOpen}
+				dialogOpen={plannedIncDialogOpen}
+				setDialogOpen={setPlannedIncDialogOpen}
 			/>
+			<MonthBudgetForm dialogOpen={monthBudgetDialog} setDialogOpen={setMonthBudgetDialog} />
 			<Paper className={classes.root}>
 				<LinearProgress
 					variant="determinate"
 					className={classes.progressBar}
-					value={totalActual / totalPlanned * 100}
+					value={!thisMonthBudget ? 0 : totalActual / totalPlanned * 100}
 				/>
 				<List className={classes.list}>
 					<div className={classes.monthContainer}>
 						<SelectedMonth />
 					</div>
-					<Collapse in={!!transactions.length} timeout={700}>
-						<Divider />
+					<Divider />
+					<Collapse in={!!thisMonthBudget} timeout={700}>
 						<ListItem className={classes.titleContainer}>
 							<Typography
 								variant="h6"
@@ -83,7 +87,8 @@ function BudgetSummary() {
 									plannedInc > 0 ? (
 										<span className={classes.plannedIncomeWrapper}>
 											<span>{formatAmount(plannedInc, '£', 0)}</span>
-											<IconButton onClick={() => setDialogOpen(true)}>
+											<IconButton
+												onClick={() => setPlannedIncDialogOpen(true)}>
 												<EditIcon />
 											</IconButton>
 										</span>
@@ -92,7 +97,7 @@ function BudgetSummary() {
 											variant="contained"
 											color="primary"
 											size="small"
-											onClick={() => setDialogOpen(true)}>
+											onClick={() => setPlannedIncDialogOpen(true)}>
 											Plan
 										</Button>
 									)
@@ -200,9 +205,19 @@ function BudgetSummary() {
 							/>
 						</ListItem>
 					</Collapse>
+					<Collapse in={!thisMonthBudget} timeout={700}>
+						<div className={classes.setupBudgetsButton}>
+							<Button
+								variant="contained"
+								color="primary"
+								onClick={() => setMonthBudgetDialog(true)}>
+								Setup budgets for this month
+							</Button>
+						</div>
+					</Collapse>
 				</List>
 			</Paper>
-		</React.Fragment>
+		</Fragment>
 	);
 }
 

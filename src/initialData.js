@@ -1,3 +1,7 @@
+import startOfMonth from 'date-fns/startOfMonth';
+import getUnixTime from 'date-fns/getUnixTime';
+import set from 'date-fns/set';
+
 export const initialCategories = {
 	allCategories: {
 		'ctg-1': { id: 'ctg-1', name: 'Transportation', type: 'exp', icon: 'icon_127' },
@@ -109,95 +113,107 @@ export const initialCategories = {
 	listOrder: [ 'exp', 'inc' ]
 };
 
-export const initialBudgets = {
-	budgetsOrder: [ 'budget-0', 'budget-1', 'budget-2', 'budget-3', 'budget-4', 'budget-5' ],
-	allBudgets: {
-		'budget-1': {
-			id: 'budget-1',
-			title: 'Shopping',
-			categoriesIds: [
-				'ctg-3',
-				'ctg-4',
-				'ctg-5',
-				'ctg-6',
-				'ctg-7',
-				// 'ctg-8',
-				// 'ctg-9',
-				'ctg-10'
-			],
-			categories: [
-				{ id: 'ctg-3', name: 'Shopping', type: 'exp', icon: 'icon_7' },
-				{ id: 'ctg-4', name: 'Clothing', type: 'exp', icon: 'icon_17' },
-				{ id: 'ctg-5', name: 'Footwear', type: 'exp', icon: 'icon_100' },
-				{ id: 'ctg-6', name: 'Electronics', type: 'exp', icon: 'icon_9' },
-				{ id: 'ctg-7', name: 'Groceries', type: 'exp', icon: 'icon_3' },
-				// { id: 'ctg-8', name: 'Food', type: 'exp', icon: 'icon_87' },
-				// { id: 'ctg-9', name: 'Beverage', type: 'exp', icon: 'icon_116' },
-				{ id: 'ctg-10', name: 'Personal Care', type: 'exp', icon: 'icon_132' }
-			],
-			planned: 2000
-		},
-		'budget-2': {
-			id: 'budget-2',
-			title: 'Transportation',
-			categoriesIds: [ 'ctg-1', 'ctg-2', 'ctg-21' ],
-			categories: [
-				{ id: 'ctg-1', name: 'Transportation', type: 'exp', icon: 'icon_127' },
-				{ id: 'ctg-2', name: 'Travel', type: 'exp', icon: 'icon_5' },
-				{ id: 'ctg-21', name: 'Gas', type: 'exp', icon: 'icon_129' }
-			],
-			planned: 1500
-		},
-		'budget-3': {
-			id: 'budget-3',
-			title: 'Bills & Utilities',
-			categoriesIds: [ 'ctg-15', 'ctg-16', 'ctg-17', 'ctg-18', 'ctg-19', 'ctg-20' ],
-			categories: [
-				{ id: 'ctg-15', name: 'Internet', type: 'exp', icon: 'icon_126' },
-				{ id: 'ctg-16', name: 'Phone', type: 'exp', icon: 'icon_134' },
-				{ id: 'ctg-17', name: 'Electricity', type: 'exp', icon: 'icon_125' },
-				{ id: 'ctg-18', name: 'Cable', type: 'exp', icon: 'icon_84' },
-				{ id: 'ctg-19', name: 'Rent', type: 'exp', icon: 'icon_136' },
-				{ id: 'ctg-20', name: 'Installments', type: 'exp', icon: 'icon_112' }
-			],
-			planned: 2000
-		},
-		'budget-4': {
-			id: 'budget-4',
-			title: 'Health & Fitness',
-			categoriesIds: [ 'ctg-22', 'ctg-23', 'ctg-24' ],
-			categories: [
-				{ id: 'ctg-22', name: 'Sports', type: 'exp', icon: 'icon_70' },
-				{ id: 'ctg-23', name: 'Doctor', type: 'exp', icon: 'ic_category_doctor' },
-				{ id: 'ctg-24', name: 'Pharmacy', type: 'exp', icon: 'ic_category_pharmacy' }
-			],
-			planned: 500
-		},
-		'budget-5': {
-			id: 'budget-5',
-			title: 'Home',
-			categoriesIds: [ 'ctg-26', 'ctg-27', 'ctg-28', 'ctg-29' ],
-			categories: [
-				{ id: 'ctg-26', name: 'Home', type: 'exp', icon: 'icon_115' },
-				{ id: 'ctg-27', name: 'Children & Babies', type: 'exp', icon: 'icon_38' },
-				{ id: 'ctg-28', name: 'Decorations', type: 'exp', icon: 'icon_21' },
-				{ id: 'ctg-29', name: 'Pets', type: 'exp', icon: 'icon_123' }
-			],
-			planned: 1000
-		},
+const budgets = {
+	0: {
+		pMonth: 0,
+		plannedInc: 22000,
+		budgetsOrder: [ 'budget-0', 'budget-1', 'budget-2', 'budget-3', 'budget-4', 'budget-5' ],
+		allBudgets: {
+			'budget-1': {
+				id: 'budget-1',
+				title: 'Shopping',
+				categoriesIds: [
+					'ctg-3',
+					'ctg-4',
+					'ctg-5',
+					'ctg-6',
+					'ctg-7',
+					// 'ctg-8',
+					// 'ctg-9',
+					'ctg-10'
+				],
+				categories: [
+					{ id: 'ctg-3', name: 'Shopping', type: 'exp', icon: 'icon_7' },
+					{ id: 'ctg-4', name: 'Clothing', type: 'exp', icon: 'icon_17' },
+					{ id: 'ctg-5', name: 'Footwear', type: 'exp', icon: 'icon_100' },
+					{ id: 'ctg-6', name: 'Electronics', type: 'exp', icon: 'icon_9' },
+					{ id: 'ctg-7', name: 'Groceries', type: 'exp', icon: 'icon_3' },
+					// { id: 'ctg-8', name: 'Food', type: 'exp', icon: 'icon_87' },
+					// { id: 'ctg-9', name: 'Beverage', type: 'exp', icon: 'icon_116' },
+					{ id: 'ctg-10', name: 'Personal Care', type: 'exp', icon: 'icon_132' }
+				],
+				planned: 0
+			},
+			'budget-2': {
+				id: 'budget-2',
+				title: 'Transportation',
+				categoriesIds: [ 'ctg-1', 'ctg-2', 'ctg-21' ],
+				categories: [
+					{ id: 'ctg-1', name: 'Transportation', type: 'exp', icon: 'icon_127' },
+					{ id: 'ctg-2', name: 'Travel', type: 'exp', icon: 'icon_5' },
+					{ id: 'ctg-21', name: 'Gas', type: 'exp', icon: 'icon_129' }
+				],
+				planned: 1500
+			},
+			'budget-3': {
+				id: 'budget-3',
+				title: 'Bills & Utilities',
+				categoriesIds: [ 'ctg-15', 'ctg-16', 'ctg-17', 'ctg-18', 'ctg-19', 'ctg-20' ],
+				categories: [
+					{ id: 'ctg-15', name: 'Internet', type: 'exp', icon: 'icon_126' },
+					{ id: 'ctg-16', name: 'Phone', type: 'exp', icon: 'icon_134' },
+					{ id: 'ctg-17', name: 'Electricity', type: 'exp', icon: 'icon_125' },
+					{ id: 'ctg-18', name: 'Cable', type: 'exp', icon: 'icon_84' },
+					{ id: 'ctg-19', name: 'Rent', type: 'exp', icon: 'icon_136' },
+					{ id: 'ctg-20', name: 'Installments', type: 'exp', icon: 'icon_112' }
+				],
+				planned: 2000
+			},
+			'budget-4': {
+				id: 'budget-4',
+				title: 'Health & Fitness',
+				categoriesIds: [ 'ctg-22', 'ctg-23', 'ctg-24' ],
+				categories: [
+					{ id: 'ctg-22', name: 'Sports', type: 'exp', icon: 'icon_70' },
+					{ id: 'ctg-23', name: 'Doctor', type: 'exp', icon: 'ic_category_doctor' },
+					{ id: 'ctg-24', name: 'Pharmacy', type: 'exp', icon: 'ic_category_pharmacy' }
+				],
+				planned: 500
+			},
+			'budget-5': {
+				id: 'budget-5',
+				title: 'Home',
+				categoriesIds: [ 'ctg-26', 'ctg-27', 'ctg-28', 'ctg-29' ],
+				categories: [
+					{ id: 'ctg-26', name: 'Home', type: 'exp', icon: 'icon_115' },
+					{ id: 'ctg-27', name: 'Children & Babies', type: 'exp', icon: 'icon_38' },
+					{ id: 'ctg-28', name: 'Decorations', type: 'exp', icon: 'icon_21' },
+					{ id: 'ctg-29', name: 'Pets', type: 'exp', icon: 'icon_123' }
+				],
+				planned: 1000
+			},
 
-		'budget-0': {
-			id: 'budget-0',
-			title: 'Others',
-			categoriesIds: [ 'ctg-11', 'ctg-12', 'ctg-30', 'ctg-31' ],
-			categories: [
-				{ id: 'ctg-11', name: 'Café', type: 'exp', icon: 'icon_105' },
-				{ id: 'ctg-12', name: 'Restaurants', type: 'exp', icon: 'icon_133' },
-				{ id: 'ctg-30', name: 'Education', type: 'exp', icon: 'icon_113' },
-				{ id: 'ctg-31', name: 'Others', type: 'exp', icon: 'icon_23' }
-			],
-			planned: 500
+			'budget-0': {
+				id: 'budget-0',
+				title: 'Others',
+				categoriesIds: [ 'ctg-11', 'ctg-12', 'ctg-30', 'ctg-31' ],
+				categories: [
+					{ id: 'ctg-11', name: 'Café', type: 'exp', icon: 'icon_105' },
+					{ id: 'ctg-12', name: 'Restaurants', type: 'exp', icon: 'icon_133' },
+					{ id: 'ctg-30', name: 'Education', type: 'exp', icon: 'icon_113' },
+					{ id: 'ctg-31', name: 'Others', type: 'exp', icon: 'icon_23' }
+				],
+				planned: 500
+			}
 		}
+	}
+};
+
+export const initialBudgets = {
+	...budgets,
+	[getUnixTime(startOfMonth(new Date()))]: {
+		...budgets[0],
+		pMonth: getUnixTime(startOfMonth(new Date()))
 	}
 };
 
@@ -207,7 +223,7 @@ const transactions = [
 		category: {
 			name: 'Initial balance'
 		},
-		date: new Date('2019-11-29'),
+		date: set(new Date(), { date: 29 }),
 		description: '',
 		type: 'inc'
 	},
@@ -216,7 +232,7 @@ const transactions = [
 		category: {
 			name: 'Transportation'
 		},
-		date: new Date('2019-11-04'),
+		date: set(new Date(), { date: 4 }),
 		description: 'Uber',
 		type: 'exp'
 	},
@@ -225,7 +241,7 @@ const transactions = [
 		category: {
 			name: 'Salary'
 		},
-		date: new Date('2019-11-22'),
+		date: set(new Date(), { date: 22 }),
 		description: '',
 		type: 'inc'
 	},
@@ -234,7 +250,7 @@ const transactions = [
 		category: {
 			name: 'Clothing'
 		},
-		date: new Date('2019-11-15'),
+		date: set(new Date(), { date: 15 }),
 		description: 'Bought a new jeans',
 		type: 'exp'
 	},
@@ -243,7 +259,7 @@ const transactions = [
 		category: {
 			name: 'Gas'
 		},
-		date: new Date('2019-11-06'),
+		date: set(new Date(), { date: 6 }),
 		description: '',
 		type: 'exp'
 	},
@@ -252,7 +268,7 @@ const transactions = [
 		category: {
 			name: 'Groceries'
 		},
-		date: new Date('2019-11-26'),
+		date: set(new Date(), { date: 26 }),
 		description: `For next week's party`,
 		type: 'exp'
 	},
@@ -261,7 +277,7 @@ const transactions = [
 		category: {
 			name: 'Café'
 		},
-		date: new Date('2019-11-26'),
+		date: set(new Date(), { date: 26 }),
 		description: ``,
 		type: 'exp'
 	}
@@ -270,7 +286,7 @@ const transactions = [
 	// 	category: {
 	// 		name: 'Food'
 	// 	},
-	// 	date: new Date('2019-11-07'),
+	// 	date: set(new Date(), { date: 7 }),
 	// 	description: `Ordered food while at work`,
 	// 	type: 'exp'
 	// },
@@ -279,7 +295,7 @@ const transactions = [
 	// 	category: {
 	// 		name: 'Phone',
 	// },
-	// 	date: new Date('2019-11-07'),
+	// 	date: set(new Date(), { date: 7 }),
 	// 	description: 'Phone bill',
 	// 	type: 'exp'
 	// },
@@ -288,7 +304,7 @@ const transactions = [
 	// 	category: {
 	// 		name: 'Transportation',
 	// },
-	// 	date: new Date('2019-11-20'),
+	// 	date: set(new Date(), { date: 20 }),
 	// 	description: 'Transportation to dahab',
 	// 	type: 'exp'
 	// },
@@ -297,7 +313,7 @@ const transactions = [
 	// 	category: {
 	// 		name: 'Rent',
 	// },
-	// 	date: new Date('2019-11-03'),
+	// 	date: set(new Date(), { date: 3 }),
 	// 	description: '',
 	// 	type: 'exp'
 	// }

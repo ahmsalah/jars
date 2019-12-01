@@ -1,15 +1,17 @@
 import { useContext } from 'react';
 import {
-	BudgetsContext,
+	ThisMonthBudgetContext,
 	DispatchContext as DispatchBudgetsContext
 } from '../context/budgets.context';
 import {
 	CategoriesContext,
 	DispatchContext as DispatchCategoriesContext
 } from '../context/categories.context';
+import { ParsedMonthContext } from '../context/month.context';
 
 function useSorting() {
-	const budgets = useContext(BudgetsContext);
+	const thisMonthBudget = useContext(ThisMonthBudgetContext);
+	const pMonth = useContext(ParsedMonthContext);
 	const dispatchBudgets = useContext(DispatchBudgetsContext);
 	const categories = useContext(CategoriesContext);
 	const dispatchCategories = useContext(DispatchCategoriesContext);
@@ -22,20 +24,20 @@ function useSorting() {
 			return;
 
 		if (type === 'list') {
-			const newBudgetsOrder = Array.from(budgets.budgetsOrder);
+			const newBudgetsOrder = Array.from(thisMonthBudget.budgetsOrder);
 			newBudgetsOrder.splice(source.index, 1);
 			newBudgetsOrder.splice(destination.index, 0, draggableId);
 
 			const newBudgets = {
-				...budgets,
+				...thisMonthBudget,
 				budgetsOrder: newBudgetsOrder
 			};
-			dispatchBudgets({ type: 'SET_BUDGETS', budgets: newBudgets });
+			dispatchBudgets({ type: 'SET_BUDGETS', budgets: newBudgets, pMonth });
 			return;
 		}
 
-		const start = budgets.allBudgets[source.droppableId];
-		const finish = budgets.allBudgets[destination.droppableId];
+		const start = thisMonthBudget.allBudgets[source.droppableId];
+		const finish = thisMonthBudget.allBudgets[destination.droppableId];
 		const draggedItem = start.categories.filter(ct => ct.id === draggableId)[0];
 
 		//moving within the same list
@@ -54,13 +56,13 @@ function useSorting() {
 			};
 
 			const newBudgets = {
-				...budgets,
+				...thisMonthBudget,
 				allBudgets: {
-					...budgets.allBudgets,
+					...thisMonthBudget.allBudgets,
 					[newList.id]: newList
 				}
 			};
-			dispatchBudgets({ type: 'SET_BUDGETS', budgets: newBudgets });
+			dispatchBudgets({ type: 'SET_BUDGETS', budgets: newBudgets, pMonth });
 			return;
 		}
 
@@ -88,15 +90,15 @@ function useSorting() {
 		};
 
 		const newBudgets = {
-			...budgets,
+			...thisMonthBudget,
 			allBudgets: {
-				...budgets.allBudgets,
+				...thisMonthBudget.allBudgets,
 				[newStart.id]: newStart,
 				[newFinish.id]: newFinish
 			}
 		};
 
-		dispatchBudgets({ type: 'SET_BUDGETS', budgets: newBudgets });
+		dispatchBudgets({ type: 'SET_BUDGETS', budgets: newBudgets, pMonth });
 	};
 
 	const onCategoriesDragEnd = result => {

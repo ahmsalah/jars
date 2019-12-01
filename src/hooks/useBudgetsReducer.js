@@ -1,14 +1,11 @@
-import { useEffect, useReducer, useContext } from 'react';
+import { useEffect, useReducer, useContext, useState } from 'react';
 import { AuthContext } from '../context/auth.context';
 import firebase from '../firebase/firebase';
 import { initialBudgets } from '../initialData';
 
-
 function useBudgetsReducer(budgetsReducer) {
-  const currentUser = useContext(AuthContext);
-  const [ budgets, dispatch ] = useReducer(budgetsReducer, initialBudgets);
-  
-
+	const currentUser = useContext(AuthContext);
+	const [ budgets, dispatch ] = useReducer(budgetsReducer, initialBudgets);
 
 	return {
 		budgets,
@@ -16,4 +13,4 @@ function useBudgetsReducer(budgetsReducer) {
 	};
 }
 
-export default useBudgetsReducer
+export default useBudgetsReducer;
