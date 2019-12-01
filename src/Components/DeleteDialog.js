@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,6 +9,11 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
+import Grow from '@material-ui/core/Grow';
+
+const TransitionGrow = React.forwardRef(function Transition(props, ref) {
+	return <Grow {...props} />;
+});
 
 const useStyles = makeStyles(({ spacing }) => ({
 	iconContainer: {
@@ -26,7 +31,8 @@ const useStyles = makeStyles(({ spacing }) => ({
 	},
 	name: {
 		'& span': {
-			fontWeight: 500
+			fontWeight: 500,
+			textTransform: 'capitalize'
 		}
 	}
 }));
@@ -39,7 +45,8 @@ function DeleteDialog({ name, icon, dialogOpen, setDialogOpen, onSubmit }) {
 			open={dialogOpen}
 			onClose={() => setDialogOpen(false)}
 			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description">
+			aria-describedby="alert-dialog-description"
+			TransitionComponent={TransitionGrow}>
 			<DialogContent>
 				<Typography className={classes.dialogTextTop}>You are about to delete</Typography>
 				<ListItem component="div" ContainerComponent="div">
@@ -71,4 +78,4 @@ function DeleteDialog({ name, icon, dialogOpen, setDialogOpen, onSubmit }) {
 	);
 }
 
-export default DeleteDialog;
+export default memo(DeleteDialog);

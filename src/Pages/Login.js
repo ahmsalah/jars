@@ -3,7 +3,7 @@ import firebase from '../firebase/firebase';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { Redirect } from 'react-router-dom';
 import { AuthContext } from '../context/auth.context';
-import { initialCategories, initialTransactions } from '../initialData';
+import { initialCategories, initialTransactions, initialBudgets } from '../initialData';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useSpring, animated } from 'react-spring';
@@ -193,6 +193,10 @@ function Login() {
 							description: tr.description,
 							type: tr.type
 						})
+					);
+
+					Object.entries(initialBudgets).map(([ key, val ], i) =>
+						userRef.collection('budgets').doc(key).set(val)
 					);
 				}
 			}

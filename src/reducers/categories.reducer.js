@@ -5,6 +5,9 @@ const categoriesReducer = (state, action) => {
 	const userID =
 		JSON.parse(window.localStorage.getItem('user')) !== null &&
 		JSON.parse(window.localStorage.getItem('user')).uid;
+
+	const userRef = firebase.firestore().collection('users').doc(userID);
+
 	switch (action.type) {
 		case 'SET_CATEGORIES':
 			return action.categories;
@@ -12,14 +15,14 @@ const categoriesReducer = (state, action) => {
 		case 'ADD_CATEGORY':
 			return (
 				userID &&
-					firebase.firestore().collection('users').doc(userID).update({
+					userRef.update({
 						[`categories.allCategories.${action.id}`]: action.newCategory,
 
 						[`categories.lists.${action.categoryType}.categoriesIds`]: firebase.firestore.FieldValue.arrayUnion(
 							action.id
 						)
 					}),
-				(state = {
+				{
 					...state,
 					allCategories: {
 						...state.allCategories,
@@ -35,20 +38,20 @@ const categoriesReducer = (state, action) => {
 							]
 						}
 					}
-				})
+				}
 			);
 
 		case 'REMOVE_CATEGORY':
 			return (
 				userID &&
-					firebase.firestore().collection('users').doc(userID).update({
+					userRef.update({
 						[`categories.allCategories.${action.id}`]: firebase.firestore.FieldValue.delete(),
 
 						[`categories.lists.${action.categoryType}.categoriesIds`]: firebase.firestore.FieldValue.arrayRemove(
 							action.id
 						)
 					}),
-				(state = {
+				{
 					...state,
 					allCategories: filterObjectByKey(state.allCategories, action.id),
 					lists: {
@@ -60,13 +63,13 @@ const categoriesReducer = (state, action) => {
 							)
 						}
 					}
-				})
+				}
 			);
 
 		case 'MOVE_CATEGORIES':
 			return (
 				userID &&
-					firebase.firestore().collection('users').doc(userID).update({
+					userRef.update({
 						[`categories.lists.${action.listId}.categoriesIds`]: action.newCategoriesIds
 					}),
 				action.newCategories

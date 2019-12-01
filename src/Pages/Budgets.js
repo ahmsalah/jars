@@ -3,10 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { TransactionsContext } from '../context/transactions.context';
 import BudgetItem from '../components/BudgetItem';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { ThisMonthBudgetContext } from '../context/budgets.context';
+import { ThisMonthBudgetContext, BudgetsContext } from '../context/budgets.context';
 import useSorting from '../hooks/useSorting';
 import BudgetSummary from '../components/BudgetSummary';
 import Collapse from '@material-ui/core/Collapse';
+import Loader from '../components/Loader';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
@@ -37,9 +38,10 @@ function Budgets() {
 	const classes = useStyles();
 	const transactions = useContext(TransactionsContext);
 	const thisMonthBudget = useContext(ThisMonthBudgetContext);
+	const budgets = useContext(BudgetsContext);
 	const { onBudgetsDragEnd } = useSorting();
 
-	return (
+	return !!Object.keys(budgets).length ? (
 		<div className={classes.root}>
 			<BudgetSummary />
 			<Collapse in={!!thisMonthBudget} timeout={700}>
@@ -91,6 +93,8 @@ function Budgets() {
 				</DragDropContext>
 			</Collapse>
 		</div>
+	) : (
+		<Loader />
 	);
 }
 
