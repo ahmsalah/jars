@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -22,6 +22,8 @@ import subMonths from 'date-fns/subMonths';
 import startOfMonth from 'date-fns/startOfMonth';
 import getUnixTime from 'date-fns/getUnixTime';
 import { useSnackbar } from 'notistack';
+import Typography from '@material-ui/core/Typography';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const TransitionGrow = React.forwardRef(function Transition(props, ref) {
 	return <Grow {...props} />;
@@ -61,31 +63,41 @@ function MonthBudgetForm({ dialogOpen, setDialogOpen }) {
 	const pMonth = useContext(ParsedMonthContext);
 	const { enqueueSnackbar } = useSnackbar();
 
+	const [ checked, setChecked ] = useState(false);
 	const [ value, handleValueChange ] = useInputState('default');
 	const [ month, handleMonthChange ] = useInputState('');
 	const lastMonth = getUnixTime(startOfMonth(subMonths(new Date(pMonth * 1000), 1)));
 
 	const handleSubmit = () => {
-		if (value === 'default') {
+		if (!budgets[pMonth]) {
+			if (value === 'default') {
+				dispatch({
+					type: 'COPY_DEFAULT',
+					pMonth
+				});
+			} else if (value === 'last-month') {
+				dispatch({
+					type: 'COPY_FROM_LAST_MONTH',
+					lastMonth,
+					pMonth
+				});
+			} else if (value === 'specific-month') {
+				dispatch({
+					type: 'COPY_FROM_SPECIFIC_MONTH',
+					month,
+					pMonth
+				});
+			}
+			enqueueSnackbar('Budgets for this month has been set');
+		} else {
 			dispatch({
-				type: 'COPY_DEFAULT',
+				type: 'RESET_MONTH_BUDGETS',
 				pMonth
 			});
-		} else if (value === 'last-month') {
-			dispatch({
-				type: 'COPY_FROM_LAST_MONTH',
-				lastMonth,
-				pMonth
-			});
-		} else if (value === 'specific-month') {
-			dispatch({
-				type: 'COPY_FROM_SPECIFIC_MONTH',
-				month,
-				pMonth
-			});
+			enqueueSnackbar('Budgets for this month has been reset');
 		}
+
 		setDialogOpen(false);
-		enqueueSnackbar('Budgets for this month has been set');
 	};
 
 	return (
@@ -94,59 +106,81 @@ function MonthBudgetForm({ dialogOpen, setDialogOpen }) {
 			onClose={() => setDialogOpen(false)}
 			aria-labelledby="form-dialog-title"
 			TransitionComponent={TransitionGrow}>
-			<DialogTitle id="form-dialog-title">This month budgets</DialogTitle>
-			<DialogContent>
-				<div>
-					<FormControl component="fieldset">
-						<FormLabel component="legend" className={classes.formLabel}>
-							How do you want to setup this month's budgets?
-						</FormLabel>
-						<RadioGroup
-							className={classes.formGroup}
-							aria-label="budgets"
-							name="budgets"
-							value={value}
-							onChange={handleValueChange}>
-							<FormControlLabel
-								value="default"
-								control={<Radio color="primary" />}
-								label="Setup default budgets"
-							/>
-							<FormControlLabel
-								value="last-month"
-								control={<Radio color="primary" />}
-								label="Copy budgets from last month"
-								disabled={!budgets.hasOwnProperty(lastMonth)}
-							/>
-							<FormControlLabel
-								value="specific-month"
-								control={<Radio color="primary" />}
-								label="Copy from a specific month"
-							/>
-						</RadioGroup>
-					</FormControl>
-				</div>
-				{value === 'specific-month' && (
-					<TextField
-						fullWidth
-						select
-						className={clsx(
-							classes.margin,
-							classes.textField,
-							classes.textFieledSelect
+			<DialogTitle id="form-dialog-title">
+				{!budgets[pMonth] ? 'This month budgets' : 'Warning'}
+			</DialogTitle>
+			<DialogContent style={{ maxWidth: !!budgets[pMonth] ? 320 : 'none' }}>
+				{!budgets[pMonth] ? (
+					<React.Fragment>
+						<div>
+							<FormControl component="fieldset">
+								<FormLabel component="legend" className={classes.formLabel}>
+									How do you want to setup this month's budgets?
+								</FormLabel>
+								<RadioGroup
+									className={classes.formGroup}
+									aria-label="budgets"
+									name="budgets"
+									value={value}
+									onChange={handleValueChange}>
+									<FormControlLabel
+										value="default"
+										control={<Radio color="primary" />}
+										label="Setup default budgets"
+									/>
+									<FormControlLabel
+										value="last-month"
+										control={<Radio color="primary" />}
+										label="Copy budgets from last month"
+										disabled={!budgets.hasOwnProperty(lastMonth)}
+									/>
+									<FormControlLabel
+										value="specific-month"
+										control={<Radio color="primary" />}
+										label="Copy from a specific month"
+										disabled={Object.keys(budgets).length < 2}
+									/>
+								</RadioGroup>
+							</FormControl>
+						</div>
+						{value === 'specific-month' && (
+							<TextField
+								fullWidth
+								select
+								className={clsx(
+									classes.margin,
+									classes.textField,
+									classes.textFieledSelect
+								)}
+								variant="outlined"
+								label="Select Month"
+								name="month"
+								value={month}
+								onChange={handleMonthChange}>
+								{budgets &&
+									Object.keys(budgets).slice(1).map(pMonth => (
+										<MenuItem key={pMonth} value={pMonth}>
+											{format(new Date(pMonth * 1000), 'MMMM yyyy')}
+										</MenuItem>
+									))}
+							</TextField>
 						)}
-						variant="outlined"
-						label="Select Month"
-						name="month"
-						value={month}
-						onChange={handleMonthChange}>
-						{budgets &&
-							Object.keys(budgets).slice(1).map(pMonth => (
-								<MenuItem key={pMonth} value={pMonth}>
-									{format(new Date(pMonth * 1000), 'MMMM yyyy')}
-								</MenuItem>
-							))}
-					</TextField>
+					</React.Fragment>
+				) : (
+					<div>
+						<Typography gutterBottom>
+							You are about to completly reset and delete all budgets for{' '}
+							{format(new Date(pMonth * 1000), 'MMMM yyyy')}
+						</Typography>
+						<Typography style={{ fontWeight: 500 }}>
+							I'm aware of that
+							<Checkbox
+								checked={checked}
+								onChange={() => setChecked(!checked)}
+								value="checked"
+							/>
+						</Typography>
+					</div>
 				)}
 			</DialogContent>
 			<DialogActions>
@@ -154,7 +188,9 @@ function MonthBudgetForm({ dialogOpen, setDialogOpen }) {
 					Cancel
 				</Button>
 				<Button
-					disabled={value === 'specific-month' && !month.length}
+					disabled={
+						!budgets[pMonth] ? value === 'specific-month' && !month.length : !checked
+					}
 					onClick={handleSubmit}
 					color="primary">
 					Ok

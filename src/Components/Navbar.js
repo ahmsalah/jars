@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { memo, useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import TransactionForm from './TransactionForm';
 import NewCategoryForm from './NewCategoryForm';
@@ -49,21 +49,24 @@ function Navbar() {
 							<MenuIcon />
 						</IconButton>
 					</Hidden>
-					<div className={classes.addButton}>
-						<Button
-							size={matches ? 'medium' : 'small'}
-							variant="contained"
-							color="primary"
-							onClick={() => setDialogOpen(true)}>
-							{!matchesXS ? (
-								<AddIcon />
-							) : (
-								(location === '/' && 'Add Transaction') ||
-								(location === '/categories' && 'Create Category') ||
-								(location === '/budgets' && 'Create Budget')
-							)}
-						</Button>
-					</div>
+					{location !== '/jars' &&
+					location !== '/reports' && (
+						<div className={classes.addButton}>
+							<Button
+								size={matches ? 'medium' : 'small'}
+								variant="contained"
+								color="primary"
+								onClick={() => setDialogOpen(true)}>
+								{!matchesXS ? (
+									<AddIcon />
+								) : (
+									(location === '/' && 'Add Transaction') ||
+									(location === '/categories' && 'Create Category') ||
+									(location === '/budgets' && 'Create Budget')
+								)}
+							</Button>
+						</div>
+					)}
 
 					<IconButton
 						onClick={e => setAnchorProfile(e.currentTarget)}
@@ -84,4 +87,4 @@ function Navbar() {
 	);
 }
 
-export default Navbar;
+export default memo(Navbar);

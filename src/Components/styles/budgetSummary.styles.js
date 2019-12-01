@@ -17,7 +17,14 @@ export default makeStyles(({ spacing, palette, breakpoints }) => ({
 		flex: '1'
 	},
 	monthContainer: {
-		padding: spacing(1)
+		padding: spacing(1),
+		display: 'flex'
+	},
+	moreButton: {
+		padding: spacing(1),
+		[breakpoints.up('sm')]: {
+			marginLeft: spacing(-7.5)
+		}
 	},
 	titleContainer: {
 		padding: spacing(2, 3, 0)
@@ -44,6 +51,9 @@ export default makeStyles(({ spacing, palette, breakpoints }) => ({
 		[breakpoints.up('sm')]: {
 			width: '24%'
 		}
+	},
+	flexGrow: {
+		flex: 1
 	},
 	title: {
 		fontSize: '1.1rem'
@@ -138,5 +148,8 @@ export default makeStyles(({ spacing, palette, breakpoints }) => ({
 		margin: spacing(3),
 		display: 'flex',
 		justifyContent: 'center'
+	},
+	morePopover: {
+		padding: spacing(2, 3)
 	}
 }));

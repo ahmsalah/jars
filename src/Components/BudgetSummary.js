@@ -15,13 +15,19 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
+import Popover from '@material-ui/core/Popover';
 import EditIcon from '@material-ui/icons/Edit';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import PlannedIncForm from './PlannedIncForm';
 import useStyles from './styles/budgetSummary.styles';
 import MonthBudgetForm from './MonthBudgetForm';
 
 function BudgetSummary() {
 	const classes = useStyles();
+	const [ anchorEl, setAnchorEl ] = useState(null);
+	const popoverOpen = Boolean(anchorEl);
+	const id = popoverOpen ? 'simple-popover' : undefined;
+
 	const [ plannedIncDialogOpen, setPlannedIncDialogOpen ] = useState(false);
 	const [ monthBudgetDialog, setMonthBudgetDialog ] = useState(false);
 	const transactions = useContext(TransactionsContext);
@@ -46,6 +52,23 @@ function BudgetSummary() {
 	);
 	return (
 		<Fragment>
+			<Popover
+				id={id}
+				open={popoverOpen}
+				anchorEl={anchorEl}
+				onClose={() => setAnchorEl(null)}>
+				<div className={classes.morePopover}>
+					<Button
+						variant="contained"
+						color="primary"
+						onClick={() => {
+							setMonthBudgetDialog(true);
+							setAnchorEl(null);
+						}}>
+						Reset this months's budgets
+					</Button>
+				</div>
+			</Popover>
 			<PlannedIncForm
 				plannedInc={plannedInc}
 				dialogOpen={plannedIncDialogOpen}
@@ -60,7 +83,17 @@ function BudgetSummary() {
 				/>
 				<List className={classes.list}>
 					<div className={classes.monthContainer}>
-						<SelectedMonth />
+						<div className={classes.flexGrow}>
+							<SelectedMonth />
+						</div>
+						{!!thisMonthBudget && (
+							<IconButton
+								onClick={e => setAnchorEl(e.currentTarget)}
+								className={classes.moreButton}
+								aria-label="more options">
+								<MoreHorizIcon fontSize="large" />
+							</IconButton>
+						)}
 					</div>
 					<Divider />
 					<Collapse in={!!thisMonthBudget} timeout={700}>
@@ -211,7 +244,7 @@ function BudgetSummary() {
 								variant="contained"
 								color="primary"
 								onClick={() => setMonthBudgetDialog(true)}>
-								Setup budgets for this month
+								Setup this month's budgets
 							</Button>
 						</div>
 					</Collapse>

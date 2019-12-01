@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import Dialog from '@material-ui/core/Dialog';
@@ -45,7 +45,7 @@ function SelectIconDialog({ onClose, open, TransitionComponent }) {
 		onClose(selectedIcon);
 	};
 
-	const icons = [ ...new Array(144) ].map((v, i) => `icon_${i}`);
+	const icons = [ ...new Array(151) ].map((v, i) => `icon_${i}`);
 	return (
 		<Dialog TransitionComponent={TransitionComponent} maxWidth="sm" open={open}>
 			<div className={classes.titleContainer}>
@@ -77,4 +77,4 @@ function SelectIconDialog({ onClose, open, TransitionComponent }) {
 	);
 }
 
-export default SelectIconDialog;
+export default memo(SelectIconDialog);

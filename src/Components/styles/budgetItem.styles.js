@@ -47,11 +47,7 @@ export default makeStyles(({ spacing, breakpoints, palette }) => ({
 		padding: 5
 	},
 	dragButton: {
-		'& svg': {
-			width: '1.4em',
-			height: '1.4em'
-		},
-		padding: 1,
+		padding: 0,
 		'&: active': {
 			cursor: 'grabbing !important'
 		}

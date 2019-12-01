@@ -112,7 +112,7 @@ function BudgetItem({ categories, budgetItem, actual, budgetId, index, pMonth })
 														aria-label="Drag"
 														{...providedList.dragHandleProps}
 														disableRipple>
-														<DragHandleIcon />
+														<DragHandleIcon fontSize="large" />
 													</IconButton>
 													<IconButton
 														className={classes.expandButton}

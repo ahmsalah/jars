@@ -52,6 +52,15 @@ const budgetsReducer = (state, action) => {
 				}
 			);
 
+		case 'RESET_MONTH_BUDGETS':
+			const newFilteredBudgets = filterObjectByKey(state, `${action.pMonth}`);
+			return (
+				budgetsRef.doc(`${action.pMonth}`).delete(),
+				{
+					...newFilteredBudgets
+				}
+			);
+
 		case 'EDIT_MONTH_INCOME':
 			return (
 				budgetsRef.doc(`${action.pMonth}`).update({ plannedInc: action.income }),
