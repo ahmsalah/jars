@@ -116,8 +116,9 @@ function NewCategoryForm({ dialogOpen, setDialogOpen }) {
 		};
 
 		dispatch({ type: 'ADD_CATEGORY', categoryType: type, id: newCategoryId, newCategory });
-
-		dispatchBudgets({ type: 'ADD_CATEGORY_TO_BUDGETS', id: newCategoryId, newCategory });
+		if (isExpense) {
+			dispatchBudgets({ type: 'ADD_CATEGORY_TO_BUDGETS', id: newCategoryId, newCategory });
+		}
 
 		reset();
 		setDialogOpen(false);

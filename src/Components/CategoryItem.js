@@ -51,7 +51,10 @@ const CategoryItem = ({ id, type, name, icon, index, categoriesLength }) => {
 
 	const handleDeleteItem = () => {
 		dispatch({ type: 'REMOVE_CATEGORY', id, categoryType: type });
-		dispatchBudgets({ type: 'REMOVE_CATEGORY_FROM_BUDGETS', id });
+
+		if (type === 'exp') {
+			dispatchBudgets({ type: 'REMOVE_CATEGORY_FROM_BUDGETS', id });
+		}
 
 		setDialogOpen(false);
 		enqueueSnackbar('Category Deleted');
