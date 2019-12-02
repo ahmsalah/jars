@@ -117,7 +117,7 @@ function Login() {
 					transactions.
 				</Typography>
 				<Typography variant="h6" className={classes.typography}>
-					Create budgets that you can actually stick to, and utilize the JARS money
+					Create budgets that you can actually stick to and utilize the JARS money
 					management system.
 				</Typography>
 				<Typography variant="h6" className={classes.typography}>
