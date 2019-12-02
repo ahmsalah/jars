@@ -210,6 +210,129 @@ export const initialBudgets = {
 	}
 };
 
+export const initialJars = {
+	jarsOrder: [ 'jar-0', 'jar-1', 'jar-2', 'jar-3', 'jar-4' ],
+	allJars: {
+		'jar-0': {
+			id: 'jar-0',
+			title: 'Save',
+			percentage: 20,
+			categoriesIds: [
+				'ctg-8001',
+				'ctg-8002',
+				'ctg-8003',
+				'ctg-8004',
+				'ctg-8005',
+				'ctg-8006',
+				'ctg-8007',
+				'ctg-8008',
+				'ctg-8009'
+			],
+			categories: [
+				{ id: 'ctg-8001', name: 'Initial balance', type: 'inc', icon: 'icon_109' },
+				{ id: 'ctg-8002', name: 'Salary', type: 'inc', icon: 'icon_75' },
+				{ id: 'ctg-8003', name: 'Savings', type: 'inc', icon: 'icon_141' },
+				{ id: 'ctg-8004', name: 'Bonus', type: 'inc', icon: 'icon_57' },
+				{ id: 'ctg-8005', name: 'Awards', type: 'inc', icon: 'icon_111' },
+				{ id: 'ctg-8006', name: 'Sale', type: 'inc', icon: 'icon_121' },
+				{ id: 'ctg-8007', name: 'Gifts', type: 'inc', icon: 'icon_117' },
+				{ id: 'ctg-8008', name: 'Interest money', type: 'inc', icon: 'icon_118' },
+				{ id: 'ctg-8009', name: 'Others', type: 'inc', icon: 'icon_22' }
+			]
+		},
+		'jar-1': {
+			id: 'jar-1',
+			title: 'Necessities',
+			percentage: 55,
+			categoriesIds: [
+				'ctg-1',
+				'ctg-21',
+				'ctg-3',
+				'ctg-4',
+				'ctg-5',
+				'ctg-7',
+				'ctg-8',
+				'ctg-10',
+				'ctg-15',
+				'ctg-16',
+				'ctg-17',
+				'ctg-19',
+				'ctg-20',
+				'ctg-23',
+				'ctg-24',
+				'ctg-26',
+				'ctg-27',
+				'ctg-29',
+				'ctg-31'
+			],
+			categories: [
+				{ id: 'ctg-1', name: 'Transportation', type: 'exp', icon: 'icon_127' },
+				{ id: 'ctg-21', name: 'Gas', type: 'exp', icon: 'icon_129' },
+				{ id: 'ctg-3', name: 'Shopping', type: 'exp', icon: 'icon_7' },
+				{ id: 'ctg-4', name: 'Clothing', type: 'exp', icon: 'icon_17' },
+				{ id: 'ctg-5', name: 'Footwear', type: 'exp', icon: 'icon_100' },
+				{ id: 'ctg-7', name: 'Groceries', type: 'exp', icon: 'icon_3' },
+				{ id: 'ctg-8', name: 'Lover & Friends', type: 'exp', icon: 'icon_148' },
+				//  { id: 'ctg-9', name: 'Beverage', type: 'exp', icon: 'icon_116' },
+				{ id: 'ctg-10', name: 'Personal Care', type: 'exp', icon: 'icon_132' },
+				{ id: 'ctg-15', name: 'Internet', type: 'exp', icon: 'icon_126' },
+				{ id: 'ctg-16', name: 'Phone', type: 'exp', icon: 'icon_134' },
+				{ id: 'ctg-17', name: 'Electricity', type: 'exp', icon: 'icon_125' },
+				{ id: 'ctg-19', name: 'Rent', type: 'exp', icon: 'icon_136' },
+				{ id: 'ctg-20', name: 'Installments', type: 'exp', icon: 'icon_112' },
+				{ id: 'ctg-23', name: 'Doctor', type: 'exp', icon: 'icon_145' },
+				{ id: 'ctg-24', name: 'Pharmacy', type: 'exp', icon: 'icon_146' },
+				{ id: 'ctg-26', name: 'Home', type: 'exp', icon: 'icon_115' },
+				{ id: 'ctg-27', name: 'Children & Babies', type: 'exp', icon: 'icon_38' },
+				{ id: 'ctg-29', name: 'Pets', type: 'exp', icon: 'icon_123' },
+				{ id: 'ctg-31', name: 'Others', type: 'exp', icon: 'icon_23' }
+			]
+		},
+		'jar-2': {
+			id: 'jar-2',
+			title: 'Play',
+			percentage: 10,
+			categoriesIds: [
+				'ctg-6',
+				'ctg-11',
+				'ctg-12',
+				'ctg-13',
+				'ctg-14',
+				'ctg-18',
+				'ctg-28',
+				'ctg-2'
+			],
+			categories: [
+				{ id: 'ctg-6', name: 'Electronics', type: 'exp', icon: 'icon_9' },
+				{ id: 'ctg-11', name: 'Café', type: 'exp', icon: 'icon_105' },
+				{ id: 'ctg-12', name: 'Restaurants', type: 'exp', icon: 'icon_133' },
+				{ id: 'ctg-13', name: 'Movies', type: 'exp', icon: 'icon_6' },
+				{ id: 'ctg-14', name: 'Entertainment', type: 'exp', icon: 'icon_49' },
+				{ id: 'ctg-18', name: 'Cable', type: 'exp', icon: 'icon_84' },
+				{ id: 'ctg-28', name: 'Decorations', type: 'exp', icon: 'icon_21' },
+				{ id: 'ctg-2', name: 'Travel', type: 'exp', icon: 'icon_5' }
+			]
+		},
+		'jar-3': {
+			id: 'jar-3',
+			title: 'Personal Growth',
+			percentage: 10,
+			categoriesIds: [ 'ctg-22', 'ctg-30' ],
+			categories: [
+				{ id: 'ctg-22', name: 'Gym & Sports', type: 'exp', icon: 'icon_70' },
+				{ id: 'ctg-30', name: 'Education', type: 'exp', icon: 'icon_113' }
+			]
+		},
+		'jar-4': {
+			id: 'jar-4',
+			title: 'Give',
+			percentage: 5,
+			categoriesIds: [ 'ctg-25' ],
+			categories: [ { id: 'ctg-25', name: 'Charity', type: 'exp', icon: 'icon_149' } ]
+		}
+	}
+};
+
 const transactions = [
 	{
 		amount: 8000,

@@ -13,67 +13,61 @@ const categoriesReducer = (state, action) => {
 			return action.categories;
 
 		case 'ADD_CATEGORY':
-			return (
-				userID &&
-					userRef.update({
-						[`categories.allCategories.${action.id}`]: action.newCategory,
+			userID &&
+				userRef.update({
+					[`categories.allCategories.${action.id}`]: action.newCategory,
 
-						[`categories.lists.${action.categoryType}.categoriesIds`]: firebase.firestore.FieldValue.arrayUnion(
+					[`categories.lists.${action.categoryType}.categoriesIds`]: firebase.firestore.FieldValue.arrayUnion(
+						action.id
+					)
+				});
+			return {
+				...state,
+				allCategories: {
+					...state.allCategories,
+					[action.id]: action.newCategory
+				},
+				lists: {
+					...state.lists,
+					[action.categoryType]: {
+						...state.lists[action.categoryType],
+						categoriesIds: [
+							...state.lists[action.categoryType].categoriesIds,
 							action.id
-						)
-					}),
-				{
-					...state,
-					allCategories: {
-						...state.allCategories,
-						[action.id]: action.newCategory
-					},
-					lists: {
-						...state.lists,
-						[action.categoryType]: {
-							...state.lists[action.categoryType],
-							categoriesIds: [
-								...state.lists[action.categoryType].categoriesIds,
-								action.id
-							]
-						}
+						]
 					}
 				}
-			);
+			};
 
 		case 'REMOVE_CATEGORY':
-			return (
-				userID &&
-					userRef.update({
-						[`categories.allCategories.${action.id}`]: firebase.firestore.FieldValue.delete(),
+			userID &&
+				userRef.update({
+					[`categories.allCategories.${action.id}`]: firebase.firestore.FieldValue.delete(),
 
-						[`categories.lists.${action.categoryType}.categoriesIds`]: firebase.firestore.FieldValue.arrayRemove(
-							action.id
+					[`categories.lists.${action.categoryType}.categoriesIds`]: firebase.firestore.FieldValue.arrayRemove(
+						action.id
+					)
+				});
+			return {
+				...state,
+				allCategories: filterObjectByKey(state.allCategories, action.id),
+				lists: {
+					...state.lists,
+					[action.categoryType]: {
+						...state.lists[action.categoryType],
+						categoriesIds: state.lists[action.categoryType].categoriesIds.filter(
+							ctID => ctID !== action.id
 						)
-					}),
-				{
-					...state,
-					allCategories: filterObjectByKey(state.allCategories, action.id),
-					lists: {
-						...state.lists,
-						[action.categoryType]: {
-							...state.lists[action.categoryType],
-							categoriesIds: state.lists[action.categoryType].categoriesIds.filter(
-								ctID => ctID !== action.id
-							)
-						}
 					}
 				}
-			);
+			};
 
 		case 'MOVE_CATEGORIES':
-			return (
-				userID &&
-					userRef.update({
-						[`categories.lists.${action.listId}.categoriesIds`]: action.newCategoriesIds
-					}),
-				action.newCategories
-			);
+			userID &&
+				userRef.update({
+					[`categories.lists.${action.listId}.categoriesIds`]: action.newCategoriesIds
+				});
+			return action.newCategories;
 		default:
 			return state;
 	}

@@ -1,6 +1,7 @@
 import React, { memo, useContext, useState } from 'react';
 import { DispatchContext } from '../context/categories.context';
 import { DispatchContext as DispatchBudgetsContext } from '../context/budgets.context';
+import { DispatchContext as DispatchJarsContext } from '../context/jars.context';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -45,12 +46,15 @@ const CategoryItem = ({ id, type, name, icon, index, categoriesLength }) => {
 	const classes = useStyles();
 	const dispatch = useContext(DispatchContext);
 	const dispatchBudgets = useContext(DispatchBudgetsContext);
+	const dispatchJars = useContext(DispatchJarsContext);
 
 	const { enqueueSnackbar } = useSnackbar();
 	const [ dialogOpen, setDialogOpen ] = useState(false);
 
 	const handleDeleteItem = () => {
 		dispatch({ type: 'REMOVE_CATEGORY', id, categoryType: type });
+
+		dispatchJars({ type: 'REMOVE_CATEGORY_FROM_JARS', id });
 
 		if (type === 'exp') {
 			dispatchBudgets({ type: 'REMOVE_CATEGORY_FROM_BUDGETS', id });

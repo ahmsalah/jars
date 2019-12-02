@@ -10,6 +10,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import { CategoriesProvider } from './context/categories.context';
 import { TransactionsProvider } from './context/transactions.context';
 import { BudgetsProvider } from './context/budgets.context';
+import { JarsProvider } from './context/jars.context';
 import { MonthProvider } from './context/month.context';
 import PrivateRoute from './PrivateRoute';
 import theme from './muiTheme';
@@ -32,28 +33,41 @@ function App({ hideLoader }) {
 				<MonthProvider>
 					<TransactionsProvider>
 						<BudgetsProvider>
-							<SnackbarProvider maxSnack={matches ? 3 : 1}>
-								{currentUser && <Navbar />}
-								<div
-									style={
-										currentUser && { display: 'flex', justifyContent: 'center' }
-									}>
-									{matches && currentUser && <Sidebar />}
+							<JarsProvider>
+								<SnackbarProvider maxSnack={matches ? 3 : 1}>
+									{currentUser && <Navbar />}
+									<div
+										style={
+											currentUser && {
+												display: 'flex',
+												justifyContent: 'center'
+											}
+										}>
+										{matches && currentUser && <Sidebar />}
 
-									<Switch>
-										<PrivateRoute exact path="/" component={Transactions} />
-										<Route exact path="/login" component={Login} />
-										<PrivateRoute
-											exact
-											path="/categories"
-											component={Categories}
-										/>
-										<PrivateRoute exact path="/budgets" component={Budgets} />
-										<PrivateRoute exact path="/jars" component={Jars} />
-										<PrivateRoute exact path="/reports" component={Reports} />
-									</Switch>
-								</div>
-							</SnackbarProvider>
+										<Switch>
+											<PrivateRoute exact path="/" component={Transactions} />
+											<Route exact path="/login" component={Login} />
+											<PrivateRoute
+												exact
+												path="/categories"
+												component={Categories}
+											/>
+											<PrivateRoute
+												exact
+												path="/budgets"
+												component={Budgets}
+											/>
+											<PrivateRoute exact path="/jars" component={Jars} />
+											<PrivateRoute
+												exact
+												path="/reports"
+												component={Reports}
+											/>
+										</Switch>
+									</div>
+								</SnackbarProvider>
+							</JarsProvider>
 						</BudgetsProvider>
 					</TransactionsProvider>
 				</MonthProvider>

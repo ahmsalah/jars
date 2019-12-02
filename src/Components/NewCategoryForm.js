@@ -1,6 +1,7 @@
 import React, { memo, useState, useContext } from 'react';
 import { DispatchContext, CategoriesContext } from '../context/categories.context';
 import { DispatchContext as DispatchBudgetsContext } from '../context/budgets.context';
+import { DispatchContext as DispatchJarsContext } from '../context/jars.context';
 import BtnSwitch from './BtnSwitch';
 import useInputState from '../hooks/useInputState';
 import useToggleState from '../hooks/useToggleState';
@@ -75,6 +76,7 @@ function NewCategoryForm({ dialogOpen, setDialogOpen }) {
 	const dispatch = useContext(DispatchContext);
 	const categories = useContext(CategoriesContext);
 	const dispatchBudgets = useContext(DispatchBudgetsContext);
+	const dispatchJars = useContext(DispatchJarsContext);
 
 	const { enqueueSnackbar } = useSnackbar();
 	const [ name, handleChange, reset ] = useInputState('');
@@ -116,6 +118,14 @@ function NewCategoryForm({ dialogOpen, setDialogOpen }) {
 		};
 
 		dispatch({ type: 'ADD_CATEGORY', categoryType: type, id: newCategoryId, newCategory });
+
+		dispatchJars({
+			type: 'ADD_CATEGORY_TO_JARS',
+			categoryType: type,
+			id: newCategoryId,
+			newCategory
+		});
+
 		if (isExpense) {
 			dispatchBudgets({ type: 'ADD_CATEGORY_TO_BUDGETS', id: newCategoryId, newCategory });
 		}
