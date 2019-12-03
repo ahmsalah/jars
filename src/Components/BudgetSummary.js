@@ -105,44 +105,21 @@ function BudgetSummary() {
 								variant="h6"
 								align="center"
 								className={clsx(classes.title, classes.marginRightAuto)}>
-								Planned
+								Actual
 							</Typography>
 							<Typography variant="h6" align="center" className={classes.title}>
-								Actual
+								Planned
 							</Typography>
 						</ListItem>
 						<ListItem className={classes.incContainer}>
 							<ListItemText
 								className={clsx(
 									classes.listItemText,
-									classes.width,
+									classes.widthActual,
 									classes.marginRightAuto
 								)}
 								primary={'Income'}
-								secondary={
-									plannedInc > 0 ? (
-										<span className={classes.plannedIncomeWrapper}>
-											<span>{formatAmount(plannedInc, '£', 0)}</span>
-											<Tooltip
-												title="Edit Planned Income"
-												placement="top"
-												arrow>
-												<IconButton
-													onClick={() => setPlannedIncDialogOpen(true)}>
-													<EditIcon />
-												</IconButton>
-											</Tooltip>
-										</span>
-									) : (
-										<Button
-											variant="contained"
-											color="primary"
-											size="small"
-											onClick={() => setPlannedIncDialogOpen(true)}>
-											Plan
-										</Button>
-									)
-								}
+								secondary={formatAmount(actualInc, '£', 0)}
 							/>
 
 							{!matches && (
@@ -159,11 +136,34 @@ function BudgetSummary() {
 							<ListItemText
 								className={clsx(
 									classes.listItemText,
-									classes.width,
+									classes.widthPlanned,
 									classes.alignRight
 								)}
 								primary="Income"
-								secondary={formatAmount(actualInc, '£', 0)}
+								secondary={
+									plannedInc > 0 ? (
+										<span className={classes.plannedIncomeWrapper}>
+											<Tooltip
+												title="Edit Planned Income"
+												placement="top"
+												arrow>
+												<IconButton
+													onClick={() => setPlannedIncDialogOpen(true)}>
+													<EditIcon />
+												</IconButton>
+											</Tooltip>
+											<span>{formatAmount(plannedInc, '£', 0)}</span>
+										</span>
+									) : (
+										<Button
+											variant="contained"
+											color="primary"
+											size="small"
+											onClick={() => setPlannedIncDialogOpen(true)}>
+											Plan
+										</Button>
+									)
+								}
 							/>
 						</ListItem>
 						{matches && (
@@ -183,11 +183,11 @@ function BudgetSummary() {
 							<ListItemText
 								className={clsx(
 									classes.listItemText,
-									classes.width,
+									classes.widthActual,
 									classes.marginRightAuto
 								)}
 								primary="Expenses"
-								secondary={formatAmount(plannedExp, '£', 0)}
+								secondary={formatAmount(actualExp, '£', 0)}
 							/>
 							{!matches && (
 								<div
@@ -203,11 +203,11 @@ function BudgetSummary() {
 							<ListItemText
 								className={clsx(
 									classes.listItemText,
-									classes.width,
+									classes.widthPlanned,
 									classes.alignRight
 								)}
 								primary="Expenses"
-								secondary={formatAmount(actualExp, '£', 0)}
+								secondary={formatAmount(plannedExp, '£', 0)}
 							/>
 						</ListItem>
 						{matches && (

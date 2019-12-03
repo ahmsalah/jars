@@ -10,7 +10,7 @@ import { IsTrLoadingContext } from '../context/transactions.context';
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
 		maxWidth: '93vw',
-		margin: spacing(8, 2, 6),
+		margin: spacing(5, 2, 6),
 		flex: 1,
 		[breakpoints.up('sm')]: {
 			maxWidth: spacing(70)

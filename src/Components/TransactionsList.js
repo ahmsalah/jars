@@ -9,7 +9,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Collapse from '@material-ui/core/Collapse';
 
 const useStyles = makeStyles(({ palette, spacing, breakpoints }) => ({
-	root: {},
+	root: {
+		padding: 0
+	},
 	noTransactions: {
 		padding: spacing(3, 2),
 		backgroundColor: palette.grey.light[2],
@@ -67,7 +69,7 @@ function TransactionsList() {
 			<Collapse timeout={500} in={!transactions.length}>
 				<div className={classes.noTransactions}>
 					<Typography variant="h4">No transactions here</Typography>
-					<Typography variant="h4">start adding now</Typography>
+					<Typography variant="h4">Add your first one</Typography>
 					<img src={require(`../assets/sad-jar.png`)} alt="No Transactions" />
 				</div>
 			</Collapse>

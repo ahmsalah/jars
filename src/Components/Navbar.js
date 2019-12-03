@@ -8,7 +8,6 @@ import useStyles from './styles/navbar.styles';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import { AuthContext } from '../context/auth.context';
-import HamburgerMenuPopover from './HamburgerMenuPopover';
 import ProfilePopover from './ProfilePopover';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -17,13 +16,14 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
+import MobileSidebar from './MobileSidebar';
 
 function Navbar() {
 	const classes = useStyles();
 	const currentUser = useContext(AuthContext);
 	const location = useLocation().pathname;
 	const [ anchorProfile, setAnchorProfile ] = useState(null);
-	const [ anchorMenu, setAnchorMenu ] = useState(null);
+	const [ drawerOpen, setDrawerOpen ] = useState(false);
 	const [ dialogOpen, setDialogOpen ] = useState(false);
 	const matches = useMediaQuery('(min-width:360px)');
 	const matchesXS = useMediaQuery('(min-width:310px)');
@@ -39,12 +39,13 @@ function Navbar() {
 			{location === '/budgets' && (
 				<BudgetForm dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
 			)}
-
+			<ProfilePopover anchorEl={anchorProfile} setAnchorEl={setAnchorProfile} />
+			<MobileSidebar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
 			<AppBar position="sticky" className={classes.root}>
 				<Toolbar className={classes.toolbar}>
 					<Hidden smUp>
 						<IconButton
-							onClick={e => setAnchorMenu(e.currentTarget)}
+							onClick={() => setDrawerOpen(true)}
 							className={classes.menuButton}
 							aria-label="menu">
 							<MenuIcon />
@@ -80,8 +81,6 @@ function Navbar() {
 							/>
 						</IconButton>
 					</Tooltip>
-					<HamburgerMenuPopover anchorEl={anchorMenu} setAnchorEl={setAnchorMenu} />
-					<ProfilePopover anchorEl={anchorProfile} setAnchorEl={setAnchorProfile} />
 				</Toolbar>
 			</AppBar>
 		</React.Fragment>

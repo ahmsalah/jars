@@ -10,6 +10,7 @@ import clsx from 'clsx';
 import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from './styles/summary.styles';
+import Collapse from '@material-ui/core/Collapse';
 
 function Summary() {
 	const classes = useStyles();
@@ -28,68 +29,70 @@ function Summary() {
 	const colorTotal = total < 0 ? 'secondary' : 'primary';
 	const [ incBarWidth, expBarWidth ] = getPercentageOfTwoNumbers(totalInc, totalExp * -1, true);
 
-	return totalInc !== 0 || totalExp !== 0 ? (
-		<Paper className={classes.root}>
-			{!matches && (
-				<div className={classes.report}>
-					<Typography variant="h3">
-						{totalInc !== 0 ? `${parseInt(total / totalInc * 100)}%` : '0%'}
-					</Typography>
-					<Typography align="center" variant="body2">
-						{totalExp * -1 <= totalInc || totalInc === 0 ? (
-							`Saved of `
-						) : (
-							`Spent more than `
-						)}
-						your income
-					</Typography>
-				</div>
-			)}
+	return (
+		<Collapse in={totalInc !== 0 || totalExp !== 0} timeout={700}>
+			<Paper className={classes.root}>
+				{!matches && (
+					<div className={classes.report}>
+						<Typography variant="h3">
+							{totalInc !== 0 ? `${parseInt(total / totalInc * 100)}%` : '0%'}
+						</Typography>
+						<Typography align="center" variant="body2">
+							{totalExp * -1 <= totalInc || totalInc === 0 ? (
+								`Saved of `
+							) : (
+								`Spent more than `
+							)}
+							your income
+						</Typography>
+					</div>
+				)}
 
-			<List className={classes.list}>
-				<ListItem>
-					<ListItemText className={classes.title} primary={'Income'} />
-					<div className={classes.barContainer}>
-						<div
-							className={clsx(classes.bar, classes.incBar)}
-							style={{ width: `${incBarWidth}%` }}
+				<List className={classes.list}>
+					<ListItem>
+						<ListItemText className={classes.title} primary={'Income'} />
+						<div className={classes.barContainer}>
+							<div
+								className={clsx(classes.bar, classes.incBar)}
+								style={{ width: `${incBarWidth}%` }}
+							/>
+						</div>
+						<ListItemText
+							className={classes.amount}
+							primary={formatAmount(totalInc)}
+							primaryTypographyProps={{ color: 'primary', variant: 'h6' }}
 						/>
-					</div>
-					<ListItemText
-						className={classes.amount}
-						primary={formatAmount(totalInc)}
-						primaryTypographyProps={{ color: 'primary', variant: 'h6' }}
-					/>
-				</ListItem>
-				<ListItem>
-					<ListItemText className={classes.title} primary={'Expenses'} />
-					<div className={classes.barContainer}>
-						<div
-							className={clsx(classes.expBar, classes.bar)}
-							style={{ width: `${expBarWidth}%` }}
+					</ListItem>
+					<ListItem>
+						<ListItemText className={classes.title} primary={'Expenses'} />
+						<div className={classes.barContainer}>
+							<div
+								className={clsx(classes.expBar, classes.bar)}
+								style={{ width: `${expBarWidth}%` }}
+							/>
+						</div>
+						<ListItemText
+							className={classes.amount}
+							primary={formatAmount(totalExp)}
+							primaryTypographyProps={{ color: 'secondary', variant: 'h6' }}
 						/>
-					</div>
-					<ListItemText
-						className={classes.amount}
-						primary={formatAmount(totalExp)}
-						primaryTypographyProps={{ color: 'secondary', variant: 'h6' }}
-					/>
-				</ListItem>
-				<Divider variant="middle" />
-				<ListItem>
-					<ListItemText
-						className={clsx(classes.amountTitle, classes.title)}
-						primary={`${total < 0 ? 'Spent' : 'Saved'} this month`}
-					/>
-					<ListItemText
-						className={clsx(classes.amount, classes.amountTotal)}
-						primary={renderTotal()}
-						primaryTypographyProps={{ color: colorTotal, variant: 'h6' }}
-					/>
-				</ListItem>
-			</List>
-		</Paper>
-	) : null;
+					</ListItem>
+					<Divider variant="middle" />
+					<ListItem>
+						<ListItemText
+							className={clsx(classes.amountTitle, classes.title)}
+							primary={`${total < 0 ? 'Spent' : 'Saved'} this month`}
+						/>
+						<ListItemText
+							className={clsx(classes.amount, classes.amountTotal)}
+							primary={renderTotal()}
+							primaryTypographyProps={{ color: colorTotal, variant: 'h6' }}
+						/>
+					</ListItem>
+				</List>
+			</Paper>
+		</Collapse>
+	);
 }
 
 export default memo(Summary);

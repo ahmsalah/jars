@@ -46,9 +46,14 @@ export default makeStyles(({ spacing, palette, breakpoints }) => ({
 	marginRightAuto: {
 		marginRight: 'auto'
 	},
-	width: {
+	widthPlanned: {
 		[breakpoints.up('sm')]: {
-			width: '24%'
+			minWidth: '23%'
+		}
+	},
+	widthActual: {
+		[breakpoints.up('sm')]: {
+			minWidth: '20%'
 		}
 	},
 	flexGrow: {
@@ -90,6 +95,7 @@ export default makeStyles(({ spacing, palette, breakpoints }) => ({
 	plannedIncomeWrapper: {
 		display: 'flex',
 		justifyItems: 'center',
+		justifyContent: 'flex-end',
 		'& svg': {
 			width: '.9em',
 			height: '.9em',
