@@ -102,7 +102,8 @@ function Tip({
 	badge,
 	noArrow,
 	modal,
-	newUser
+	newUser,
+	child
 }) {
 	const currentUser = useContext(AuthContext);
 	const up600 = useMediaQuery('(min-width:600px)');
@@ -116,7 +117,7 @@ function Tip({
 				tooltipArrow: classes.tooltipArrow,
 				arrow: classes.arrow
 			}}
-			TransitionProps={{ timeout: 800 }}
+			TransitionProps={{ timeout: 1000 }}
 			placement={placement || 'bottom'}
 			title={title}
 			open={open}
@@ -143,8 +144,11 @@ function Tip({
 			{modal ? (
 				<Modal open={open}>{renderButton()}</Modal>
 			) : (
-				<Fade in={open} timeout={800}>
-					<div className={classes.background}>{renderButton()}</div>
+				<Fade in={open} timeout={1000}>
+					<div className={classes.background}>
+						{child}
+						{renderButton()}
+					</div>
 				</Fade>
 			)}
 			{enableClickAway ? (

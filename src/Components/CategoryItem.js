@@ -14,6 +14,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack';
 import DeleteDialog from './DeleteDialog';
 import { Draggable } from 'react-beautiful-dnd';
+import Tip from './Tip';
+import { useLocation } from 'react-router-dom';
+import SwipeUpDownIcon from '../assets/svgs/SwipeUpDownIcon';
 
 const useStyles = makeStyles(({ breakpoints, spacing }) => ({
 	root: {
@@ -39,6 +42,35 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
 			opacity: '0',
 			transition: 'opacity .3s'
 		}
+	},
+	swipeIcon: {
+		[breakpoints.up('sm')]: {
+			left: 'unset'
+		},
+		animation: '$swipe 2.5s infinite',
+		position: 'fixed',
+		left: 0,
+		bottom: 0,
+		'& svg': {
+			width: '18em',
+			height: '18em'
+		}
+	},
+	'@keyframes swipe': {
+		'0%': {
+			opacity: 1,
+			transform: 'translateY(160px)'
+		},
+		'35%': {
+			opacity: 1
+		},
+		'70%': {
+			opacity: 0,
+			transform: 'translateY(10px)'
+		},
+		'100%': {
+			opacity: 0
+		}
 	}
 }));
 
@@ -47,9 +79,11 @@ const CategoryItem = ({ id, type, name, icon, index, categoriesLength }) => {
 	const dispatch = useContext(DispatchContext);
 	const dispatchBudgets = useContext(DispatchBudgetsContext);
 	const dispatchJars = useContext(DispatchJarsContext);
+	const location = useLocation().pathname;
 
 	const { enqueueSnackbar } = useSnackbar();
 	const [ dialogOpen, setDialogOpen ] = useState(false);
+	const [ tipOpen, setTipOpen ] = useState(location === '/categories' && id === 'ctg-1');
 
 	const handleDeleteItem = () => {
 		dispatch({ type: 'REMOVE_CATEGORY', id, categoryType: type });
@@ -73,6 +107,7 @@ const CategoryItem = ({ id, type, name, icon, index, categoriesLength }) => {
 				name={name}
 				icon={icon}
 			/>
+
 			<Draggable draggableId={id} index={index}>
 				{provided => (
 					<div
@@ -91,8 +126,21 @@ const CategoryItem = ({ id, type, name, icon, index, categoriesLength }) => {
 									alt={name}
 								/>
 							</ListItemAvatar>
-
-							<ListItemText>{name}</ListItemText>
+							<Tip
+								// newUser
+								child={
+									<div className={classes.swipeIcon}>
+										<SwipeUpDownIcon />
+									</div>
+								}
+								title="To sort categories, hold and drag a category up or down"
+								open={tipOpen}
+								buttonTop
+								placement="top"
+								handleClose={() => setTipOpen(false)}
+								enableClickAway>
+								<ListItemText>{name}</ListItemText>
+							</Tip>
 							<ListItemSecondaryAction>
 								<Tooltip title="Delete Budget" placement="top" arrow>
 									<IconButton
