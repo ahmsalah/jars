@@ -15,44 +15,27 @@ import { useSpring, animated } from 'react-spring';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 function Login() {
-	const heightGreaterThan550 = useMediaQuery('(min-height:550px)');
-	const greaterThan1200 = useMediaQuery('(min-width:1200px)');
-	const greaterThan1000 = useMediaQuery('(min-width:1000px)');
-	const greaterThan800 = useMediaQuery('(min-width:800px)');
-	const handWidth =
-		(greaterThan1200 && '65em') ||
-		(greaterThan1000 && '60em') ||
-		(greaterThan800 && '50em') ||
-		'45em';
-	const jarWidth =
-		(greaterThan1200 && '47em') ||
-		(greaterThan1000 && '38em') ||
-		(greaterThan800 && '33em') ||
-		'30em';
-	const savingJarsWidth =
-		(greaterThan1200 && '15em') ||
-		(greaterThan1000 && '12em') ||
-		(greaterThan800 && '10em') ||
-		'10em';
+	const heightUp550 = useMediaQuery('(min-height:550px)');
+	const up1200 = useMediaQuery('(min-width:1200px)');
+	const up1000 = useMediaQuery('(min-width:1000px)');
+	const up800 = useMediaQuery('(min-width:800px)');
+	const handWidth = (up1200 && '65em') || (up1000 && '60em') || (up800 && '50em') || '45em';
+	const jarWidth = (up1200 && '47em') || (up1000 && '38em') || (up800 && '33em') || '30em';
+	const savingJarsWidth = (up1200 && '15em') || (up1000 && '12em') || (up800 && '10em') || '10em';
 
-	const styleProps = { handWidth, jarWidth, savingJarsWidth, heightGreaterThan550 };
+	const styleProps = { handWidth, jarWidth, savingJarsWidth, heightUp550 };
 
 	const calc = (x, y) => [ x - window.innerWidth / 2, y - window.innerHeight / 2 ];
 	const transHand = (x, y) =>
-		`translate3d(${x / 3 + (greaterThan1200 ? 340 : 220)}px,${y / 4.5 -
-			(greaterThan1000 ? 150 : 100)}px,0)`;
+		`translate3d(${x / 3 + (up1200 ? 340 : 220)}px,${y / 4.5 - (up1000 ? 150 : 100)}px,0)`;
 	const transCoin = (x, y) =>
-		`translate3d(${x / 3 + (greaterThan1200 ? 340 : 220)}px,${y / 4.5 -
-			(greaterThan1000 ? 150 : 100)}px,0)`;
+		`translate3d(${x / 3 + (up1200 ? 340 : 220)}px,${y / 4.5 - (up1000 ? 150 : 100)}px,0)`;
 	const transJarRight = (x, y) =>
-		`translate3d(${x / 9 + (greaterThan1200 ? -20 : -50)}px,${y / 11 +
-			(greaterThan1200 ? 125 : 150)}px,0)`;
+		`translate3d(${x / 9 + (up1200 ? -20 : -50)}px,${y / 11 + (up1200 ? 125 : 150)}px,0)`;
 	const transJarMiddle = (x, y) =>
-		`translate3d(${x / 10 + (greaterThan1200 ? -20 : -50)}px,${y / 11 +
-			(greaterThan1200 ? 125 : 150)}px,0)`;
+		`translate3d(${x / 10 + (up1200 ? -20 : -50)}px,${y / 11 + (up1200 ? 125 : 150)}px,0)`;
 	const transJarLeft = (x, y) =>
-		`translate3d(${x / 12 + (greaterThan1200 ? -20 : -50)}px,${y / 11 +
-			(greaterThan1200 ? 125 : 150)}px,0)`;
+		`translate3d(${x / 12 + (up1200 ? -20 : -50)}px,${y / 11 + (up1200 ? 125 : 150)}px,0)`;
 	const transSavingJars = (x, y) => `translate3d(${x / 35}px,${y / 30}px,0)`;
 
 	const currentUser = useContext(AuthContext);
@@ -69,15 +52,16 @@ function Login() {
 		callbacks: {
 			signInSuccessWithAuthResult: authResult => {
 				const user = firebase.auth().currentUser;
-				if (authResult.additionalUserInfo.isNewUser) {
-					const userRef = firebase.firestore().collection('users').doc(user.uid);
+				const userRef = firebase.firestore().collection('users').doc(user.uid);
 
+				if (authResult.additionalUserInfo.isNewUser) {
 					userRef.set({
 						email: user.email,
 						name: user.displayName,
 						photoUrl: user.photoURL,
 						categories: initialCategories,
-						jars: initialJars
+						jars: initialJars,
+						isNewUser: authResult.additionalUserInfo.isNewUser
 					});
 
 					initialTransactions.map(tr =>
@@ -93,6 +77,10 @@ function Login() {
 					Object.entries(initialBudgets).map(([ key, val ], i) =>
 						userRef.collection('budgets').doc(key).set(val)
 					);
+				} else {
+					userRef.update({
+						isNewUser: authResult.additionalUserInfo.isNewUser
+					});
 				}
 			}
 		},
@@ -110,7 +98,7 @@ function Login() {
 				className={classes.savingJars}
 				style={{ transform: props.xy.interpolate(transSavingJars) }}
 			/>
-			{greaterThan800 && heightGreaterThan550 && <span className={classes.bottom} />}
+			{up800 && heightUp550 && <span className={classes.bottom} />}
 			<div className={classes.left}>
 				<Typography variant="h6" className={classes.typography}>
 					Save and manage your personal money and keep track of your day to day in-and-out
@@ -128,8 +116,8 @@ function Login() {
 					<StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
 				</div>
 			</div>
-			{greaterThan800 &&
-			heightGreaterThan550 && (
+			{up800 &&
+			heightUp550 && (
 				<div className={classes.container}>
 					<animated.div
 						className={classes.coin}

@@ -14,13 +14,10 @@ export function JarsProvider(props) {
 		() => {
 			if (currentUser) {
 				firebase.firestore().collection('users').doc(currentUser.uid).get().then(doc => {
-					let jars;
 					if (doc.exists) {
-						jars = doc.data().jars;
-					} else {
-						jars = [];
+						const jars = doc.data().jars;
+						dispatch({ type: 'SET_JARS', jars });
 					}
-					dispatch({ type: 'SET_JARS', jars });
 				});
 			}
 		},

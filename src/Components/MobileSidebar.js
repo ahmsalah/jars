@@ -11,7 +11,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import CategoryIcon from '@material-ui/icons/Category';
 import CollectionsBookmarkIcon from '@material-ui/icons/CollectionsBookmark';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import JarIcon from './JarIcon';
+import JarIcon from '../assets/svgs/JarIcon';
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
 	drawer: {

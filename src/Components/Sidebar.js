@@ -14,20 +14,20 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import JarIcon from './JarIcon';
+import JarIcon from '../assets/svgs/JarIcon';
 
 function Sidebar() {
 	const classes = useStyles();
 	const history = useHistory();
-	const matches = useMediaQuery('(min-width:800px)');
-	const [ isOpen, setIsOpen ] = useState(matches);
+	const up800 = useMediaQuery('(min-width:800px)');
+	const [ isOpen, setIsOpen ] = useState(up800);
 	const [ value, setValue ] = useState(history.location.pathname);
 
 	useEffect(
 		() => {
-			setIsOpen(matches);
+			setIsOpen(up800);
 		},
-		[ matches ]
+		[ up800 ]
 	);
 
 	const handleChange = (event, newValue) => {

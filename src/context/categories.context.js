@@ -17,13 +17,13 @@ export function CategoriesProvider(props) {
 					let categories;
 					if (doc.exists) {
 						categories = doc.data().categories;
+						dispatch({
+							type: 'SET_CATEGORIES',
+							categories
+						});
 					} else {
 						categories = [];
 					}
-					dispatch({
-						type: 'SET_CATEGORIES',
-						categories
-					});
 				});
 				// const unsubscribe = firebase
 				// 	.firestore()

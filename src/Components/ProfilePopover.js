@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { memo, useContext } from 'react';
 import firebase from '../firebase/firebase';
 import Avatar from '@material-ui/core/Avatar';
 import { AuthContext } from '../context/auth.context';
@@ -13,7 +13,7 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 		display: 'flex',
 		backgroundColor: palette.grey[900],
 		[breakpoints.down('xs')]: {
-		padding: spacing(2, 1)
+			padding: spacing(2, 1)
 		}
 	},
 	popoverContent: {
@@ -100,4 +100,4 @@ function ProfilePopover({ anchorEl, setAnchorEl }) {
 	);
 }
 
-export default ProfilePopover;
+export default memo(ProfilePopover);

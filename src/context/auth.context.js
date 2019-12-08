@@ -12,7 +12,10 @@ export function AuthProvider({ children }) {
 		firebase.auth().onAuthStateChanged(user => {
 			if (user) {
 				window.localStorage.setItem('user', JSON.stringify(user));
-				setCurrentUser(user);
+				firebase.firestore().collection('users').doc(user.uid).get().then(doc => {
+					const isNewUser = doc.data().isNewUser;
+					setCurrentUser({ ...user, isNewUser });
+				});
 			} else {
 				window.localStorage.clear();
 				setCurrentUser(null);

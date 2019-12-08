@@ -9,7 +9,6 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import { AuthContext } from '../context/auth.context';
 import ProfilePopover from './ProfilePopover';
-import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import BudgetForm from './BudgetForm';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -17,6 +16,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import MobileSidebar from './MobileSidebar';
+import Tip from './Tip';
 
 function Navbar() {
 	const classes = useStyles();
@@ -25,8 +25,10 @@ function Navbar() {
 	const [ anchorProfile, setAnchorProfile ] = useState(null);
 	const [ drawerOpen, setDrawerOpen ] = useState(false);
 	const [ dialogOpen, setDialogOpen ] = useState(false);
-	const matches = useMediaQuery('(min-width:360px)');
-	const matchesXS = useMediaQuery('(min-width:310px)');
+	const [ tipOpen, setTipOpen ] = useState(location === '/' && !currentUser.isNewUser);
+	const up600 = useMediaQuery('(min-width:600px)');
+	const up360 = useMediaQuery('(min-width:360px)');
+	const up310 = useMediaQuery('(min-width:310px)');
 
 	return (
 		<React.Fragment>
@@ -43,30 +45,39 @@ function Navbar() {
 			<MobileSidebar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
 			<AppBar position="sticky" className={classes.root}>
 				<Toolbar className={classes.toolbar}>
-					<Hidden smUp>
+					{!up600 && (
 						<IconButton
 							onClick={() => setDrawerOpen(true)}
 							className={classes.menuButton}
 							aria-label="menu">
 							<MenuIcon />
 						</IconButton>
-					</Hidden>
+					)}
 					{location !== '/jars' &&
 					location !== '/reports' && (
-						<div className={classes.addButton}>
-							<Button
-								size={matches ? 'medium' : 'small'}
-								variant="contained"
-								color="primary"
-								onClick={() => setDialogOpen(true)}>
-								{!matchesXS ? (
-									<AddIcon />
-								) : (
-									(location === '/' && 'Add Transaction') ||
-									(location === '/categories' && 'Create Category') ||
-									(location === '/budgets' && 'Create Budget')
-								)}
-							</Button>
+						<div className={classes.addButtonContainer}>
+							<Tip
+								title="Tap here to add a new transaction"
+								open={tipOpen}
+								handleClose={() => setTipOpen(false)}
+								enableClickAway>
+								<Button
+									size={up360 ? 'medium' : 'small'}
+									variant="contained"
+									color="primary"
+									onClick={() => {
+										setTipOpen(false);
+										setDialogOpen(true);
+									}}>
+									{!up310 ? (
+										<AddIcon />
+									) : (
+										(location === '/' && 'Add Transaction') ||
+										(location === '/categories' && 'Create Category') ||
+										(location === '/budgets' && 'Create Budget')
+									)}
+								</Button>
+							</Tip>
 						</div>
 					)}
 					<Tooltip title="Sign out" arrow>
