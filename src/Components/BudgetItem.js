@@ -1,28 +1,24 @@
-import React, { memo, useState, useContext } from 'react';
+import React, { memo, useState, useContext, forwardRef } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
+
 import List from '@material-ui/core/List';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import DragHandleIcon from '@material-ui/icons/DragHandle';
-import EditIcon from '@material-ui/icons/Edit';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import useStyles from './styles/budgetItem.styles';
 import Collapse from '@material-ui/core/Collapse';
-import Tooltip from '@material-ui/core/Tooltip';
 import BudgetItemDetails from './BudgetItemDetails';
 import DeleteDialog from './DeleteDialog';
 import { useSnackbar } from 'notistack';
 import { DispatchContext } from '../context/budgets.context';
 import BudgetForm from './BudgetForm';
+import Tip from './Tip';
+import BudgetItemCategories from './BudgetItemCategories';
+import BudgetItemActionIcons from './BudgetItemActionIcons';
 
 const ExpansionPanelSummary = withStyles({
 	root: {
@@ -30,200 +26,166 @@ const ExpansionPanelSummary = withStyles({
 	}
 })(MuiExpansionPanelSummary);
 
-function BudgetItem({ categories, budgetItem, actual, budgetId, index, pMonth }) {
-	const dispatch = useContext(DispatchContext);
-	const [ expanded, setExpanded ] = useState(true);
-	const [ deleteDialogOpen, setDeleteDialogOpen ] = useState(false);
-	const [ editDialogOpen, setEditDialogOpen ] = useState(false);
-	const { enqueueSnackbar } = useSnackbar();
-	const actualAmount = actual < 0 ? actual * -1 : actual;
-	const props = { expanded };
-	const classes = useStyles(props);
+const BudgetItem = forwardRef(
+	(
+		{ categories, budgetItem, actual, budgetId, index, pMonth, tipOpen, handleNextTip, tips },
+		ref
+	) => {
+		const dispatch = useContext(DispatchContext);
+		const [ expanded, setExpanded ] = useState(true);
+		const [ deleteDialogOpen, setDeleteDialogOpen ] = useState(false);
+		const [ editDialogOpen, setEditDialogOpen ] = useState(false);
+		const { enqueueSnackbar } = useSnackbar();
+		const actualAmount = actual < 0 ? actual * -1 : actual;
+		const classes = useStyles();
 
-	const handleDelete = () => {
-		dispatch({ type: 'REMOVE_BUDGET', budgetId, pMonth });
-		setDeleteDialogOpen(false);
-		enqueueSnackbar('Budget Deleted');
-	};
+		const handleDelete = () => {
+			dispatch({ type: 'REMOVE_BUDGET', budgetId, pMonth });
+			setDeleteDialogOpen(false);
+			enqueueSnackbar('Budget Deleted');
+		};
 
-	return (
-		<React.Fragment>
-			<BudgetForm
-				edit_id={budgetId}
-				edit_title={budgetItem.title}
-				edit_planned={budgetItem.planned}
-				dialogOpen={editDialogOpen}
-				setDialogOpen={setEditDialogOpen}
-			/>
-			<DeleteDialog
-				onSubmit={handleDelete}
-				dialogOpen={deleteDialogOpen}
-				setDialogOpen={setDeleteDialogOpen}
-				name={budgetItem.title}
-			/>
-			<Draggable draggableId={budgetId} index={index}>
-				{providedList => (
-					<Paper
-						{...providedList.draggableProps}
-						ref={providedList.innerRef}
-						className={classes.root}>
-						<Droppable droppableId={budgetId}>
-							{(provided, snapshot) => (
-								<div ref={provided.innerRef} {...provided.droppableProps}>
-									<ExpansionPanel expanded={expanded}>
-										<ExpansionPanelSummary className={classes.summary}>
-											<LinearProgress
-												variant="determinate"
-												className={classes.progressBar}
-												value={
-													(budgetItem.planned - actualAmount) /
-													budgetItem.planned *
-													100
-												}
-											/>
-											<div className={classes.titleContainer}>
-												<Typography className={classes.title}>
-													{budgetItem.title}{' '}
-													{budgetId === 'budget-0' && (
-														<span className={classes.titleDefault}>
-															(default)
-														</span>
-													)}
-												</Typography>
-												<div className={classes.iconsContainer}>
-													{budgetId !== 'budget-0' && (
-														<Tooltip
-															title="Delete Budget"
-															placement="top"
-															arrow>
-															<IconButton
-																className={classes.iconButton}
-																aria-label="Delete"
-																onClick={() =>
-																	setDeleteDialogOpen(true)}
-																disableRipple>
-																<DeleteIcon />
-															</IconButton>
-														</Tooltip>
-													)}
-													<Tooltip
-														title="Edit Budget"
-														placement="top"
-														arrow>
-														<IconButton
-															className={classes.iconButton}
-															aria-label="Edit"
-															onClick={() => setEditDialogOpen(true)}
-															disableRipple>
-															<EditIcon />
-														</IconButton>
-													</Tooltip>
-													<Tooltip
-														title="Drag Budget"
-														placement="top"
-														arrow>
-														<IconButton
-															className={classes.dragButton}
-															aria-label="Drag"
-															{...providedList.dragHandleProps}
-															disableRipple>
-															<DragHandleIcon fontSize="large" />
-														</IconButton>
-													</Tooltip>
-													<Tooltip
-														title="Expand Budget"
-														placement="top"
-														arrow>
-														<IconButton
-															className={classes.expandButton}
-															aria-label="Expand More"
-															onClick={() => setExpanded(!expanded)}
-															disableRipple>
-															<ExpandMoreIcon />
-														</IconButton>
-													</Tooltip>
-												</div>
-											</div>
-											<Collapse in={!expanded}>
-												<div className={classes.summaryAmountsContainer}>
-													<BudgetItemDetails
-														budgetItem={budgetItem}
-														spent={actualAmount}
+		return (
+			<div ref={ref}>
+				{budgetId === 'budget-3' &&
+					[ ...new Array(3) ].map((v, i) => (
+						<Tip
+							key={i}
+							noArrow
+							buttonTop
+							title={tips[i]}
+							open={tipOpen[i]}
+							badge={`${i + 1}/${tips.length}`}
+							placement="top"
+							buttonLabel="next"
+							handleClose={i === 2 ? handleNextTip(i, ref) : handleNextTip(i)}>
+							<div />
+						</Tip>
+					))}
+				<BudgetForm
+					edit_id={budgetId}
+					edit_title={budgetItem.title}
+					edit_planned={budgetItem.planned}
+					dialogOpen={editDialogOpen}
+					setDialogOpen={setEditDialogOpen}
+				/>
+				<DeleteDialog
+					onSubmit={handleDelete}
+					dialogOpen={deleteDialogOpen}
+					setDialogOpen={setDeleteDialogOpen}
+					name={budgetItem.title}
+				/>
+				<Draggable draggableId={budgetId} index={index}>
+					{providedList => (
+						<Paper
+							{...providedList.draggableProps}
+							ref={providedList.innerRef}
+							className={classes.root}>
+							<Droppable droppableId={budgetId}>
+								{(provided, snapshot) => (
+									<div ref={provided.innerRef} {...provided.droppableProps}>
+										<ExpansionPanel expanded={expanded}>
+											<ExpansionPanelSummary className={classes.summary}>
+												<LinearProgress
+													variant="determinate"
+													className={classes.progressBar}
+													value={
+														(budgetItem.planned - actualAmount) /
+														budgetItem.planned *
+														100
+													}
+												/>
+												<div className={classes.titleContainer}>
+													<Typography className={classes.title}>
+														{budgetItem.title}{' '}
+														{budgetId === 'budget-0' && (
+															<span className={classes.titleDefault}>
+																(default)
+															</span>
+														)}
+													</Typography>
+													<BudgetItemActionIcons
+														setDeleteDialogOpen={setDeleteDialogOpen}
 														setEditDialogOpen={setEditDialogOpen}
-														view="summary"
+														expanded={expanded}
+														setExpanded={setExpanded}
+														providedList={providedList}
 													/>
 												</div>
-											</Collapse>
-										</ExpansionPanelSummary>
-										<ExpansionPanelDetails
-											className={classes.expansionPanelDetails}>
-											<div className={classes.left}>
-												<div
-													style={{
-														transition: 'background-color 0.2s ease',
-														backgroundColor: snapshot.isDraggingOver
-															? 'rgba(0,0,0,0.1)'
-															: !categories.length
-																? 'rgba(0,0,0,0.05)'
-																: '#fff'
-													}}
-													className={classes.categoriesContainer}>
-													{!categories.length && (
-														<div
-															className={
-																classes.noCategoriesContainer
+												<Collapse in={!expanded}>
+													<div
+														className={classes.summaryAmountsContainer}>
+														<BudgetItemDetails
+															budgetItem={budgetItem}
+															spent={actualAmount}
+															setEditDialogOpen={setEditDialogOpen}
+															view="summary"
+														/>
+													</div>
+												</Collapse>
+											</ExpansionPanelSummary>
+											<ExpansionPanelDetails
+												className={classes.expansionPanelDetails}>
+												<div className={classes.left}>
+													{budgetId === 'budget-3' ? (
+														<Tip
+															buttonTop
+															title={tipOpen[3] ? tips[3] : tips[4]}
+															open={tipOpen[3] || tipOpen[4]}
+															badge={
+																tipOpen[3] ? (
+																	`4/${tips.length}`
+																) : (
+																	`5/${tips.length}`
+																)
+															}
+															placement="top"
+															buttonLabel="next"
+															handleClose={
+																tipOpen[3] ? (
+																	handleNextTip(3)
+																) : (
+																	handleNextTip(4)
+																)
 															}>
-															<Typography align="center">
-																Drag categories from other budgets
-																and drop them here
-															</Typography>
-														</div>
-													)}
-													{categories.map((ct, i) => (
-														<Draggable
-															key={ct.id}
-															draggableId={ct.id}
-															index={i}>
-															{provided => (
-																<Chip
-																	{...provided.draggableProps}
-																	{...provided.dragHandleProps}
-																	ref={provided.innerRef}
-																	avatar={
-																		<Avatar
-																			alt={ct.name}
-																			src={require(`../assets/icons/${ct.icon}.png`)}
-																		/>
-																	}
-																	className={classes.chip}
-																	label={ct.name}
-																	// onDelete={() =>
-																	// 	console.log('deleted')}
-																	variant="outlined"
+															{
+																<BudgetItemCategories
+																	snapshot={snapshot}
+																	provided={snapshot}
+																	categories={categories}
 																/>
-															)}
-														</Draggable>
-													))}
-													{provided.placeholder}
+															}
+														</Tip>
+													) : (
+														<BudgetItemCategories
+															snapshot={snapshot}
+															provided={snapshot}
+															categories={categories}
+														/>
+													)}
 												</div>
-											</div>
-											<List className={classes.right}>
-												<BudgetItemDetails
-													setEditDialogOpen={setEditDialogOpen}
-													budgetItem={budgetItem}
-													spent={actualAmount}
-												/>
-											</List>
-										</ExpansionPanelDetails>
-									</ExpansionPanel>
-								</div>
-							)}
-						</Droppable>
-					</Paper>
-				)}
-			</Draggable>
-		</React.Fragment>
-	);
-}
+												<List className={classes.right}>
+													<BudgetItemDetails
+														setEditDialogOpen={setEditDialogOpen}
+														budgetItem={budgetItem}
+														spent={actualAmount}
+														tipOpen={tipOpen}
+														handleNextTip={handleNextTip}
+														budgetId={budgetId}
+														tips={tips}
+													/>
+												</List>
+											</ExpansionPanelDetails>
+										</ExpansionPanel>
+									</div>
+								)}
+							</Droppable>
+						</Paper>
+					)}
+				</Draggable>
+			</div>
+		);
+	}
+);
 
 export default memo(BudgetItem);

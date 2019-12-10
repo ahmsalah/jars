@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { TransactionsContext } from '../context/transactions.context';
+import { AuthContext } from '../context/auth.context';
 import BudgetItem from '../components/BudgetItem';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { ThisMonthBudgetContext, BudgetsContext } from '../context/budgets.context';
@@ -39,11 +40,37 @@ function Budgets() {
 	const transactions = useContext(TransactionsContext);
 	const thisMonthBudget = useContext(ThisMonthBudgetContext);
 	const budgets = useContext(BudgetsContext);
+	const currentUser = useContext(AuthContext);
 	const { onBudgetsDragEnd } = useSorting();
+	const initialTips = {
+		0: !currentUser.isNewUser,
+		1: false,
+		2: false,
+		3: false,
+		4: false,
+		5: false,
+		6: false
+	};
+	const tips = [
+		'These are your budgets',
+		'Jars initially comes with 6 budgets: Others, Shopping, Transportation, Bills & Utilities, Personal, Home.',
+		'You can add more, delete or adjust these budgets as you wish.',
+		'Each budget contains expense categories that are similar to one another.',
+		'They are draggable, meaning that you can drag and drop a category from/to other budgets.',
+		'Set the planned amount for each budget from here',
+		'This is the overall summary of your budgets, the left side is the total of your income and expenses transactions, and the right side is what you plan for them.'
+	];
+	const [ tipOpen, setTipOpen ] = useState(initialTips);
+
+	const handleNextTip = (i, ref) => e => {
+		setTipOpen(tipOpen => ({ ...tipOpen, [i]: false, [i + 1]: true }));
+		!!ref && ref.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+		i === 5 && window.scroll({ top: 0, behavior: 'smooth' });
+	};
 
 	return !!Object.keys(budgets).length ? (
 		<div className={classes.root}>
-			<BudgetSummary />
+			<BudgetSummary tipOpen={tipOpen} tips={tips} handleNextTip={handleNextTip} />
 			<Collapse in={!!thisMonthBudget} timeout={700}>
 				<DragDropContext onDragEnd={onBudgetsDragEnd}>
 					<Droppable droppableId="all-lists" type="list">
@@ -74,8 +101,11 @@ function Budgets() {
 											0
 										);
 
+										const ref = React.createRef();
+
 										return (
 											<BudgetItem
+												ref={ref}
 												index={i}
 												key={budgetId}
 												budgetId={budgetId}
@@ -83,6 +113,9 @@ function Budgets() {
 												categories={categoriesList}
 												actual={totalActual}
 												pMonth={thisMonthBudget.pMonth}
+												tipOpen={tipOpen}
+												tips={tips}
+												handleNextTip={handleNextTip}
 											/>
 										);
 									})}

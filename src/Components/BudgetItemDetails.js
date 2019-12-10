@@ -2,9 +2,11 @@ import React, { memo, useState, Fragment } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
+import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { formatAmount } from '../helpers';
 import BudgetForm from './BudgetForm';
+import Tip from './Tip';
 
 const useStyles = makeStyles(() => ({
 	listItem: {
@@ -16,7 +18,8 @@ const useStyles = makeStyles(() => ({
 			fontSize: '0.875rem',
 			fontWeight: 400,
 			lineHeight: 1.43,
-			letterSpacing: '0.01071em'
+			letterSpacing: '0.01071em',
+			display: 'block'
 		},
 		'& > p': {
 			fontSize: '1rem',
@@ -28,10 +31,15 @@ const useStyles = makeStyles(() => ({
 	}
 }));
 
-function BudgetItemDetails({ budgetItem, spent, view }) {
+function BudgetItemDetails({ budgetItem, spent, view, tipOpen, handleNextTip, budgetId, tips }) {
 	const classes = useStyles();
 	const [ editDialogOpen, setEditDialogOpen ] = useState(false);
 	const planned = budgetItem.planned;
+
+	const remaining =
+		spent > planned
+			? `0 (${formatAmount(planned - spent, false, 0)})`
+			: formatAmount(planned - spent, false, 0);
 
 	return (
 		<Fragment>
@@ -70,32 +78,38 @@ function BudgetItemDetails({ budgetItem, spent, view }) {
 					<ListItemText
 						className={classes.listItemText}
 						primary="Remaining"
-						secondary={
-							spent > planned ? (
-								`0 (${formatAmount(planned - spent, false, 0)})`
-							) : (
-								formatAmount(planned - spent, false, 0)
-							)
-						}
+						secondary={remaining}
 					/>
 				</Fragment>
 			) : (
 				<Fragment>
 					<ListItem className={classes.listItem}>
 						<ListItemText
+							disableTypography
 							className={classes.listItemText}
-							primary="Planned"
+							primary={<Typography component="span">Planned</Typography>}
 							secondary={
 								planned > 0 ? (
-									formatAmount(planned, false, 0, false)
+									<Typography>
+										{formatAmount(planned, false, 0, false)}
+									</Typography>
 								) : (
-									<Button
-										variant="contained"
-										color="primary"
-										size="small"
-										onClick={() => setEditDialogOpen(true)}>
-										Plan
-									</Button>
+									<Tip
+										buttonTop
+										title={tips[5]}
+										open={tipOpen[5] && budgetId === 'budget-3'}
+										badge={`6/${tips.length}`}
+										placement="top"
+										buttonLabel="next"
+										handleClose={handleNextTip(5)}>
+										<Button
+											variant="contained"
+											color="primary"
+											size="small"
+											onClick={() => setEditDialogOpen(true)}>
+											Plan
+										</Button>
+									</Tip>
 								)
 							}
 						/>
@@ -111,13 +125,7 @@ function BudgetItemDetails({ budgetItem, spent, view }) {
 						<ListItemText
 							className={classes.listItemText}
 							primary="Remaining"
-							secondary={
-								spent > planned ? (
-									`0 (${formatAmount(planned - spent, false, 0)})`
-								) : (
-									formatAmount(planned - spent, false, 0)
-								)
-							}
+							secondary={remaining}
 						/>
 					</ListItem>
 				</Fragment>

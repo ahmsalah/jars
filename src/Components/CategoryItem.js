@@ -15,8 +15,9 @@ import { useSnackbar } from 'notistack';
 import DeleteDialog from './DeleteDialog';
 import { Draggable } from 'react-beautiful-dnd';
 import Tip from './Tip';
-import { useLocation } from 'react-router-dom';
 import SwipeUpDownIcon from '../assets/svgs/SwipeUpDownIcon';
+import Fade from '@material-ui/core/Fade';
+import { AuthContext } from '../context/auth.context';
 
 const useStyles = makeStyles(({ breakpoints, spacing }) => ({
 	root: {
@@ -79,11 +80,10 @@ const CategoryItem = ({ id, type, name, icon, index, categoriesLength }) => {
 	const dispatch = useContext(DispatchContext);
 	const dispatchBudgets = useContext(DispatchBudgetsContext);
 	const dispatchJars = useContext(DispatchJarsContext);
-	const location = useLocation().pathname;
-
 	const { enqueueSnackbar } = useSnackbar();
 	const [ dialogOpen, setDialogOpen ] = useState(false);
-	const [ tipOpen, setTipOpen ] = useState(location === '/categories' && id === 'ctg-1');
+	const currentUser = useContext(AuthContext);
+	const [ tipOpen, setTipOpen ] = useState(!currentUser.isNewUser);
 
 	const handleDeleteItem = () => {
 		dispatch({ type: 'REMOVE_CATEGORY', id, categoryType: type });
@@ -107,7 +107,11 @@ const CategoryItem = ({ id, type, name, icon, index, categoriesLength }) => {
 				name={name}
 				icon={icon}
 			/>
-
+			<Fade in={id === 'ctg-1' && tipOpen} timeout={1000}>
+				<div className={classes.swipeIcon}>
+					<SwipeUpDownIcon />
+				</div>
+			</Fade>
 			<Draggable draggableId={id} index={index}>
 				{provided => (
 					<div
@@ -127,14 +131,8 @@ const CategoryItem = ({ id, type, name, icon, index, categoriesLength }) => {
 								/>
 							</ListItemAvatar>
 							<Tip
-								// newUser
-								child={
-									<div className={classes.swipeIcon}>
-										<SwipeUpDownIcon />
-									</div>
-								}
 								title="To sort categories, hold and drag a category up or down"
-								open={tipOpen}
+								open={id === 'ctg-1' && tipOpen}
 								buttonTop
 								placement="top"
 								handleClose={() => setTipOpen(false)}

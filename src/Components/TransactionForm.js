@@ -89,7 +89,7 @@ function TransactionForm({
 	);
 
 	const handleNextTip = i => {
-		setTipOpen({ ...tipOpen, [i]: false, [i + 1]: true });
+		setTipOpen(tipOpen => ({ ...tipOpen, [i]: false, [i + 1]: true }));
 	};
 
 	const handleToggleIsExpense = () => {
@@ -189,7 +189,6 @@ function TransactionForm({
 								title="Toggle transaction type between 'Expense' and 'Income'"
 								open={tipOpen[1]}
 								badge="1/6"
-								placement="bottom"
 								buttonLabel="next"
 								handleClose={() => handleNextTip(1)}>
 								<div className={classes.switch}>
@@ -206,7 +205,6 @@ function TransactionForm({
 									title="Choose category from here, you can add, delete and sort them in the categories page"
 									open={tipOpen[2]}
 									badge="2/6"
-									placement="top"
 									buttonLabel="next"
 									handleClose={() => handleNextTip(2)}>
 									<TextField
