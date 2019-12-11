@@ -151,7 +151,7 @@ const BudgetItem = forwardRef(
 															{
 																<BudgetItemCategories
 																	snapshot={snapshot}
-																	provided={snapshot}
+																	provided={provided}
 																	categories={categories}
 																/>
 															}
@@ -159,7 +159,7 @@ const BudgetItem = forwardRef(
 													) : (
 														<BudgetItemCategories
 															snapshot={snapshot}
-															provided={snapshot}
+															provided={provided}
 															categories={categories}
 														/>
 													)}

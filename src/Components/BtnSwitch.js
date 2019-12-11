@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import './BtnSwitch.css';
 
 function BtnSwitch({ toggleExpense, isExpense }) {
@@ -10,4 +10,4 @@ function BtnSwitch({ toggleExpense, isExpense }) {
 	);
 }
 
-export default BtnSwitch;
+export default memo(BtnSwitch);

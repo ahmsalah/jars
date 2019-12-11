@@ -4,7 +4,7 @@ export default makeStyles(({ spacing, breakpoints }) => ({
 	'@global': {
 		body: {
 			background: 'radial-gradient(circle, rgba(45,45,50,1) 75%, rgba(35,35,39,1) 100%)',
-			overflow: styleProps => (styleProps.heightGreaterThan550 ? 'hidden' : 'initial')
+			overflow: styleProps => (!styleProps.heightUp550 ? 'initial' : 'hidden')
 		}
 	},
 	root: {

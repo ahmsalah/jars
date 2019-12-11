@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { memo, useContext } from 'react';
 import { TransactionsContext } from '../context/transactions.context';
 import TransactionItem from './TransactionItem';
 import List from '@material-ui/core/List';
@@ -77,4 +77,4 @@ function TransactionsList() {
 	);
 }
 
-export default TransactionsList;
+export default memo(TransactionsList);

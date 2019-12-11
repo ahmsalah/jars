@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import CategoryItem from './CategoryItem';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
@@ -68,4 +68,4 @@ const CategoryList = ({ categories, type, list }) => {
 	) : null;
 };
 
-export default CategoryList;
+export default memo(CategoryList);
