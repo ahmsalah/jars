@@ -61,7 +61,13 @@ function Login() {
 						photoUrl: user.photoURL,
 						categories: initialCategories,
 						jars: initialJars,
-						isNewUser: authResult.additionalUserInfo.isNewUser
+						isNewUser: authResult.additionalUserInfo.isNewUser,
+						showTips: {
+							transactions: true,
+							transactionsForm: true,
+							categories: true,
+							budgets: true
+						}
 					});
 
 					initialTransactions.map(tr =>

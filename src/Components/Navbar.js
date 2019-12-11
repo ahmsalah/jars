@@ -1,4 +1,4 @@
-import React, { memo, useContext, useState } from 'react';
+import React, { memo, useContext, useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import TransactionForm from './TransactionForm';
 import NewCategoryForm from './NewCategoryForm';
@@ -8,6 +8,7 @@ import useStyles from './styles/navbar.styles';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import { AuthContext } from '../context/auth.context';
+import { TipsContext, DispatchTipsContext } from '../context/tips.context';
 import ProfilePopover from './ProfilePopover';
 import MenuIcon from '@material-ui/icons/Menu';
 import BudgetForm from './BudgetForm';
@@ -21,14 +22,30 @@ import Tip from './Tip';
 function Navbar() {
 	const classes = useStyles();
 	const currentUser = useContext(AuthContext);
+	const showTips = useContext(TipsContext);
+	const dispatchTips = useContext(DispatchTipsContext);
 	const location = useLocation().pathname;
 	const [ anchorProfile, setAnchorProfile ] = useState(null);
 	const [ drawerOpen, setDrawerOpen ] = useState(false);
 	const [ dialogOpen, setDialogOpen ] = useState(false);
-	const [ tipOpen, setTipOpen ] = useState(location === '/' && !currentUser.isNewUser);
+	const [ tipOpen, setTipOpen ] = useState(false);
 	const up600 = useMediaQuery('(min-width:600px)');
 	const up360 = useMediaQuery('(min-width:360px)');
 	const up310 = useMediaQuery('(min-width:310px)');
+
+	useEffect(
+		() => {
+			!!showTips.transactions && location === '/' && setTipOpen(true);
+		},
+		[ location, showTips.transactions ]
+	);
+
+	const closeTip = () => {
+		setTipOpen(false);
+		if (location === '/') {
+			dispatchTips({ type: 'SET_SECTION_TIPS', section: 'transactions', open: false });
+		}
+	};
 
 	return (
 		<React.Fragment>
@@ -59,14 +76,14 @@ function Navbar() {
 							<Tip
 								title="Tap here to add a new transaction"
 								open={tipOpen}
-								handleClose={() => setTipOpen(false)}
+								handleClose={closeTip}
 								enableClickAway>
 								<Button
 									size={up360 ? 'medium' : 'small'}
 									variant="contained"
 									color="primary"
 									onClick={() => {
-										setTipOpen(false);
+										closeTip();
 										setDialogOpen(true);
 									}}>
 									{!up310 ? (

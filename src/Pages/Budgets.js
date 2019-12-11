@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { TransactionsContext } from '../context/transactions.context';
-import { AuthContext } from '../context/auth.context';
 import BudgetItem from '../components/BudgetItem';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { ThisMonthBudgetContext, BudgetsContext } from '../context/budgets.context';
@@ -9,6 +8,7 @@ import useSorting from '../hooks/useSorting';
 import BudgetSummary from '../components/BudgetSummary';
 import Collapse from '@material-ui/core/Collapse';
 import Loader from '../components/Loader';
+import { TipsContext, DispatchTipsContext } from '../context/tips.context';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
@@ -40,10 +40,12 @@ function Budgets() {
 	const transactions = useContext(TransactionsContext);
 	const thisMonthBudget = useContext(ThisMonthBudgetContext);
 	const budgets = useContext(BudgetsContext);
-	const currentUser = useContext(AuthContext);
+	const showTips = useContext(TipsContext);
+	const dispatchTips = useContext(DispatchTipsContext);
+
 	const { onBudgetsDragEnd } = useSorting();
 	const initialTips = {
-		0: !currentUser.isNewUser,
+		0: false,
 		1: false,
 		2: false,
 		3: false,
@@ -62,10 +64,23 @@ function Budgets() {
 	];
 	const [ tipOpen, setTipOpen ] = useState(initialTips);
 
+	useEffect(
+		() => {
+			!!showTips.budgets && setTipOpen(tipOpen => ({ ...tipOpen, 0: true }));
+		},
+		[ showTips.budgets ]
+	);
+
 	const handleNextTip = (i, ref) => e => {
 		setTipOpen(tipOpen => ({ ...tipOpen, [i]: false, [i + 1]: true }));
+
 		!!ref && ref.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
 		i === 5 && window.scroll({ top: 0, behavior: 'smooth' });
+
+		// if the tip is the last one, set showTips to false for budgets
+		if (i === tips.length - 1) {
+			dispatchTips({ type: 'SET_SECTION_TIPS', section: 'budgets', open: false });
+		}
 	};
 
 	return !!Object.keys(budgets).length ? (

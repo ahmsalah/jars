@@ -1,4 +1,4 @@
-import React, { memo, useContext, useState } from 'react';
+import React, { memo, useContext, useState, useEffect } from 'react';
 import { DispatchContext } from '../context/categories.context';
 import { DispatchContext as DispatchBudgetsContext } from '../context/budgets.context';
 import { DispatchContext as DispatchJarsContext } from '../context/jars.context';
@@ -17,7 +17,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import Tip from './Tip';
 import SwipeUpDownIcon from '../assets/svgs/SwipeUpDownIcon';
 import Fade from '@material-ui/core/Fade';
-import { AuthContext } from '../context/auth.context';
+import { TipsContext, DispatchTipsContext } from '../context/tips.context';
 
 const useStyles = makeStyles(({ breakpoints, spacing }) => ({
 	root: {
@@ -82,8 +82,21 @@ const CategoryItem = ({ id, type, name, icon, index, categoriesLength }) => {
 	const dispatchJars = useContext(DispatchJarsContext);
 	const { enqueueSnackbar } = useSnackbar();
 	const [ dialogOpen, setDialogOpen ] = useState(false);
-	const currentUser = useContext(AuthContext);
-	const [ tipOpen, setTipOpen ] = useState(!currentUser.isNewUser);
+	const showTips = useContext(TipsContext);
+	const dispatchTips = useContext(DispatchTipsContext);
+	const [ tipOpen, setTipOpen ] = useState(false);
+
+	useEffect(
+		() => {
+			!!showTips.categories && setTipOpen(true);
+		},
+		[ showTips.categories ]
+	);
+
+	const closeTip = () => {
+		setTipOpen(false);
+		dispatchTips({ type: 'SET_SECTION_TIPS', section: 'categories', open: false });
+	};
 
 	const handleDeleteItem = () => {
 		dispatch({ type: 'REMOVE_CATEGORY', id, categoryType: type });
@@ -135,7 +148,7 @@ const CategoryItem = ({ id, type, name, icon, index, categoriesLength }) => {
 								open={id === 'ctg-1' && tipOpen}
 								buttonTop
 								placement="top"
-								handleClose={() => setTipOpen(false)}
+								handleClose={closeTip}
 								enableClickAway>
 								<ListItemText>{name}</ListItemText>
 							</Tip>

@@ -1,10 +1,12 @@
-import React, { Fragment } from 'react';
+import React, { memo, Fragment } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { makeStyles } from '@material-ui/core/styles';
 import Fade from '@material-ui/core/Fade';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import clsx from 'clsx';
 
@@ -32,7 +34,7 @@ const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
 	popper: {
 		margin: spacing(0, 4),
 		[breakpoints.down('xs')]: {
-			marginTop: props => (props.modal ? (props.placementTop ? 0 : -40) : 0),
+			marginTop: props => (props.modal ? (props.placementTop ? 0 : -25) : 0),
 			marginBottom: props => (props.modal ? (!props.placementTop ? 0 : -20) : 0)
 		}
 	},
@@ -160,7 +162,18 @@ function Tip({
 	return (
 		<Fragment>
 			{modal ? (
-				<Modal open={open}>{renderButton()}</Modal>
+				<Modal
+					closeAfterTransition
+					onClose={handleClose}
+					BackdropComponent={Backdrop}
+					BackdropProps={{
+						timeout: 800
+					}}
+					open={open}>
+					<Fade in={open} timeout={800}>
+						{renderButton()}
+					</Fade>
+				</Modal>
 			) : (
 				<Fade in={open} timeout={1000}>
 					<div className={classes.background}>
@@ -178,4 +191,4 @@ function Tip({
 	);
 }
 
-export default Tip;
+export default memo(Tip);
