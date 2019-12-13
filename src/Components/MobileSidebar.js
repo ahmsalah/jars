@@ -9,9 +9,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { NavLink } from 'react-router-dom';
 import HomeIcon from '@material-ui/icons/Home';
 import CategoryIcon from '@material-ui/icons/Category';
-import CollectionsBookmarkIcon from '@material-ui/icons/CollectionsBookmark';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import JarIcon from '../assets/svgs/JarIcon';
+import PiechartIcon from '../assets/svgs/PiechartIcon';
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
 	drawer: {
@@ -53,7 +53,7 @@ function MobileSidebar({ drawerOpen, setDrawerOpen }) {
 		else if (val === 'Categories') return <CategoryIcon />;
 		else if (val === 'Budgets') return <AssignmentIcon />;
 		else if (val === 'Jars') return <JarIcon />;
-		else if (val === 'Reports') return <CollectionsBookmarkIcon />;
+		else if (val === 'Reports') return <PiechartIcon />;
 	};
 
 	const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);

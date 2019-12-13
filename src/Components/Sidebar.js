@@ -9,12 +9,12 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeIcon from '@material-ui/icons/Home';
 import CategoryIcon from '@material-ui/icons/Category';
-import CollectionsBookmarkIcon from '@material-ui/icons/CollectionsBookmark';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import JarIcon from '../assets/svgs/JarIcon';
+import PiechartIcon from '../assets/svgs/PiechartIcon';
 
 function Sidebar() {
 	const classes = useStyles();
@@ -67,11 +67,7 @@ function Sidebar() {
 				<Tab label={isOpen && 'Categories'} icon={<CategoryIcon />} value="/categories" />
 				<Tab label={isOpen && 'Budgets'} icon={<AssignmentIcon />} value="/budgets" />
 				<Tab label={isOpen && 'Jars'} icon={<JarIcon />} value="/jars" />
-				<Tab
-					label={isOpen && 'Reports'}
-					icon={<CollectionsBookmarkIcon />}
-					value="/reports"
-				/>
+				<Tab label={isOpen && 'Reports'} icon={<PiechartIcon />} value="/reports" />
 			</Tabs>
 		</Drawer>
 	);
