@@ -1,6 +1,6 @@
 import startOfMonth from 'date-fns/startOfMonth';
 import getUnixTime from 'date-fns/getUnixTime';
-// import set from 'date-fns/set';
+import set from 'date-fns/set';
 
 export const initialCategories = {
 	allCategories: {
@@ -334,33 +334,33 @@ export const initialJars = {
 };
 
 const transactions = [
-	// {
-	// 	amount: 8000,
-	// 	category: {
-	// 		name: 'Salary'
-	// 	},
-	// 	date: set(new Date(), { date: 28 }),
-	// 	description: '',
-	// 	type: 'inc'
-	// },
-	// {
-	// 	amount: -1300,
-	// 	category: {
-	// 		name: 'Groceries'
-	// 	},
-	// 	date: set(new Date(), { date: 8 }),
-	// 	description: `For next week's party`,
-	// 	type: 'exp'
-	// },
-	// {
-	// 	amount: -250,
-	// 	category: {
-	// 		name: 'Café'
-	// 	},
-	// 	date: set(new Date(), { date: 12 }),
-	// 	description: ``,
-	// 	type: 'exp'
-	// },
+	{
+		amount: 10000,
+		category: {
+			name: 'Salary'
+		},
+		date: set(new Date(), { date: 28 }),
+		description: '',
+		type: 'inc'
+	},
+	{
+		amount: -1300,
+		category: {
+			name: 'Groceries'
+		},
+		date: set(new Date(), { date: 12 }),
+		description: `For next week's party`,
+		type: 'exp'
+	},
+	{
+		amount: -250,
+		category: {
+			name: 'Café'
+		},
+		date: set(new Date(), { date: 8 }),
+		description: ``,
+		type: 'exp'
+	}
 	// {
 	// 	amount: 3500,
 	// 	category: {

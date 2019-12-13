@@ -18,6 +18,7 @@ import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import MobileSidebar from './MobileSidebar';
 import Tip from './Tip';
+import Carousel from './Carousel';
 
 function Navbar() {
 	const classes = useStyles();
@@ -29,16 +30,26 @@ function Navbar() {
 	const [ drawerOpen, setDrawerOpen ] = useState(false);
 	const [ dialogOpen, setDialogOpen ] = useState(false);
 	const [ tipOpen, setTipOpen ] = useState(false);
+	const [ carouselOpen, setCarouselOpen ] = useState(false);
 	const up600 = useMediaQuery('(min-width:600px)');
 	const up360 = useMediaQuery('(min-width:360px)');
 	const up310 = useMediaQuery('(min-width:310px)');
 
 	useEffect(
 		() => {
-			!!showTips.transactions && location === '/' && setTipOpen(true);
+			!!showTips.carousel && setCarouselOpen(true);
+			showTips.carousel === false &&
+				!!showTips.transactions &&
+				location === '/' &&
+				setTipOpen(true);
 		},
-		[ location, showTips.transactions ]
+		[ location, showTips ]
 	);
+
+	const closeCarousel = () => {
+		setCarouselOpen(false);
+		dispatchTips({ type: 'SET_SECTION_TIPS', section: 'carousel', open: false });
+	};
 
 	const closeTip = () => {
 		setTipOpen(false);
@@ -49,6 +60,7 @@ function Navbar() {
 
 	return (
 		<React.Fragment>
+			<Carousel open={carouselOpen} handleClose={closeCarousel} />
 			{location === '/' && (
 				<TransactionForm dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
 			)}

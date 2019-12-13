@@ -18,11 +18,13 @@ export function TipsProvider(props) {
 					.collection('users')
 					.doc(currentUser.uid)
 					.onSnapshot(doc => {
-						const showTips = doc.data().showTips;
-						dispatchTips({
-							type: 'SET_TIPS',
-							showTips
-						});
+						if (doc.data()) {
+							const showTips = doc.data().showTips;
+							dispatchTips({
+								type: 'SET_TIPS',
+								showTips
+							});
+						}
 					});
 				return () => unsubscribe();
 			}

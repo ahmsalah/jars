@@ -3,12 +3,7 @@ import firebase from '../firebase/firebase';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { Redirect } from 'react-router-dom';
 import { AuthContext } from '../context/auth.context';
-import {
-	initialCategories,
-	initialTransactions,
-	initialBudgets,
-	initialJars
-} from '../initialData';
+import { initialCategories, initialBudgets, initialJars } from '../initialData';
 import useStyles from '../components/styles/login.styles';
 import Typography from '@material-ui/core/Typography';
 import { useSpring, animated } from 'react-spring';
@@ -63,6 +58,7 @@ function Login() {
 						jars: initialJars,
 						isNewUser: authResult.additionalUserInfo.isNewUser,
 						showTips: {
+							carousel: true,
 							transactions: true,
 							transactionsForm: true,
 							categories: true,
@@ -70,15 +66,15 @@ function Login() {
 						}
 					});
 
-					initialTransactions.map(tr =>
-						userRef.collection('transactions').add({
-							category: tr.category,
-							amount: tr.amount,
-							dateTimestamp: tr.date,
-							description: tr.description,
-							type: tr.type
-						})
-					);
+					// initialTransactions.map(tr =>
+					// 	userRef.collection('transactions').add({
+					// 		category: tr.category,
+					// 		amount: tr.amount,
+					// 		dateTimestamp: tr.date,
+					// 		description: tr.description,
+					// 		type: tr.type
+					// 	})
+					// );
 
 					Object.entries(initialBudgets).map(([ key, val ], i) =>
 						userRef.collection('budgets').doc(key).set(val)
