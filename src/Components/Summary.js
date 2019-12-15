@@ -11,17 +11,19 @@ import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from './styles/summary.styles';
 import Collapse from '@material-ui/core/Collapse';
+import { CurrencyContext } from '../context/currency.context';
 
 function Summary() {
 	const classes = useStyles();
 	const transactions = useContext(TransactionsContext);
-	const matches = useMediaQuery('(max-width:600px)');
+	const currency = useContext(CurrencyContext);
+	const up600 = useMediaQuery('(min-width:600px)');
 
 	const renderTotal = () => {
 		const percentage = totalInc && totalExp ? ` (${parseInt(total / totalInc * 100)}%)` : '';
-		return matches
-			? formatAmount(total, '£', 2, false) + percentage
-			: formatAmount(total, '£', 2, false);
+		return up600
+			? formatAmount(total, currency, 2, false)
+			: formatAmount(total, currency, 2, false) + percentage;
 	};
 
 	const [ totalExp, totalInc ] = calcExpInc(transactions);
@@ -32,7 +34,7 @@ function Summary() {
 	return (
 		<Collapse in={totalInc !== 0 || totalExp !== 0} timeout={700}>
 			<Paper className={classes.root}>
-				{!matches && (
+				{up600 && (
 					<div className={classes.report}>
 						<Typography variant="h3">
 							{totalInc !== 0 ? `${parseInt(total / totalInc * 100)}%` : '0%'}

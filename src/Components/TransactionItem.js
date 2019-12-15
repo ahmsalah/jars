@@ -19,6 +19,7 @@ import Popover from '@material-ui/core/Popover';
 import EditIcon from '@material-ui/icons/Edit';
 import TransactionForm from './TransactionForm';
 import Tooltip from '@material-ui/core/Tooltip';
+import { CurrencyContext } from '../context/currency.context';
 
 function TransactionItem({
 	transaction: { id, category, description, date, amount, type },
@@ -26,6 +27,7 @@ function TransactionItem({
 }) {
 	const classes = useStyles();
 	const dispatch = useContext(DispatchContext);
+	const currency = useContext(CurrencyContext);
 	const up600 = useMediaQuery('(min-width:600px)');
 	const { enqueueSnackbar } = useSnackbar();
 	const [ editDialogOpen, setEditDialogOpen ] = useState(false);
@@ -90,7 +92,7 @@ function TransactionItem({
 							)}
 							<ListItemText
 								className={classes.amount}
-								primary={formatAmount(amount)}
+								primary={formatAmount(amount, currency)}
 								secondary={(!up600 || !!carousel) && formatDate(date)}
 								primaryTypographyProps={{ color: color }}
 							/>

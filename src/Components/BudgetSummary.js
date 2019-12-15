@@ -23,6 +23,7 @@ import useStyles from './styles/budgetSummary.styles';
 import MonthBudgetForm from './MonthBudgetForm';
 import Tooltip from '@material-ui/core/Tooltip';
 import Tip from './Tip';
+import { CurrencyContext } from '../context/currency.context';
 
 function BudgetSummary({ tipOpen, handleNextTip, tips }) {
 	const classes = useStyles();
@@ -34,6 +35,7 @@ function BudgetSummary({ tipOpen, handleNextTip, tips }) {
 	const [ monthBudgetDialog, setMonthBudgetDialog ] = useState(false);
 	const transactions = useContext(TransactionsContext);
 	const thisMonthBudget = useContext(ThisMonthBudgetContext);
+	const currency = useContext(CurrencyContext);
 
 	const up600 = useMediaQuery('(min-width:600px)');
 	const heightUp650 = useMediaQuery('(min-height:650px)');
@@ -129,7 +131,7 @@ function BudgetSummary({ tipOpen, handleNextTip, tips }) {
 										classes.marginRightAuto
 									)}
 									primary={'Income'}
-									secondary={formatAmount(actualInc, '£', 0)}
+									secondary={formatAmount(actualInc, currency, 0)}
 								/>
 
 								{up600 && (
@@ -166,7 +168,7 @@ function BudgetSummary({ tipOpen, handleNextTip, tips }) {
 														<EditIcon />
 													</IconButton>
 												</Tooltip>
-												<span>{formatAmount(plannedInc, '£', 0)}</span>
+												<span>{formatAmount(plannedInc, currency, 0)}</span>
 											</span>
 										) : (
 											<Button
@@ -204,7 +206,7 @@ function BudgetSummary({ tipOpen, handleNextTip, tips }) {
 										classes.marginRightAuto
 									)}
 									primary="Expenses"
-									secondary={formatAmount(actualExp, '£', 0)}
+									secondary={formatAmount(actualExp, currency, 0)}
 								/>
 								{up600 && (
 									<div
@@ -227,7 +229,7 @@ function BudgetSummary({ tipOpen, handleNextTip, tips }) {
 										classes.alignRight
 									)}
 									primary="Expenses"
-									secondary={formatAmount(plannedExp, '£', 0)}
+									secondary={formatAmount(plannedExp, currency, 0)}
 								/>
 							</ListItem>
 							{!up600 && (
@@ -255,7 +257,9 @@ function BudgetSummary({ tipOpen, handleNextTip, tips }) {
 										classes.totalItemText
 									)}
 									primary="Saved"
-									secondary={formatAmount(totalActual, '£', 0) + ' ' + percentage}
+									secondary={
+										formatAmount(totalActual, currency, 0) + ' ' + percentage
+									}
 								/>
 
 								<ListItemText
@@ -265,7 +269,7 @@ function BudgetSummary({ tipOpen, handleNextTip, tips }) {
 										classes.totalItemText
 									)}
 									primary="Planning to save"
-									secondary={formatAmount(totalPlanned, '£', 0)}
+									secondary={formatAmount(totalPlanned, currency, 0)}
 								/>
 							</ListItem>
 						</Collapse>

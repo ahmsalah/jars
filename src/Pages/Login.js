@@ -57,6 +57,7 @@ function Login() {
 						categories: initialCategories,
 						jars: initialJars,
 						isNewUser: authResult.additionalUserInfo.isNewUser,
+						currency: '£',
 						showTips: {
 							carousel: true,
 							transactions: true,
