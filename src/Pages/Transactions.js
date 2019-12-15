@@ -10,18 +10,26 @@ import { sortList, calcExpInc, filterArrayByDate } from '../helpers';
 import { Paper } from '@material-ui/core';
 import { initialTransactions } from '../initialData';
 import useInputState from '../hooks/useInputState';
+import Sidebar from '../Components/Sidebar';
 
 function Transactions({ expCategories, incCategories }) {
 	const [ transactions, setTransactions ] = useState(initialTransactions);
-	const [ filteredTransactions, setFilteredTransactions ] = useState(transactions);
-	const [ sortedTransactions, setSortedTransactions ] = useState(filteredTransactions);
+	const [ filteredTransactions, setFilteredTransactions ] = useState(
+		transactions
+	);
+	const [ sortedTransactions, setSortedTransactions ] = useState(
+		filteredTransactions
+	);
 	const [ sortBy, handleSortByChange ] = useInputState('date');
 	const [ isReversed, toggleIsReversed ] = useToggleState(false);
 	const [ selectedDate, handleDateChange ] = useState(new Date());
 
 	useEffect(
 		() => {
-			const updatedTransactions = filterArrayByDate(transactions, selectedDate);
+			const updatedTransactions = filterArrayByDate(
+				transactions,
+				selectedDate
+			);
 			setFilteredTransactions(updatedTransactions);
 		},
 		[ transactions, selectedDate ]
@@ -29,7 +37,11 @@ function Transactions({ expCategories, incCategories }) {
 
 	useEffect(
 		() => {
-			const updatedTransactions = sortList(filteredTransactions, sortBy, isReversed);
+			const updatedTransactions = sortList(
+				filteredTransactions,
+				sortBy,
+				isReversed
+			);
 			setSortedTransactions(updatedTransactions);
 		},
 		[ sortBy, filteredTransactions, isReversed ]
@@ -51,6 +63,8 @@ function Transactions({ expCategories, incCategories }) {
 	const [ totalExp, totalInc ] = calcExpInc(filteredTransactions);
 	return (
 		<React.Fragment>
+			<Sidebar />
+
 			<Navbar
 				addTransaction={addTransaction}
 				expCategories={expCategories}
