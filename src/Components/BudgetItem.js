@@ -110,6 +110,7 @@ const BudgetItem = forwardRef(
 														expanded={expanded}
 														setExpanded={setExpanded}
 														providedList={providedList}
+														budgetId={budgetId}
 													/>
 												</div>
 												<Collapse in={!expanded}>
