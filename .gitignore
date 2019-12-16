@@ -22,4 +22,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+.*
+!/.gitignore
+
 src/playground
+
+src/firebase
+firestore.rules
+debug.log
+
