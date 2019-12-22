@@ -80,17 +80,29 @@ export default makeStyles(({ spacing, palette, breakpoints }) => ({
 	list: {
 		padding: 0
 	},
-	typography: {
-		margin: spacing(3, 2, 5),
+	slideTitle: {
+		margin: props => (props.heightUp600 ? spacing(7, 2, 5) : spacing(3, 2, 5)),
 		fontSize: '1.4rem',
 		[breakpoints.up('sm')]: {
 			fontSize: '1.6rem'
 		}
 	},
-	img: {
+	imgContainer: {
+		margin: spacing(0, 3),
+		padding: spacing(1.5, 2, 1),
+		maxWidth: 380
+	},
+	imgBudget: {
 		width: '100%',
-		height: '100%',
-		maxHeight: 255,
+		maxHeight: '40vh',
 		objectFit: 'contain'
+	},
+	imgChart: {
+		width: '100%',
+		maxHeight: '30vh',
+		objectFit: 'contain'
+	},
+	chartCaption: {
+		margin: spacing(1, 2, 0.5)
 	}
 }));

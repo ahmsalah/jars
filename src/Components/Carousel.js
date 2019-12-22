@@ -19,8 +19,10 @@ import useStyles from './styles/carousel.styles';
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 function Carousel({ open, handleClose }) {
-	const classes = useStyles();
 	const up600 = useMediaQuery('(min-width:600px)');
+	const heightUp600 = useMediaQuery('(min-height:600px)');
+	const props = { heightUp600 };
+	const classes = useStyles(props);
 	const [ index, setIndex ] = useState(0);
 
 	const handleChangeIndex = index => {
@@ -39,6 +41,7 @@ function Carousel({ open, handleClose }) {
 			<Fade in={open} timeout={{ enter: 0, exit: 1000 }}>
 				<div className={classes.root}>
 					<AutoPlaySwipeableViews
+						autoPlay={false}
 						interval={4000}
 						style={{ height: '100%' }}
 						index={index}
@@ -48,7 +51,7 @@ function Carousel({ open, handleClose }) {
 								<Typography
 									align="center"
 									variant="h6"
-									className={classes.typography}>
+									className={classes.slideTitle}>
 									Record each time you spend or recieve money.
 								</Typography>
 								<Paper className={classes.paper}>
@@ -71,16 +74,16 @@ function Carousel({ open, handleClose }) {
 								<Typography
 									align="center"
 									variant="h6"
-									className={classes.typography}>
+									className={classes.slideTitle}>
 									Create budgets and monitor your spending.
 								</Typography>
 								<div>
 									<img
 										src={require(up600
-											? `../assets/budget1.png`
-											: `../assets/budget2.png`)}
+											? `../assets/budget-wider.png`
+											: `../assets/budget.png`)}
 										alt="create budgets"
-										className={classes.img}
+										className={classes.imgBudget}
 									/>
 								</div>
 							</div>
@@ -90,16 +93,22 @@ function Carousel({ open, handleClose }) {
 								<Typography
 									align="center"
 									variant="h6"
-									className={classes.typography}>
+									className={classes.slideTitle}>
 									See exactly where your money is going.
 								</Typography>
-								<div>
+								<Paper className={classes.imgContainer}>
 									<img
 										src={require(`../assets/pie-chart.png`)}
 										alt="charts"
-										className={classes.img}
+										className={classes.imgChart}
 									/>
-								</div>
+									<Typography
+										align="center"
+										variant="subtitle2"
+										className={classes.chartCaption}>
+										You spent 60% of your income on shopping.
+									</Typography>
+								</Paper>
 							</div>
 						</div>
 					</AutoPlaySwipeableViews>

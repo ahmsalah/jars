@@ -106,7 +106,7 @@ export default makeStyles(({ spacing, breakpoints, palette }) => ({
 		maxWidth: 200
 	},
 	chip: {
-		backgroundColor: '#fff',
+		backgroundColor: '#fff !important',
 		'&:active': {
 			cursor: 'grabbing !important'
 		}
