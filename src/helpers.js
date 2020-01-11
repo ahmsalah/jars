@@ -162,6 +162,41 @@ const filterObjectByKey = (object, objKey) => {
 
 /**
 |--------------------------------------------------
+| Filters an object by an object key
+| @param {Object}	the object to be filtered
+| @param {string} object key to filter by
+|--------------------------------------------------
+*/
+function reduceObjValues(arr, objKey1, objKey2, ...moreProps) {
+	return [ ...arr ]
+		.reduce((acc, val) => {
+			const o =
+				acc
+					.filter(obj => {
+						return obj[objKey1] === val[objKey1];
+					})
+					.pop() ||
+				(moreProps.length
+					? {
+							[objKey1]: val[objKey1],
+							[objKey2]: 0,
+							[moreProps[0]]: val[moreProps[0]],
+							[moreProps[1]]: val[moreProps[1]]
+						}
+					: {
+							[objKey1]: val[objKey1],
+							[objKey2]: 0
+						});
+
+			o[objKey2] += val[objKey2];
+			acc.push(o);
+			return acc;
+		}, [])
+		.filter((val, i, arr) => arr.indexOf(val) === i);
+}
+
+/**
+|--------------------------------------------------
 */
 export {
 	filterArrayByMonth,
@@ -170,5 +205,6 @@ export {
 	getExactTime,
 	formatAmount,
 	getPercentageOfTwoNumbers,
-	filterObjectByKey
+	filterObjectByKey,
+	reduceObjValues
 };
