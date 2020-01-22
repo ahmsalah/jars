@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Loader from '../components/Loader';
 import TipsExpansionPanel from '../components/TipsExpansionPanel';
+import Layout from '../components/Layout';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
@@ -76,44 +77,46 @@ function Categories() {
 	);
 
 	return (
-		<div className={classes.root}>
-			<div className={classes.content}>
-				{isLoading || !categories.lists ? (
-					<Loader />
-				) : Object.keys(categories.allCategories).length ? (
-					<React.Fragment>
-						<div className={classes.expansionPanelContainer}>
-							<TipsExpansionPanel
-								title="Tips"
-								message="You can reorder categories by holding a category and then drag it up or down."
-							/>
-						</div>
-						{categories.listOrder.map(listID => {
-							const list = categories.lists[listID];
-
-							const categoriesList = list.categoriesIds.map(
-								ctID => categories.allCategories[ctID]
-							);
-
-							return (
-								<CategoryList
-									key={listID}
-									list={list}
-									type={listID}
-									categories={categoriesList}
+		<Layout>
+			<div className={classes.root}>
+				<div className={classes.content}>
+					{isLoading || !categories.lists ? (
+						<Loader />
+					) : Object.keys(categories.allCategories).length ? (
+						<React.Fragment>
+							<div className={classes.expansionPanelContainer}>
+								<TipsExpansionPanel
+									title="Tips"
+									message="You can reorder categories by holding a category and then drag it up or down."
 								/>
-							);
-						})}
-					</React.Fragment>
-				) : (
-					<div className={classes.noCategories}>
-						<Typography variant="h4">No categories here</Typography>
-						<Typography variant="h4">start adding now</Typography>
-						<img src={require(`../assets/sad-jar.png`)} alt="No Transactions" />
-					</div>
-				)}
+							</div>
+							{categories.listOrder.map(listID => {
+								const list = categories.lists[listID];
+
+								const categoriesList = list.categoriesIds.map(
+									ctID => categories.allCategories[ctID]
+								);
+
+								return (
+									<CategoryList
+										key={listID}
+										list={list}
+										type={listID}
+										categories={categoriesList}
+									/>
+								);
+							})}
+						</React.Fragment>
+					) : (
+						<div className={classes.noCategories}>
+							<Typography variant="h4">No categories here</Typography>
+							<Typography variant="h4">start adding now</Typography>
+							<img src={require(`../assets/sad-jar.png`)} alt="No Transactions" />
+						</div>
+					)}
+				</div>
 			</div>
-		</div>
+		</Layout>
 	);
 }
 

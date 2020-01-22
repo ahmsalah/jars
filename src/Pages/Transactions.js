@@ -6,6 +6,7 @@ import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Loader from '../components/Loader';
 import { IsTrLoadingContext } from '../context/transactions.context';
+import Layout from '../components/Layout';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
@@ -32,19 +33,21 @@ function Transactions() {
 	const isTrLoading = useContext(IsTrLoadingContext);
 
 	return (
-		<div className={classes.root}>
-			{isTrLoading ? (
-				<Loader />
-			) : (
-				<React.Fragment>
-					<Summary />
-					<Paper className={classes.content}>
-						<Filters />
-						<TransactionsList />
-					</Paper>
-				</React.Fragment>
-			)}
-		</div>
+		<Layout>
+			<div className={classes.root}>
+				{isTrLoading ? (
+					<Loader />
+				) : (
+					<React.Fragment>
+						<Summary />
+						<Paper className={classes.content}>
+							<Filters />
+							<TransactionsList />
+						</Paper>
+					</React.Fragment>
+				)}
+			</div>
+		</Layout>
 	);
 }
 

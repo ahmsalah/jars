@@ -9,6 +9,7 @@ import BudgetSummary from '../components/BudgetSummary';
 import Collapse from '@material-ui/core/Collapse';
 import Loader from '../components/Loader';
 import { TipsContext, DispatchTipsContext } from '../context/tips.context';
+import Layout from '../components/Layout';
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 	root: {
@@ -83,66 +84,71 @@ function Budgets() {
 		}
 	};
 
-	return !!Object.keys(budgets).length ? (
-		<div className={classes.root}>
-			<BudgetSummary tipOpen={tipOpen} tips={tips} handleNextTip={handleNextTip} />
-			<Collapse in={!!thisMonthBudget} timeout={700}>
-				<DragDropContext onDragEnd={onBudgetsDragEnd}>
-					<Droppable droppableId="all-lists" type="list">
-						{provided => (
-							<div
-								ref={provided.innerRef}
-								{...provided.droppableProps}
-								className={classes.budgetList}>
-								{!!thisMonthBudget &&
-									thisMonthBudget.budgetsOrder.map((budgetId, i) => {
-										const budgetItem = thisMonthBudget.allBudgets[budgetId];
+	return (
+		<Layout>
+			{!!Object.keys(budgets).length ? (
+				<div className={classes.root}>
+					<BudgetSummary tipOpen={tipOpen} tips={tips} handleNextTip={handleNextTip} />
+					<Collapse in={!!thisMonthBudget} timeout={700}>
+						<DragDropContext onDragEnd={onBudgetsDragEnd}>
+							<Droppable droppableId="all-lists" type="list">
+								{provided => (
+									<div
+										ref={provided.innerRef}
+										{...provided.droppableProps}
+										className={classes.budgetList}>
+										{!!thisMonthBudget &&
+											thisMonthBudget.budgetsOrder.map((budgetId, i) => {
+												const budgetItem =
+													thisMonthBudget.allBudgets[budgetId];
 
-										const categoriesList = budgetItem.categoriesIds.map(
-											ctID =>
-												budgetItem.categories.filter(
-													ct => ct.id === ctID
-												)[0]
-										);
-										const actual = !!transactions.length
-											? transactions.filter(tr =>
-													budgetItem.categories.some(
-														ct => ct.id === tr.category.id
-													)
-												)
-											: [];
-										const totalActual = actual.reduce(
-											(acc, curr) => acc + curr.amount,
-											0
-										);
+												const categoriesList = budgetItem.categoriesIds.map(
+													ctID =>
+														budgetItem.categories.filter(
+															ct => ct.id === ctID
+														)[0]
+												);
+												const actual = !!transactions.length
+													? transactions.filter(tr =>
+															budgetItem.categories.some(
+																ct => ct.id === tr.category.id
+															)
+														)
+													: [];
+												const totalActual = actual.reduce(
+													(acc, curr) => acc + curr.amount,
+													0
+												);
 
-										const ref = React.createRef();
+												const ref = React.createRef();
 
-										return (
-											<BudgetItem
-												ref={ref}
-												index={i}
-												key={budgetId}
-												budgetId={budgetId}
-												budgetItem={budgetItem}
-												categories={categoriesList}
-												actual={totalActual}
-												pMonth={thisMonthBudget.pMonth}
-												tipOpen={tipOpen}
-												tips={tips}
-												handleNextTip={handleNextTip}
-											/>
-										);
-									})}
-								{provided.placeholder}
-							</div>
-						)}
-					</Droppable>
-				</DragDropContext>
-			</Collapse>
-		</div>
-	) : (
-		<Loader />
+												return (
+													<BudgetItem
+														ref={ref}
+														index={i}
+														key={budgetId}
+														budgetId={budgetId}
+														budgetItem={budgetItem}
+														categories={categoriesList}
+														actual={totalActual}
+														pMonth={thisMonthBudget.pMonth}
+														tipOpen={tipOpen}
+														tips={tips}
+														handleNextTip={handleNextTip}
+													/>
+												);
+											})}
+										{provided.placeholder}
+									</div>
+								)}
+							</Droppable>
+						</DragDropContext>
+					</Collapse>
+				</div>
+			) : (
+				<Loader />
+			)}
+		</Layout>
 	);
 }
 

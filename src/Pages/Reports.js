@@ -19,6 +19,8 @@ import {
 	AllTransactionsContext,
 	IsTrLoadingContext
 } from '../context/transactions.context';
+import ChartWrapper from '../components/ChartWrapper';
+import Layout from '../components/Layout';
 
 function Reports() {
 	const classes = useStyles();
@@ -51,97 +53,102 @@ function Reports() {
 	);
 
 	return (
-		<div className={classes.root}>
-			<Collapse in={!!allTransactions.length} timeout={800}>
-				<div className={classes.flex}>
-					<Paper className={classes.chartContainer}>
-						<div className={classes.titleContainer}>
-							<Typography className={classes.title}>
-								Expenses and Income Structure
-							</Typography>
-							<Divider />
-						</div>
-						<Tabs
-							classes={{ indicator: classes.tabIndicator }}
-							className={classes.tabsButtons}
-							value={value}
-							onChange={handleChange}
-							indicatorColor="primary"
-							textColor="primary"
-							variant="fullWidth"
-							aria-label="full width tabs example">
-							{charts.map(ch => (
-								<Tab
-									key={ch.type}
-									disabled={!ch.chartData.length}
-									classes={{ selected: classes.selectedButton }}
-									className={classes.tabButton}
-									label={ch.type === 'exp' ? 'Expenses' : 'Income'}
-								/>
-							))}
-						</Tabs>
-						<div className={classes.selectedMonth}>
-							<SelectedMonth />
-						</div>
-						<SwipeableViews index={value} onChangeIndex={handleChangeIndex}>
-							{charts.map(ch => (
-								<Collapse key={ch.type} in={!!ch.chartData.length}>
-									<div className={classes.padding}>
-										<Typography className={classes.total}>
-											{formatAmount(ch.total)}
-										</Typography>
-										<DoughnutChart chartData={ch.chartData} colors={colors} />
-									</div>
-								</Collapse>
-							))}
-						</SwipeableViews>
-						<Collapse in={noExp && noInc}>
-							<Typography align="center" className={classes.padding}>
-								You haven't added any transactions this month.
-							</Typography>
-						</Collapse>
-					</Paper>
+		<Layout>
+			<div className={classes.root}>
+				<Collapse in={!!allTransactions.length} timeout={800}>
+					<div className={classes.flex}>
+						<Paper className={classes.chartContainer}>
+							<div className={classes.titleContainer}>
+								<Typography className={classes.title}>
+									Expenses and Income Structure
+								</Typography>
+								<Divider />
+							</div>
+							<Tabs
+								classes={{ indicator: classes.tabIndicator }}
+								className={classes.tabsButtons}
+								value={value}
+								onChange={handleChange}
+								indicatorColor="primary"
+								textColor="primary"
+								variant="fullWidth"
+								aria-label="full width tabs example">
+								{charts.map(ch => (
+									<Tab
+										key={ch.type}
+										disabled={!ch.chartData.length}
+										classes={{ selected: classes.selectedButton }}
+										className={classes.tabButton}
+										label={ch.type === 'exp' ? 'Expenses' : 'Income'}
+									/>
+								))}
+							</Tabs>
+							<div className={classes.selectedMonth}>
+								<SelectedMonth />
+							</div>
+							<SwipeableViews index={value} onChangeIndex={handleChangeIndex}>
+								{charts.map(ch => (
+									<Collapse key={ch.type} in={!!ch.chartData.length}>
+										<div className={classes.padding}>
+											<Typography className={classes.total}>
+												{formatAmount(ch.total)}
+											</Typography>
+											<DoughnutChart
+												chartData={ch.chartData}
+												colors={colors}
+											/>
+										</div>
+									</Collapse>
+								))}
+							</SwipeableViews>
+							<Collapse in={noExp && noInc}>
+								<Typography align="center" className={classes.padding}>
+									You haven't added any transactions this month.
+								</Typography>
+							</Collapse>
+						</Paper>
 
-					<Paper className={classes.chartContainer}>
-						<div className={classes.titleContainer}>
-							<Typography className={classes.title}>Cash Flow</Typography>
-							<Divider />
-						</div>
-						<div className={classes.padding}>
-							<LineChart chartData={cashFlow} />
-						</div>
-					</Paper>
-					<Paper className={classes.chartContainer}>
-						<div className={classes.titleContainer}>
-							<Typography className={classes.title}>
-								Income to Expense Comparison
-							</Typography>
-							<Divider />
-						</div>
-						<div className={classes.padding}>
-							<BarChart chartData={totalExpIncByMonth} />
-						</div>
-					</Paper>
-				</div>
-			</Collapse>
-			<Collapse in={isTrLoading}>
-				<Loader />
-			</Collapse>
-			<Collapse in={!allTransactions.length && !isTrLoading}>
-				<div className={classes.flex}>
-					<div className={classes.chartContainer}>
-						<Typography className={classes.typography}>
-							Add your first transaction to enable reports!
-						</Typography>
-						<img
-							className={classes.jarsImg}
-							src={require(`../assets/all-jars.png`)}
-							alt="No Transactions"
-						/>
+						<Paper className={classes.chartContainer}>
+							<div className={classes.titleContainer}>
+								<Typography className={classes.title}>Cash Flow</Typography>
+								<Divider />
+							</div>
+							<div className={classes.padding}>
+								<LineChart chartData={cashFlow} />
+							</div>
+						</Paper>
+						<Paper className={classes.chartContainer}>
+							<div className={classes.titleContainer}>
+								<Typography className={classes.title}>
+									Income to Expense Comparison
+								</Typography>
+								<Divider />
+							</div>
+							<div className={classes.padding}>
+								<BarChart chartData={totalExpIncByMonth} />
+							</div>
+						</Paper>
 					</div>
-				</div>
-			</Collapse>
-		</div>
+				</Collapse>
+				<Collapse in={isTrLoading}>
+					<Loader />
+				</Collapse>
+				<Collapse in={!allTransactions.length && !isTrLoading}>
+					<div className={classes.flex}>
+						<div className={classes.chartContainer}>
+							<Typography className={classes.typography}>
+								Add your first transaction to enable reports!
+							</Typography>
+							<img
+								className={classes.jarsImg}
+								src={require(`../assets/all-jars.png`)}
+								alt="No Transactions"
+							/>
+						</div>
+					</div>
+				</Collapse>
+			</div>
+		</Layout>
 	);
 }
 

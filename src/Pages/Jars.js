@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import Layout from '../components/Layout';
 
 const useStyles = makeStyles(({ palette, spacing, breakpoints }) => ({
 	root: {
@@ -29,16 +30,18 @@ function Jars() {
 	const classes = useStyles();
 
 	return (
-		<div className={classes.root}>
-			<Typography variant="h2" className={classes.typography}>
-				Coming soon!
-			</Typography>
-			<img
-				className={classes.jarsImg}
-				src={require(`../assets/all-jars.png`)}
-				alt="No Transactions"
-			/>
-		</div>
+		<Layout>
+			<div className={classes.root}>
+				<Typography variant="h2" className={classes.typography}>
+					Coming soon!
+				</Typography>
+				<img
+					className={classes.jarsImg}
+					src={require(`../assets/all-jars.png`)}
+					alt="No Transactions"
+				/>
+			</div>
+		</Layout>
 	);
 }
 
