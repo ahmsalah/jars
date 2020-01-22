@@ -7,6 +7,7 @@ import PrivateRoute from './PrivateRoute';
 import Budgets from './pages/Budgets';
 import Jars from './pages/Jars';
 import Reports from './pages/Reports';
+import NothingHere from './pages/NothingHere';
 
 function Routes() {
 	return (
@@ -17,6 +18,7 @@ function Routes() {
 			<PrivateRoute exact path="/budgets" component={Budgets} />
 			<PrivateRoute exact path="/jars" component={Jars} />
 			<PrivateRoute exact path="/reports" component={Reports} />
+			<Route component={NothingHere} />
 		</Switch>
 	);
 }
